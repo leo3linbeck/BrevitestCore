@@ -1,0 +1,1 @@
+﻿model.Cartridge.methods.manufacture(	{		assayID: 'DE35D20341C240A1873FD6C1577F1BDF',		quantity: 10	});

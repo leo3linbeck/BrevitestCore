@@ -1,0 +1,1 @@
+﻿addHttpRequestHandler('^/close-device[?]*', getFolder().path + 'Javascript/deviceRequestHandler.js', 'closeDeviceHandler');

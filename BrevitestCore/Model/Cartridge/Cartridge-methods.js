@@ -1,0 +1,1 @@
+﻿model.Cartridge.methods.manufacture = function(param) {	// param: assayID, quantity	var assay = ds.Assay(param.assayID);	var c, i;	for (i = 0; i < param.quantity; i += 1) {		c = ds.Cartridge.createEntity();		c.manufacturedOn = new Date();		c.assay = assay;		c.save();	}		return param.quantity;};model.Cartridge.methods.manufacture.scope = 'public';
