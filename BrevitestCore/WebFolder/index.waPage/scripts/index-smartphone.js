@@ -132,7 +132,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					console.log('ERROR: textFieldPatientNumber.change', error);
 					$$('richTextPatientInfo').setValue('Error: ' + error.message);
 				},
-				params: [$$('textFieldPatientNumber').getValue()]
+				params: [patientNumber]
 			}
 		);
 	}
@@ -148,6 +148,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	function clearPrescriptionForm() {
 		sources.patient.query('ID === null', {onSuccess: function(e) {return;} } );
+		patientNumber = '';
+		sources.patientNumber.sync();
 		assayList.length = 0;
 		sources.assayList.sync();
 		prescriptionNote = '';
