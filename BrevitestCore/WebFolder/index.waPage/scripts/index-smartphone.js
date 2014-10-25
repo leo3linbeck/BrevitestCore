@@ -2,10 +2,10 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var assayListEvent = {};	// @dataSource
 	var imageButton2 = {};	// @buttonImage
 	var imageButton1 = {};	// @buttonImage
 	var patientEvent = {};	// @dataSource
-	var assayEvent = {};	// @dataSource
 	var buttonAssayUZ = {};	// @button
 	var buttonAssayPT = {};	// @button
 	var buttonAssayKO = {};	// @button
@@ -151,6 +151,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.patient.query('ID === null', {onSuccess: function(e) {return;} } );
 		patientNumber = '';
 		sources.patientNumber.sync();
+		$$('richTextPatientInfo').setValue('');
 		assayList.length = 0;
 		sources.assayList.sync();
 		prescriptionNote = '';
@@ -202,6 +203,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	assayListEvent.onCollectionChange = function assayListEvent_onCollectionChange (event)// @startlock
+	{// @endlock
+		updateWritePrescriptionButton();
+	};// @lock
+
 	imageButton2.click = function imageButton2_click (event)// @startlock
 	{// @endlock
 		removeLastAssay();
@@ -213,11 +219,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 	patientEvent.onCurrentElementChange = function patientEvent_onCurrentElementChange (event)// @startlock
-	{// @endlock
-		updateWritePrescriptionButton();
-	};// @lock
-
-	assayEvent.onCurrentElementChange = function assayEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		updateWritePrescriptionButton();
 	};// @lock
@@ -318,10 +319,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("assayList", "onCollectionChange", assayListEvent.onCollectionChange, "WAF");
 	WAF.addListener("imageButton2", "click", imageButton2.click, "WAF");
 	WAF.addListener("imageButton1", "click", imageButton1.click, "WAF");
 	WAF.addListener("patient", "onCurrentElementChange", patientEvent.onCurrentElementChange, "WAF");
-	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonAssayUZ", "click", buttonAssayUZ.click, "WAF");
 	WAF.addListener("buttonAssayPT", "click", buttonAssayPT.click, "WAF");
 	WAF.addListener("buttonAssayKO", "click", buttonAssayKO.click, "WAF");
