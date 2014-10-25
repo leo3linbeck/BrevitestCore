@@ -2,6 +2,9 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonStart = {};	// @button
+	var row3 = {};	// @container
+	var row2 = {};	// @container
 	var assayListEvent = {};	// @dataSource
 	var imageButton2 = {};	// @buttonImage
 	var imageButton1 = {};	// @buttonImage
@@ -20,7 +23,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var documentEvent = {};	// @document
 	var buttonReview = {};	// @button
 	var buttonMonitor = {};	// @button
-	var buttonStart = {};	// @button
+	var buttonRun = {};	// @button
 	var buttonPrescribe = {};	// @button
 // @endregion// @endlock
 
@@ -37,7 +40,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	function disableAllButtons() {
 		$$('buttonRegister').disable();
 		$$('buttonPrescribe').disable();
-		$$('buttonStart').disable();
+		$$('buttonRun').disable();
 		$$('buttonMonitor').disable();
 		$$('buttonReview').disable();
 	}
@@ -45,7 +48,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	function enableAllButtons() {
 		$$('buttonRegister').enable();
 		$$('buttonPrescribe').enable();
-		$$('buttonStart').enable();
+		$$('buttonRun').enable();
 		$$('buttonMonitor').enable();
 		$$('buttonReview').enable();
 	}
@@ -92,7 +95,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onError: function(error) {
 					console.log('ERROR: allAssays', error);
 				},
-				orderBy: [name],
+				orderBy: 'name',
 				params: [getAssayIDList(), startChar, endChar]
 			}
 		);
@@ -111,7 +114,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onError: function(error) {
 					console.log('ERROR: allAssays', error);
 				},
-				orderBy: [name],
+				orderBy: 'name',
 				params: [getAssayIDList()]
 			}
 		);
@@ -160,6 +163,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function writePrescription() {
+		$$('buttonWritePrescription').disable();
 		sources.prescription.write(
 			{
 				onSuccess: function(event) {
@@ -199,9 +203,63 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		assayList.splice(assayList.length - 1, 1);
 		sources.assayList.sync();
 	}
+	
+	function loadUnstartedTests(callback) {
+		sources.test.query('isComplete == false',
+			{
+				onSuccess: function(event) {
+					console.log('loadUnstartedTests', event);
+					if (callback) {
+						callback(event);
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: loadUnstartedTests', error);
+				},
+				orderBy: 'prescribedOn'
+			}
+		);
+	}
+
+	function loadDevices(callback) {
+		sources.device.query('practice.users.username == :1',
+			{
+				onSuccess: function(event) {
+					console.log('loadDevices', event);
+					if (callback) {
+						callback(event);
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: loadDevices', error);
+				},
+				orderBy: 'modelName, serialNumber',
+				params: [WAF.directory.currentUser().userName]
+			}
+		);
+	}
 
 	
 // eventHandlers// @lock
+
+	buttonStart.click = function buttonStart_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(1);
+	};// @lock
+
+	row3.click = function row3_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(9);
+	};// @lock
+
+	row2.click = function row2_click (event)// @startlock
+	{// @endlock
+		loadDevices(
+			function(event) {
+				$$('navigationView1').goToView(8);
+			}
+		);
+	};// @lock
 
 	assayListEvent.onCollectionChange = function assayListEvent_onCollectionChange (event)// @startlock
 	{// @endlock
@@ -307,9 +365,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		$$('navigationView1').goToView(4);
 	};// @lock
 
-	buttonStart.click = function buttonStart_click (event)// @startlock
+	buttonRun.click = function buttonRun_click (event)// @startlock
 	{// @endlock
-		$$('navigationView1').goToView(3);
+		loadUnstartedTests(
+			function(event) {
+				$$('navigationView1').goToView(3);
+			}
+		);
 	};// @lock
 
 	buttonPrescribe.click = function buttonPrescribe_click (event)// @startlock
@@ -319,6 +381,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonStart", "click", buttonStart.click, "WAF");
+	WAF.addListener("row3", "click", row3.click, "WAF");
+	WAF.addListener("row2", "click", row2.click, "WAF");
 	WAF.addListener("assayList", "onCollectionChange", assayListEvent.onCollectionChange, "WAF");
 	WAF.addListener("imageButton2", "click", imageButton2.click, "WAF");
 	WAF.addListener("imageButton1", "click", imageButton1.click, "WAF");
@@ -338,7 +403,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
 	WAF.addListener("buttonReview", "click", buttonReview.click, "WAF");
 	WAF.addListener("buttonMonitor", "click", buttonMonitor.click, "WAF");
-	WAF.addListener("buttonStart", "click", buttonStart.click, "WAF");
+	WAF.addListener("buttonRun", "click", buttonRun.click, "WAF");
 	WAF.addListener("buttonPrescribe", "click", buttonPrescribe.click, "WAF");
 // @endregion
 };// @endlock
