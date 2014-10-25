@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var imageButton2 = {};	// @buttonImage
+	var imageButton1 = {};	// @buttonImage
 	var patientEvent = {};	// @dataSource
 	var assayEvent = {};	// @dataSource
 	var buttonAssayUZ = {};	// @button
@@ -13,7 +15,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var row1 = {};	// @container
 	var buttonWritePrescription = {};	// @button
 	var textFieldPatientNumber = {};	// @textField
-	var icon2 = {};	// @icon
 	var buttonRegister = {};	// @button
 	var login1 = {};	// @login
 	var documentEvent = {};	// @document
@@ -185,7 +186,31 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 	
+	function loadAssayList() {
+		allAssays(
+			function(event) {
+				$$('navigationView1').goToView(7);
+			}
+		);
+	}
+
+	function removeLastAssay() {
+		assayList.splice(assayList.length - 1, 1);
+		sources.assayList.sync();
+	}
+
+	
 // eventHandlers// @lock
+
+	imageButton2.click = function imageButton2_click (event)// @startlock
+	{// @endlock
+		removeLastAssay();
+	};// @lock
+
+	imageButton1.click = function imageButton1_click (event)// @startlock
+	{// @endlock
+		loadAssayList();
+	};// @lock
 
 	patientEvent.onCurrentElementChange = function patientEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
@@ -244,15 +269,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		loadPatientInfo();
 	};// @lock
 
-	icon2.click = function icon2_click (event)// @startlock
-	{// @endlock
-		allAssays(
-			function(event) {
-				$$('navigationView1').goToView(7);
-			}
-		);
-	};// @lock
-
 	buttonRegister.click = function buttonRegister_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(6);
@@ -302,6 +318,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("imageButton2", "click", imageButton2.click, "WAF");
+	WAF.addListener("imageButton1", "click", imageButton1.click, "WAF");
 	WAF.addListener("patient", "onCurrentElementChange", patientEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonAssayUZ", "click", buttonAssayUZ.click, "WAF");
@@ -313,7 +331,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("buttonWritePrescription", "click", buttonWritePrescription.click, "WAF");
 	WAF.addListener("textFieldPatientNumber", "change", textFieldPatientNumber.change, "WAF");
-	WAF.addListener("icon2", "click", icon2.click, "WAF");
 	WAF.addListener("buttonRegister", "click", buttonRegister.click, "WAF");
 	WAF.addListener("login1", "logout", login1.logout, "WAF");
 	WAF.addListener("login1", "login", login1.login, "WAF");
