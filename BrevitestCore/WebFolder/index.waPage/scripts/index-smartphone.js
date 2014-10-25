@@ -2,6 +2,14 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var patientEvent = {};	// @dataSource
+	var assayEvent = {};	// @dataSource
+	var buttonAssayUZ = {};	// @button
+	var buttonAssayPT = {};	// @button
+	var buttonAssayKO = {};	// @button
+	var buttonAssayFJ = {};	// @button
+	var buttonAssayAE = {};	// @button
+	var buttonAssayAll = {};	// @button
 	var row1 = {};	// @container
 	var buttonWritePrescription = {};	// @button
 	var textFieldPatientNumber = {};	// @textField
@@ -30,10 +38,145 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		$$('buttonMonitor').enable();
 		$$('buttonReview').enable();
 	}
-	
-	selectedAssays = [];
 
+	assayButtons = ['buttonAssayAll', 'buttonAssayAE', 'buttonAssayFJ', 'buttonAssayKO', 'buttonAssayPT', 'buttonAssayUZ'];
+
+	function highlightAssayButton(highlight) {
+		assayButtons.forEach(
+			function (e) {
+				if (e === highlight) {
+					$$(e).setBackgroundColor('rgb(21, 126,250)');
+					$$(e).setTextColor('#FFFFFF');
+				}
+				else {
+					$$(e).setBackgroundColor('#FFFFFF');
+					$$(e).setTextColor('rgb(21, 126,250)');
+				}	
+			}
+		);
+	}
+	
+	function getAssayIDList() {
+		var assayIDs = [];
+		
+		assayList.forEach(
+			function (e) {
+				assayIDs.push(e.ID);	
+			}
+		);
+		if (assayIDs.length === 0) {
+			assayIDs.push('');	
+		}
+		
+		return assayIDs;
+	}
+		
+	function filterAssays(startChar, endChar, buttonID) {
+		sources.assay.query('NOT ID in :1 AND name >= :2 AND name <= :3',
+			{
+				onSuccess: function(event) {
+					highlightAssayButton(buttonID);
+					console.log('allAssays', event);
+				},
+				onError: function(error) {
+					console.log('ERROR: allAssays', error);
+				},
+				orderBy: [name],
+				params: [getAssayIDList(), startChar, endChar]
+			}
+		);
+	}
+	
+	function allAssays(callback) {
+		sources.assay.query('NOT ID in :1',
+			{
+				onSuccess: function(event) {
+					console.log('allAssays', event);
+					if (callback) {
+						callback(event);
+					}
+					highlightAssayButton('buttonAssayAll');
+				},
+				onError: function(error) {
+					console.log('ERROR: allAssays', error);
+				},
+				orderBy: [name],
+				params: [getAssayIDList()]
+			}
+		);
+	}
+	
+	function loadPatientInfo() {
+		sources.patient.query('reference === :1',
+			{
+				onSuccess: function(event) {
+					console.log('textFieldPatientNumber.change', event);
+					if (event.dataSource.length) {
+						$$('richTextPatientInfo').setValue(event.dataSource.gender + ', DOB: ' + event.dataSource.dateOfBirth.toDateString().substring(4));
+					}
+					else {
+						$$('richTextPatientInfo').setValue('Patient not found');
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: textFieldPatientNumber.change', error);
+					$$('richTextPatientInfo').setValue('Error: ' + error.message);
+				},
+				params: [$$('textFieldPatientNumber').getValue()]
+			}
+		);
+	}
+	
+	function updateWritePrescriptionButton() {
+		if (assayList.length > 0 && sources.patient.length === 1) {
+			$$('buttonWritePrescription').enable();
+		}
+		else {	
+			$$('buttonWritePrescription').disable();
+		}
+	}
+	
 // eventHandlers// @lock
+
+	patientEvent.onCurrentElementChange = function patientEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		updateWritePrescriptionButton();
+	};// @lock
+
+	assayEvent.onCurrentElementChange = function assayEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		updateWritePrescriptionButton();
+	};// @lock
+
+	buttonAssayUZ.click = function buttonAssayUZ_click (event)// @startlock
+	{// @endlock
+		filterAssays('U', 'ZZZZZZ', this.id);
+	};// @lock
+
+	buttonAssayPT.click = function buttonAssayPT_click (event)// @startlock
+	{// @endlock
+		filterAssays('P', 'TZZZZZ', this.id);
+	};// @lock
+
+	buttonAssayKO.click = function buttonAssayKO_click (event)// @startlock
+	{// @endlock
+		filterAssays('K', 'OZZZZZ', this.id);
+	};// @lock
+
+	buttonAssayFJ.click = function buttonAssayFJ_click (event)// @startlock
+	{// @endlock
+		filterAssays('F', 'JZZZZZ', this.id);
+	};// @lock
+
+	buttonAssayAE.click = function buttonAssayAE_click (event)// @startlock
+	{// @endlock
+		filterAssays('A', 'EZZZZZ', this.id);
+	};// @lock
+
+	buttonAssayAll.click = function buttonAssayAll_click (event)// @startlock
+	{// @endlock
+		allAssays();
+	};// @lock
 
 	row1.click = function row1_click (event)// @startlock
 	{// @endlock
@@ -49,36 +192,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	textFieldPatientNumber.change = function textFieldPatientNumber_change (event)// @startlock
 	{// @endlock
-		sources.patient.query('reference === :1',
-			{
-				onSuccess: function(evt) {
-					console.log('textFieldPatientNumber.change', evt);
-					$$('richTextPatientInfo').setValue(evt.dataSource.gender + ', DOB: ' + evt.dataSource.dateOfBirth.toDateString());
-				},
-				onError: function(err) {
-					console.log('ERROR: textFieldPatientNumber.change', err);
-					$$('richTextPatientInfo').setValue('');
-				},
-				params: [$$('textFieldPatientNumber').getValue()]
-			}
-		);
+		loadPatientInfo();
 	};// @lock
 
 	icon2.click = function icon2_click (event)// @startlock
 	{// @endlock
-		selectedAssays = [];
-		sources.assay.all(
-			{
-				onSuccess: function(evt) {
-					console.log('icon2.click', evt);
-				},
-				onError: function(err) {
-					console.log('ERROR: icon2.click', err);
-				},
-				orderBy: [name]
+		allAssays(
+			function(event) {
+				$$('navigationView1').goToView(7);
 			}
 		);
-		$$('navigationView1').goToView(7);
 	};// @lock
 
 	buttonRegister.click = function buttonRegister_click (event)// @startlock
@@ -104,6 +227,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		else {
 			enableAllButtons();
 		}
+		
+		$$('buttonWritePrescription').disable();
 	};// @lock
 
 	buttonReview.click = function buttonReview_click (event)// @startlock
@@ -127,6 +252,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("patient", "onCurrentElementChange", patientEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("buttonAssayUZ", "click", buttonAssayUZ.click, "WAF");
+	WAF.addListener("buttonAssayPT", "click", buttonAssayPT.click, "WAF");
+	WAF.addListener("buttonAssayKO", "click", buttonAssayKO.click, "WAF");
+	WAF.addListener("buttonAssayFJ", "click", buttonAssayFJ.click, "WAF");
+	WAF.addListener("buttonAssayAE", "click", buttonAssayAE.click, "WAF");
+	WAF.addListener("buttonAssayAll", "click", buttonAssayAll.click, "WAF");
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("buttonWritePrescription", "click", buttonWritePrescription.click, "WAF");
 	WAF.addListener("textFieldPatientNumber", "change", textFieldPatientNumber.change, "WAF");
