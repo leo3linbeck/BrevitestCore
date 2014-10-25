@@ -23,6 +23,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonPrescribe = {};	// @button
 // @endregion// @endlock
 
+	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
+	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
+	function notify(text) {
+		notification.log(text);
+	}
+	
+	function notifyError(text, error) {
+		notification.error(text + (error ? ' - ' + JSON.stringify(error) : ''));
+	}
+	
 	function disableAllButtons() {
 		$$('buttonRegister').disable();
 		$$('buttonPrescribe').disable();
@@ -136,6 +146,43 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
+	function clearPrescriptionForm() {
+		sources.patient.query('ID === null', {onSuccess: function(e) {return;} } );
+		assayList.length = 0;
+		sources.assayList.sync();
+		prescriptionNote = '';
+		sources.prescriptionNote.sync();
+		$$('buttonWritePrescription').disable();
+	}
+	
+	function writePrescription() {
+		sources.prescription.write(
+			{
+				onSuccess: function(event) {
+					if (event.result.success) {
+						console.log('writePrescription', event);
+						notify('New prescription written with ' + event.result.testCount + ' test(s)');
+						clearPrescriptionForm();
+					}
+					else {
+						console.log('ERROR: writePrescription', event);
+						notify('Error writing new prescription ' + JSON.stringify(event));
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: writePrescription', error);
+					notifyError('System error writing new prescription. ' + JSON.stringify(error));
+				}
+			},
+			{
+				username: 		WAF.directory.currentUser().userName,
+				patientID: 		sources.patient.ID,
+				tests: 			getAssayIDList(),
+				note: 			prescriptionNote
+			}
+		);
+	}
+	
 // eventHandlers// @lock
 
 	patientEvent.onCurrentElementChange = function patientEvent_onCurrentElementChange (event)// @startlock
@@ -187,7 +234,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonWritePrescription.click = function buttonWritePrescription_click (event)// @startlock
 	{// @endlock
-		// Add your code here
+		writePrescription();
 	};// @lock
 
 	textFieldPatientNumber.change = function textFieldPatientNumber_change (event)// @startlock
@@ -249,6 +296,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonPrescribe.click = function buttonPrescribe_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(2);
+		$$('textFieldPatientNumber').focus();
 	};// @lock
 
 // @region eventManager// @startlock
