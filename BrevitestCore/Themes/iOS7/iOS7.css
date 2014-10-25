@@ -1,0 +1,1007 @@
+/*
+* This file is part of Wakanda software, licensed by 4D under
+*  (i) the GNU General Public License version 3 (GNU GPL v3), or
+*  (ii) the Affero General Public License version 3 (AGPL v3) or
+*  (iii) a commercial license.
+* This file remains the exclusive property of 4D and/or its licensors
+* and is protected by national and international legislations.
+* In any event, Licensee's compliance with the terms and conditions
+* of the applicable license constitutes a prerequisite to any use of this file.
+* Except as otherwise expressly stated in the applicable license,
+* such license does not include any other license or rights on this file,
+* 4D's and/or its licensors' trademarks and/or other proprietary rights.
+* Consequently, no title, copyright or other proprietary rights
+* other than those specified in the applicable license is granted.
+*/
+.waf-theme.iOS7 .waf-widget-header,
+.waf-theme.iOS7 .waf-container.waf-widget-header {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 .waf-widget-body,
+.waf-theme.iOS7 .waf-container.waf-widget-body {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-widget-footer,
+.waf-theme.iOS7 .waf-container.waf-widget-footer {
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-widget-odd {
+  background-color: rgba(192, 192, 192, 0.050000000000000044);
+}
+.waf-theme.iOS7 .waf-button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #157efa;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #157efa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  padding: 0;
+}
+.waf-theme.iOS7 .waf-button.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-button.waf-state-disabled {
+  opacity: 0.4;
+}
+.waf-theme.iOS7 .waf-button.waf-role-success {
+  border-color: #80b30e;
+  background-color: #ffffff;
+  color: #80b30e;
+}
+.waf-theme.iOS7 .waf-button.waf-role-success.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-button.waf-role-warning {
+  border-color: #f05924;
+  background-color: #ffffff;
+  color: #f05924;
+}
+.waf-theme.iOS7 .waf-button.waf-role-warning.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-button.waf-role-danger {
+  border-color: #ef2523;
+  background-color: #ffffff;
+  color: #ef2523;
+}
+.waf-theme.iOS7 .waf-button.waf-role-danger.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-button.waf-role-info {
+  border-color: #b3b3b3;
+  background-color: #ffffff;
+  color: #b3b3b3;
+}
+.waf-theme.iOS7 .waf-button.waf-role-info.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-buttonImage {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #157efa;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #157efa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-state-disabled {
+  opacity: 0.4;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-success {
+  border-color: #80b30e;
+  background-color: #ffffff;
+  color: #80b30e;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-success.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-warning {
+  border-color: #f05924;
+  background-color: #ffffff;
+  color: #f05924;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-warning.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-danger {
+  border-color: #ef2523;
+  background-color: #ffffff;
+  color: #ef2523;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-danger.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-info {
+  border-color: #b3b3b3;
+  background-color: #ffffff;
+  color: #b3b3b3;
+}
+.waf-theme.iOS7 .waf-buttonImage.waf-role-info.waf-state-hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-canvas {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-container {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-dataGrid {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-header {
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-footer {
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-body {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-row {
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-dataGrid ul.waf-toolbar {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-header .waf-sort {
+  margin-top: 4px;
+}
+.waf-theme.iOS7 .waf-dataGrid .waf-dataGrid-header .waf-dataGrid-cell .content {
+  padding: 0 5px;
+}
+.waf-theme.iOS7 .waf-frame {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-listView {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+}
+.waf-theme.iOS7 .waf-listView .waf-container {
+  border-width: 0;
+}
+.waf-theme.iOS7 .waf-listView .waf-list-row {
+  border-width: 1px 0 0 0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-listView .waf-list-row:first-child {
+  border-top-width: 0;
+}
+.waf-theme.iOS7 .waf-listView .waf-list-row.waf-state-selected {
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-listView .waf-list-row .waf-list-buttonGoTo {
+  border-width: 0;
+  background: none;
+  background-size: 12px 19px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-image: url(images/listview-goTo.png);
+}
+.waf-theme.iOS7 .waf-matrix .waf-matrix-element {
+  -webkit-transition: border 0.2s ease-in-out, -webkit-box-shadow 0.2s ease-in-out;
+  -moz-transition: border 0.2s ease-in-out, background-image 0.2s ease-in-out, -moz-box-shadow 0.2s ease-in-out;
+  -o-transition: border 0.2s ease-in-out, background-image 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.waf-theme.iOS7 .waf-menuBar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #157efa;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-menuItem {
+  border-width: 0;
+  border-style: inherit;
+  border-color: inherit;
+  color: #157efa;
+  box-shadow: 0 0 0 1px #157efa inset;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-horizontal {
+  border-right-width: 1px;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-horizontal.waf-menuItem-first {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-horizontal.waf-menuItem-last {
+  border-right-width: 0;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-vertical {
+  border-bottom-width: 1px;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-vertical.waf-menuItem-first {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-vertical.waf-menuItem-last {
+  border-bottom-width: 0;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-state-selected {
+  background-color: #157efa;
+  color: #ffffff;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-horizontal {
+  border-right-width: 0;
+}
+.waf-theme.iOS7 .waf-menuItem.waf-menuItem-vertical {
+  border-bottom-width: 0;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content {
+  border-width: 0;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view {
+  border-width: 0;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view .waf-navigationView-header {
+  border-width: 0;
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view .waf-navigationView-header .waf-navigationView-title {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view .waf-navigationView-header .waf-navigationView-title::before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  width: 1px;
+  vertical-align: middle;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-footer {
+  border-width: 0;
+  outline-width: 0;
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view .waf-navigationView-title {
+  font-weight: normal;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-content .waf-navigationView-view .waf-navigationView-header {
+  border-width: 1px 1px 0;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-footer {
+  border-width: 0 1px 1px;
+}
+.waf-theme.iOS7 .waf-navigationView .waf-navigationView-header .waf-button {
+  border-width: 0;
+  border-radius: 0;
+  font-weight: normal;
+  background-color: transparent;
+}
+.waf-theme.iOS7 .waf-popover {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+}
+.waf-theme.iOS7 .waf-popover .waf-popover-header {
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 .waf-popover .waf-popover-footer {
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-popover .waf-popover-header {
+  border-width: 0 0 1px 0;
+  font-weight: normal;
+}
+.waf-theme.iOS7 .waf-popover .waf-popover-footer {
+  border-width: 1px 0 0 0;
+}
+.waf-theme.iOS7 .waf-popover .waf-popover-body {
+  border: 0;
+}
+.waf-theme.iOS7 .waf-progressBar {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-progressBar .waf-progressBar-range {
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  background-color: #157efa;
+  background-clip: content-box;
+  box-shadow: 0 0 0 1px #023674 inset;
+}
+.waf-theme.iOS7 .waf-radioGroup {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-radioGroup li {
+  border-width: 0;
+  border-style: inherit;
+  border-color: inherit;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-vertical li:first-child {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-vertical li:last-child {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-horizontal li:first-child {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-horizontal li:last-child {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio {
+  border-width: 0;
+  border-style: inherit;
+  border-color: inherit;
+  border-radius: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio .waf-radio-box {
+  visibility: hidden;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-active {
+  background-color: #157efa;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-selected .waf-radio-box {
+  visibility: visible;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-selected .waf-radio-box svg polygon {
+  fill: #157efa;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-selected label {
+  color: #157efa;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-vertical .waf-radio:not(.waf-position-first) {
+  border-top-width: 1px;
+}
+.waf-theme.iOS7 .waf-radioGroup.waf-direction-horizontal .waf-radio:not(.waf-position-first) {
+  border-left-width: 1px;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-active label {
+  color: #ffffff;
+}
+.waf-theme.iOS7 .waf-radioGroup .waf-radio.waf-state-selected {
+  -webkit-transition-property: background-color, color;
+  -webkit-transition-duration: 350ms, 200ms;
+  -webkit-transition-timing-function: linear, linear;
+  -moz-transition-property: background-color, color;
+  -moz-transition-duration: 350ms, 200ms;
+  -moz-transition-timing-function: linear, linear;
+  transition-property: background-color, color;
+  transition-duration: 350ms, 200ms;
+  transition-timing-function: linear, linear;
+}
+.waf-theme.iOS7 .waf-section {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+}
+.waf-theme.iOS7 .waf-section > .waf-container {
+  border-width: 0 0 1px 0;
+}
+.waf-theme.iOS7 .waf-section .waf-container:not(.waf-section-blank) .waf-richText {
+  line-height: 38px;
+}
+.waf-theme.iOS7 .waf-section .waf-section-input .waf-textField {
+  box-shadow: none;
+  border-width: 0;
+}
+.waf-theme.iOS7 .waf-select {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  color: #000000;
+}
+.waf-theme.iOS7 .waf-select .waf-select-mask {
+  border-width: 0;
+  border-style: inherit;
+  border-color: inherit;
+  border-radius: inherit;
+}
+.waf-theme.iOS7 .waf-select .waf-select-label {
+  border-width: 1px;
+  border-style: inherit;
+  border-color: inherit;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-bottom-width: 0;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+.waf-theme.iOS7 .waf-select .waf-select-button {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+.waf-theme.iOS7 .waf-select .waf-select-label {
+  padding-left: 5px;
+  right: 19px;
+}
+.waf-theme.iOS7 .waf-select .waf-select-button {
+  width: 19px;
+}
+.waf-theme.iOS7 .waf-select .waf-select-icon-symbol {
+  fill: #c0c0c0;
+}
+.waf-theme.iOS7 .waf-slider {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-radius: 0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-slider .ui-slider-range {
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 0;
+  background-color: #157efa;
+  background-clip: content-box;
+  box-shadow: 0 0 0 1px #023674 inset;
+}
+.waf-theme.iOS7 .waf-slider .ui-slider-handle {
+  position: absolute;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #b3b3b3;
+  border-radius: 1000px;
+  background-image: none;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-slider.ui-slider-horizontal .ui-slider-handle {
+  top: -4px;
+  bottom: -4px;
+}
+.waf-theme.iOS7 .waf-slider.ui-slider-vertical .ui-slider-handle {
+  margin-left: 0;
+  left: -4px;
+  right: -4px;
+}
+.waf-theme.iOS7 .waf-slider.waf-state-disabled {
+  opacity: 0.4;
+}
+.waf-theme.iOS7 .waf-splitView > .waf-container {
+  border-width: 0;
+}
+.waf-theme.iOS7 .waf-switchbox {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-radius: 1000px;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-switchbox .waf-switchbox-switch {
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 1000px;
+  background-color: #157efa;
+  background-clip: content-box;
+  box-shadow: 0 0 0 1px #023674 inset;
+}
+.waf-theme.iOS7 .waf-switchbox .waf-switchbox-switch {
+  width: 19%;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar {
+  border-radius: inherit;
+}
+.waf-theme.iOS7 .waf-tabView .waf-container {
+  border-radius: inherit;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-top-left > .waf-tabView-menuBar,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-top-right > .waf-tabView-menuBar {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-top-left > .waf-container,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-top-right > .waf-container {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-bottom-left > .waf-tabView-menuBar,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-bottom-right > .waf-tabView-menuBar {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-bottom-left > .waf-container,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-bottom-right > .waf-container {
+  border-bottom-width: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-left-top > .waf-tabView-menuBar,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-left-bottom > .waf-tabView-menuBar {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-left-top > .waf-container,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-left-bottom > .waf-container {
+  border-left-width: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-right-top > .waf-tabView-menuBar,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-right-bottom > .waf-tabView-menuBar {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-right-top > .waf-container,
+.waf-theme.iOS7 .waf-tabView.waf-tabView-menu-position-right-bottom > .waf-container {
+  border-right-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar.waf-menuBar-horizontal .waf-menuItem.waf-menuItem-last {
+  border-right-width: 1px;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar.waf-menuBar-vertical .waf-menuItem.waf-menuItem-last {
+  border-bottom-width: 1px;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar {
+  border-color: #c0c0c0;
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar .waf-menuItem {
+  box-shadow: none;
+  color: #000000;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar .waf-menuItem.waf-menuItem-horizontal {
+  border-right-width: 1px;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar .waf-menuItem.waf-menuItem-vertical {
+  border-bottom-width: 1px;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar .waf-menuItem.waf-state-selected {
+  background-color: #ffffff;
+  color: #157efa;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar.waf-menuBar-horizontal .waf-menuItem {
+  height: 100% !important;
+}
+.waf-theme.iOS7 .waf-tabView .waf-tabView-menuBar.waf-menuBar-vertical .waf-menuItem {
+  width: 100% !important;
+}
+.waf-theme.iOS7 .waf-textField {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  color: #000000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.waf-theme.iOS7 .waf-video {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 {
+  background-color: #ffffff;
+}
+#studio-tmp-bodyContainer.waf-theme.iOS7 {
+  background-color: transparent !important;
+}
+.waf-theme.iOS7 {
+  line-height: 1.4;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000000;
+}
+.waf-theme.iOS7 h1,
+.waf-theme.iOS7 h2,
+.waf-theme.iOS7 h3,
+.waf-theme.iOS7 h4,
+.waf-theme.iOS7 h5,
+.waf-theme.iOS7 h6 {
+  line-height: 1.4;
+}
+.waf-theme.iOS7 h1,
+.waf-theme.iOS7 h2,
+.waf-theme.iOS7 h3 {
+  margin-top: 28px;
+  margin-bottom: 14px;
+}
+.waf-theme.iOS7 h4,
+.waf-theme.iOS7 h5,
+.waf-theme.iOS7 h6 {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+.waf-theme.iOS7 h1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 40px;
+}
+.waf-theme.iOS7 h2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 34px;
+}
+.waf-theme.iOS7 h3 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 28px;
+}
+.waf-theme.iOS7 h4 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 23px;
+}
+.waf-theme.iOS7 h5 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+}
+.waf-theme.iOS7 h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+}
+.waf-theme.iOS7 p {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.waf-theme.iOS7 a {
+  color: #000000;
+}
+.waf-theme.iOS7 ul,
+.waf-theme.iOS7 ol {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.waf-theme.iOS7 ul ul,
+.waf-theme.iOS7 ol ul,
+.waf-theme.iOS7 ul ol,
+.waf-theme.iOS7 ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.waf-theme.iOS7 .waf-ui-textHeaders {
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 .waf-ui-input,
+.waf-theme.iOS7 input[type="text"],
+.waf-theme.iOS7 input[type="search"],
+.waf-theme.iOS7 textarea {
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  color: #000000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.waf-theme.iOS7 .waf-ui-button,
+.waf-theme.iOS7 input[type="submit"],
+.waf-theme.iOS7 input[type="reset"],
+.waf-theme.iOS7 button {
+  padding: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #157efa;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #157efa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.waf-theme.iOS7 .waf-ui-button:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="submit"]:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="reset"]:not(.waf-button):hover,
+.waf-theme.iOS7 button:not(.waf-button):hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonSuccess,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonSuccess,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonSuccess,
+.waf-theme.iOS7 button.waf-ui-buttonSuccess {
+  border-color: #80b30e;
+  background-color: #ffffff;
+  color: #80b30e;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonSuccess:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonSuccess:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonSuccess:not(.waf-button):hover,
+.waf-theme.iOS7 button.waf-ui-buttonSuccess:not(.waf-button):hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonWarning,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonWarning,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonWarning,
+.waf-theme.iOS7 button.waf-ui-buttonWarning {
+  border-color: #f05924;
+  background-color: #ffffff;
+  color: #f05924;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonWarning:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonWarning:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonWarning:not(.waf-button):hover,
+.waf-theme.iOS7 button.waf-ui-buttonWarning:not(.waf-button):hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonDanger,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonDanger,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonDanger,
+.waf-theme.iOS7 button.waf-ui-buttonDanger {
+  border-color: #ef2523;
+  background-color: #ffffff;
+  color: #ef2523;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonDanger:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonDanger:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonDanger:not(.waf-button):hover,
+.waf-theme.iOS7 button.waf-ui-buttonDanger:not(.waf-button):hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonInfo,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonInfo,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonInfo,
+.waf-theme.iOS7 button.waf-ui-buttonInfo {
+  border-color: #b3b3b3;
+  background-color: #ffffff;
+  color: #b3b3b3;
+}
+.waf-theme.iOS7 .waf-ui-button.waf-ui-buttonInfo:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="submit"].waf-ui-buttonInfo:not(.waf-button):hover,
+.waf-theme.iOS7 input[type="reset"].waf-ui-buttonInfo:not(.waf-button):hover,
+.waf-theme.iOS7 button.waf-ui-buttonInfo:not(.waf-button):hover {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 select {
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+}
+.waf-theme.iOS7 ::-webkit-input-placeholder {
+  color: #c0c0c0;
+}
+.waf-theme.iOS7 ::-moz-placeholder {
+  color: #c0c0c0;
+}
+.waf-theme.iOS7 :-ms-input-placeholder {
+  color: #c0c0c0;
+}
+.waf-theme.iOS7 input:-moz-placeholder {
+  color: #c0c0c0;
+}
+.waf-theme.iOS7 table {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+  font-size: 12px;
+}
+.waf-theme.iOS7 table thead,
+.waf-theme.iOS7 table tbody,
+.waf-theme.iOS7 table tfoot,
+.waf-theme.iOS7 table tr,
+.waf-theme.iOS7 table th,
+.waf-theme.iOS7 table td {
+  border-width: 0;
+  border-style: inherit;
+  border-color: inherit;
+}
+.waf-theme.iOS7 table th,
+.waf-theme.iOS7 table td {
+  padding: 12px;
+  border-width: 1px;
+}
+.waf-theme.iOS7 table thead th {
+  text-align: center;
+}
+.waf-theme.iOS7 table thead th,
+.waf-theme.iOS7 table thead td {
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 table tfoot th,
+.waf-theme.iOS7 table tfoot td {
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 table tbody th {
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 table tbody td {
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 table .waf-state-loading {
+  height: 120px;
+}
+.waf-theme.iOS7 table .waf-state-loading .waf-ui-spinner,
+.waf-theme.iOS7 table .waf-state-loading .waf-ui-loader {
+  margin: auto;
+}
+.waf-theme.iOS7 .waf-ui-box {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-ui-header {
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.waf-theme.iOS7 .waf-ui-footer {
+  background-color: #e6e6e6;
+}
+.waf-theme.iOS7 .waf-ui-body {
+  background-color: #ffffff;
+}
+/**
+ * -------------------------------------------------------
+ * @section navBar
+ * @section tabBar
+ * -------------------------------------------------------
+ */
+.waf-theme.iOS7 .waf-ui-navBar {
+  list-style: none;
+}
+.waf-theme.iOS7 .waf-ui-navBar li {
+  display: block;
+}
+.waf-theme.iOS7 .waf-ui-tabBar {
+  list-style: none;
+}
+.waf-theme.iOS7 .waf-ui-tabBar::before,
+.waf-theme.iOS7 .waf-ui-tabBar::after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+.waf-theme.iOS7 .waf-ui-tabBar li {
+  display: block;
+  float: left;
+}
+.waf-theme.iOS7 .waf-ui-spinner {
+  position: relative;
+  overflow: hidden;
+  width: 3em;
+  height: 3em;
+  font-size: 14px;
+  -webkit-animation: waf-kf-spin_2t 1.3s infinite alternate;
+  animation: waf-kf-spin_2t 1.3s infinite alternate;
+}
+@-webkit-keyframes waf-kf-spin_2t {
+  to {
+    -webkit-transform: rotate(2turn);
+    transform: rotate(2turn);
+  }
+}
+@keyframes waf-kf-spin-spin_2t {
+  to {
+    -webkit-transform: rotate(2turn);
+    transform: rotate(2turn);
+  }
+}
+/** 
+ * Widget ListView
+ *
+ */
+.waf-theme.iOS7 .waf-wlistview {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c0c0c0;
+}
+.waf-theme.iOS7 .waf-wlistview li {
+  height: 120px;
+  padding: 15px;
+  border-width: 1px 0 0 0;
+  background-color: #ffffff;
+}
+.waf-theme.iOS7 .waf-wlistview li:first-of-type {
+  border-top-width: 0;
+}
+.waf-theme.iOS7 .waf-wlistview li:last-of-type {
+  border-bottom-width: 0;
+}
+.waf-theme.iOS7 .waf-wlistview li .content {
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 1px 0 3px 1px rgba(0, 0, 0, 0.3);
+  -webkit-transition-property: left;
+  -moz-transition-property: left;
+  transition-property: left;
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  transition-duration: 300ms;
+}
+.waf-theme.iOS7 .waf-wlistview li.swyped-content {
+  background-color: #e6e6e6;
+  background-image: none;
+}
+.waf-theme.iOS7 .waf-wlistview img {
+  width: 90px;
+  height: 90px;
+  margin-right: 15px;
+}
+.waf-theme.iOS7 .waf-wlistview h1,
+.waf-theme.iOS7 .waf-wlistview h2,
+.waf-theme.iOS7 .waf-wlistview h3,
+.waf-theme.iOS7 .waf-wlistview h4,
+.waf-theme.iOS7 .waf-wlistview h5,
+.waf-theme.iOS7 .waf-wlistview h6 {
+  margin-top: 11px;
+  height: 33px;
+  line-height: 33px;
+}
+.waf-theme.iOS7 .waf-wlistview p {
+  height: 33px;
+  line-height: 33px;
+}
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h1,
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h2,
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h3,
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h4,
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h5,
+.waf-theme.iOS7 .waf-wlistview.waf-tpl-alignTop h6 {
+  margin-top: 0;
+  line-height: 1;
+  height: auto;
+  max-height: 45px;
+}
