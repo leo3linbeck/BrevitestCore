@@ -1,0 +1,124 @@
+/*
+* This file is part of Wakanda software, licensed by 4D under
+*  (i) the GNU General Public License version 3 (GNU GPL v3), or
+*  (ii) the Affero General Public License version 3 (AGPL v3) or
+*  (iii) a commercial license.
+* This file remains the exclusive property of 4D and/or its licensors
+* and is protected by national and international legislations.
+* In any event, Licensee's compliance with the terms and conditions
+* of the applicable license constitutes a prerequisite to any use of this file.
+* Except as otherwise expressly stated in the applicable license,
+* such license does not include any other license or rights on this file,
+* 4D's and/or its licensors' trademarks and/or other proprietary rights.
+* Consequently, no title, copyright or other proprietary rights
+* other than those specified in the applicable license is granted.
+*/
+
+
+/**
+ * tabs Bar
+ */
+
+.waf-tabs > ul {
+    position: absolute;
+    top:    0;
+    bottom: 0;
+    left:   0;
+    right:  0;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    z-index: 101;
+}
+.waf-tabs[class*="waf-tabs-top"] > ul {
+    bottom: auto;
+}
+.waf-tabs[class*="waf-tabs-bottom"] > ul {
+    top: auto;
+}
+.waf-tabs[class*="waf-tabs-left"] > ul {
+    right: auto;
+}
+.waf-tabs[class*="waf-tabs-right"] > ul {
+    left: auto;
+}
+
+.waf-tabs.waf-tabs-topRight > ul {
+    left: auto;
+}
+.waf-tabs.waf-tabs-bottomRight > ul {
+    left: auto;
+}
+.waf-tabs.waf-tabs-leftBottom > ul {
+    top: auto;
+}
+.waf-tabs.waf-tabs-rightBottom > ul {
+    top: auto;
+}
+
+
+/**
+ * tabs
+ */
+
+.waf-tabs > ul li {
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.waf-tabs[class*="waf-tabs-top"] > ul li,
+.waf-tabs[class*="waf-tabs-bottom"] > ul li {
+    float: left;
+    height: 100%;
+}
+
+.waf-tabs.waf-tabs-topLeft > ul li:not(:last-of-type),
+.waf-tabs.waf-tabs-bottomLeft > ul li:not(:last-of-type) {
+    margin-right: 5px;
+}
+.waf-tabs.waf-tabs-topRight > ul li:not(:first-of-type),
+.waf-tabs.waf-tabs-bottomRight > ul li:not(:first-of-type) {
+    margin-left: 5px;
+}
+.waf-tabs.waf-tabs-leftTop > ul li:not(:last-of-type),
+.waf-tabs.waf-tabs-rightTop > ul li:not(:last-of-type) {
+    margin-bottom: 5px;
+}
+.waf-tabs.waf-tabs-leftBottom > ul li:not(:first-of-type),
+.waf-tabs.waf-tabs-rightBottom > ul li:not(:first-of-type) {
+    margin-top: 5px;
+}
+
+
+/**
+ * close Tab
+ */
+
+.waf-tabs .waf-tabs-closeTab {
+    border-width: 0;
+    background-color: transparent;
+    background-image: none;
+}
+
+
+/**
+ * containers 
+ */
+
+.waf-tabs .waf-tabscontainer {
+    position: absolute;
+    display: none;
+    top:    0;
+    bottom: 0;
+    left:   0;
+    right:  0;
+
+    z-index: 100;
+}
+.waf-tabs .waf-tabscontainer.waf-state-active {
+    display: block;
+}

@@ -1,6 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<directory>
-	<group ID="01000000000000000000000000000000" name="Admin">
-	</group>
-</directory>
-
+﻿<?xml version="1.0" encoding="UTF-8"?><directory>	<group ID="01000000000000000000000000000000" name="Admin">		<include user="leo3" ID="6CB6AE49EE5743709EF16FFF49848889"/>	</group>	<user ID="6CB6AE49EE5743709EF16FFF49848889" name="leo3" fullName="Leo Linbeck III" password="014db4b8b5bd059f86b2e565e93461f5"/>	<user ID="592F6509DA354E928DA80C29F6FA2044" name="dev" fullName="Dev Chatterjee" password="d4dba3fa0f71510fd51c6af51e62275a"/>	<user ID="1ABB8CCC1E234E29819D1187AF141D67" name="atul" fullName="Atul Varadhachary" password="821521f47e47955dd5caff16569c9a2e"/></directory>
