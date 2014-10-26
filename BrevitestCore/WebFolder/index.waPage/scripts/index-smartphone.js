@@ -227,6 +227,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 
+	function loadTestsInProgress(callback) {
+		sources.test.query('startedOn !== null AND finishedOn === null',
+			{
+				onSuccess: function(event) {
+					console.log('loadTestsInProgress', event);
+					if (callback) {
+						callback(event);
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: loadTestsInProgress', error);
+				},
+				orderBy: 'startedOn'
+			}
+		);
+	}
+
 	function loadDevices(callback) {
 		sources.device.query('practice.users.username == :1',
 			{
@@ -393,7 +410,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonMonitor.click = function buttonMonitor_click (event)// @startlock
 	{// @endlock
-		$$('navigationView1').goToView(4);
+		loadTestsInProgress(
+			function(event) {
+				$$('navigationView1').goToView(4);
+			}
+		);
+
 	};// @lock
 
 	buttonRun.click = function buttonRun_click (event)// @startlock
