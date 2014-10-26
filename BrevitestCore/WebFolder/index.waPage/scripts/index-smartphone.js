@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonRefreshStatus = {};	// @button
+	var row8 = {};	// @container
 	var buttonStart = {};	// @button
 	var row3 = {};	// @container
 	var row2 = {};	// @container
@@ -290,6 +292,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	buttonRefreshStatus.click = function buttonRefreshStatus_click (event)// @startlock
+	{// @endlock
+		sources.testUnderway.serverRefresh({
+			onSuccess: function(evt) {
+				console.log('sources.testUnderway.serverRefresh', evt);
+			},
+			onError: function(err) {
+				console.log('ERROR: sources.testUnderway.serverRefresh', err);
+			}
+		});
+	};// @lock
+
+	row8.click = function row8_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(10);
+	};// @lock
+
 	buttonStart.click = function buttonStart_click (event)// @startlock
 	{// @endlock
 		startTest();
@@ -303,7 +322,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
 		loadDevices(
-			function(event) {
+			function(e) {
 				$$('navigationView1').goToView(8);
 			}
 		);
@@ -411,7 +430,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonMonitor.click = function buttonMonitor_click (event)// @startlock
 	{// @endlock
 		loadTestsInProgress(
-			function(event) {
+			function(e) {
 				$$('navigationView1').goToView(4);
 			}
 		);
@@ -421,7 +440,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonRun.click = function buttonRun_click (event)// @startlock
 	{// @endlock
 		loadUnstartedTests(
-			function(event) {
+			function(e) {
 				$$('navigationView1').goToView(3);
 			}
 		);
@@ -434,6 +453,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonRefreshStatus", "click", buttonRefreshStatus.click, "WAF");
+	WAF.addListener("row8", "click", row8.click, "WAF");
 	WAF.addListener("buttonStart", "click", buttonStart.click, "WAF");
 	WAF.addListener("row3", "click", row3.click, "WAF");
 	WAF.addListener("row2", "click", row2.click, "WAF");
