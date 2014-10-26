@@ -1,0 +1,17 @@
+{
+  "name": "w3c-domcore-errors",
+  "description": "An implementation of the standard DOMException and DOMError interfaces",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AMorgaut/w3c-domcore-errors.git"
+  },
+  "author": "Alexandre Morgaut <Alexandre.Morgaut@gmail.com> (http://github.com/AMorgaut)",
+  "main": "./w3c-domcore-errors.js",
+  "directories": {
+    "lib": "."
+  },
+  "engines": {
+    "node": "*"
+  }
+}

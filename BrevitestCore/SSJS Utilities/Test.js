@@ -1,1 +1,1 @@
-﻿model.Cartridge.methods.manufacture(	{		assayID: 'DE35D20341C240A1873FD6C1577F1BDF',		quantity: 10	});
+﻿var spark = require('sparkCore');var device = ds.Device.find('serialNumber === :1', 'OBAD-BWUG-NCPA-WIAF');var token = spark.getAccessToken(device.sparkCoreID);({token: token, expiry: device.tokenExpiry})
