@@ -249,11 +249,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.test.start(
 			{
 				onSuccess: function(event) {
-					notify('Test started. Go to Monitor Tests to check progress.');
-					$$('navigationView1').goToView(1);
+					if (event.result && event.result.success) {
+						notify('Test started. Go to Monitor Tests to check progress.');
+						$$('navigationView1').goToView(1);
+					}
+					else {
+						notifyError('Test failed to start');
+						console.log('ERROR: startTest', event);
+					}
 				},
 				onError: function(error) {
-					notify('Test failed to start: ' + JSON.stringify(error));
+					notifyError('Test failed to start: ' + JSON.stringify(error));
 				}
 			},
 			{
