@@ -211,7 +211,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function loadUnstartedTests(callback) {
-		sources.test.query('isComplete == false',
+		sources.test.query('startedOn === null',
 			{
 				onSuccess: function(event) {
 					console.log('loadUnstartedTests', event);
