@@ -29,8 +29,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
 	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
+	notification.progress = humane.spawn({ addnCls: 'humane-original', timeout: 0 });
+	
 	function notify(text) {
 		notification.log(text);
+	}
+	
+	function notifyProgress(text) {
+		notification.progress(text);
 	}
 	
 	function notifyError(text, error) {
@@ -238,13 +244,32 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);
 	}
+	
+	function startTest() {
+		sources.test.start(
+			{
+				onSuccess: function(event) {
+					notify('Test started. Go to Monitor Tests to check progress.');
+					$$('navigationView1').goToView(1);
+				},
+				onError: function(error) {
+					notify('Test failed to start: ' + JSON.stringify(error));
+				}
+			},
+			{
+				testID: sources.test.ID,
+				deviceID: sources.device.ID,
+				username: WAF.directory.currentUser().userName
+			}
+		);
+	}
 
 	
 // eventHandlers// @lock
 
 	buttonStart.click = function buttonStart_click (event)// @startlock
 	{// @endlock
-		$$('navigationView1').goToView(1);
+		startTest();
 	};// @lock
 
 	row3.click = function row3_click (event)// @startlock

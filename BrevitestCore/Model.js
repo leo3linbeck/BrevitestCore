@@ -1,1 +1,1 @@
-﻿include("./Model/Cartridge/Cartridge-methods.js");include("./Model/Prescription/Prescription-methods.js");include("./Model/Test/Test-events.js");
+﻿include("./Model/Cartridge/Cartridge-methods.js");include("./Model/Prescription/Prescription-methods.js");include("./Model/Test/Test-events.js");include("./Model/Device/Device-methods.js");include("./Model/Test/Test-methods.js");
