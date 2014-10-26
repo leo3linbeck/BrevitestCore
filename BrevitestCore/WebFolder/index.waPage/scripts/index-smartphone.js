@@ -211,7 +211,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function loadUnstartedTests(callback) {
-		sources.test.query('startedOn === null',
+		sources.testUnstarted.query('startedOn === null',
 			{
 				onSuccess: function(event) {
 					console.log('loadUnstartedTests', event);
@@ -228,7 +228,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function loadTestsInProgress(callback) {
-		sources.test.query('startedOn !== null AND finishedOn === null',
+		sources.testUnderway.query('startedOn !== null AND finishedOn === null',
 			{
 				onSuccess: function(event) {
 					console.log('loadTestsInProgress', event);
@@ -263,7 +263,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function startTest() {
-		sources.test.start(
+		sources.testUnstarted.start(
 			{
 				onSuccess: function(event) {
 					if (event.result && event.result.success) {
@@ -280,7 +280,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				}
 			},
 			{
-				testID: sources.test.ID,
+				testID: sources.testUnstarted.ID,
 				deviceID: sources.device.ID,
 				username: WAF.directory.currentUser().userName
 			}
