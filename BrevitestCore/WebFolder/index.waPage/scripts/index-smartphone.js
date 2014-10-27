@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var button1 = {};	// @button
 	var buttonRefreshStatus = {};	// @button
 	var row8 = {};	// @container
 	var buttonStart = {};	// @button
@@ -272,7 +273,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onSuccess: function(event) {
 					if (event.result && event.result.success) {
 						notify('Test started. Go to Monitor Tests to check progress.');
-						$$('navigationView1').goToView(1);
+						loadUnstartedTests(function(event) {
+							$$('navigationView1').goToPreviousView();
+							$$('navigationView1').goToPreviousView();
+						});
 					}
 					else {
 						notifyError('Test failed to start');
@@ -293,6 +297,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	
 // eventHandlers// @lock
+
+	button1.click = function button1_click (event)// @startlock
+	{// @endlock
+		sources.testUnderway.serverRefresh({
+			onSuccess: function(evt) {
+				console.log('sources.testUnderway.serverRefresh', evt);
+			},
+			onError: function(err) {
+				console.log('ERROR: sources.testUnderway.serverRefresh', err);
+			}
+		});
+	};// @lock
 
 	buttonRefreshStatus.click = function buttonRefreshStatus_click (event)// @startlock
 	{// @endlock
@@ -470,6 +486,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonRefreshStatus", "click", buttonRefreshStatus.click, "WAF");
 	WAF.addListener("row8", "click", row8.click, "WAF");
 	WAF.addListener("buttonStart", "click", buttonStart.click, "WAF");
