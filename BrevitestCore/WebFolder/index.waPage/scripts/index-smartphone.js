@@ -29,6 +29,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonPrescribe = {};	// @button
 // @endregion// @endlock
 
+	var updateIntervalID = null;
+
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
 	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
 	notification.progress = humane.spawn({ addnCls: 'humane-original', timeout: 0 });
@@ -432,8 +434,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		loadTestsInProgress(
 			function(e) {
 				$$('navigationView1').goToView(4);
+				sources.testUnderway.updateStatus({ onSuccess: function(e) {return;} });
 			}
 		);
+		
+//		(function loop() {
+//			setTimeout(function() {
+//				sources.testUnderway.serverRefresh({
+//					onSuccess: function(evt) {
+//						console.log('sources.testUnderway.serverRefresh', evt);
+//					},
+//					onError: function(err) {
+//						console.log('ERROR: sources.testUnderway.serverRefresh', err);
+//					}
+//				});
+//				loop();
+//			}, 1000);
+//		})();
 
 	};// @lock
 
