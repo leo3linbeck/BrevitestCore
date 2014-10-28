@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var row4 = {};	// @container
 	var button1 = {};	// @button
 	var buttonRefreshStatus = {};	// @button
 	var row8 = {};	// @container
@@ -249,6 +250,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 
+	function loadCompletedTests(callback) {
+		sources.test.query('finishedOn !== null',
+			{
+				onSuccess: function(event) {
+					console.log('loadCompletedTests', event);
+					if (callback) {
+						callback(event);
+					}
+				},
+				onError: function(error) {
+					console.log('ERROR: loadCompletedTests', error);
+				},
+				orderBy: 'finishedOn desc'
+			}
+		);
+	}
+
 	function loadDevices(callback) {
 		sources.device.query('practice.users.username == :1',
 			{
@@ -297,6 +315,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	
 // eventHandlers// @lock
+
+	row4.click = function row4_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(11);
+	};// @lock
 
 	button1.click = function button1_click (event)// @startlock
 	{// @endlock
@@ -442,7 +465,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonReview.click = function buttonReview_click (event)// @startlock
 	{// @endlock
-		$$('navigationView1').goToView(5);
+		loadCompletedTests(
+			function(e) {
+				$$('navigationView1').goToView(5);
+			}
+		);
 	};// @lock
 
 	buttonMonitor.click = function buttonMonitor_click (event)// @startlock
@@ -486,6 +513,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("row4", "click", row4.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonRefreshStatus", "click", buttonRefreshStatus.click, "WAF");
 	WAF.addListener("row8", "click", row8.click, "WAF");
