@@ -31,7 +31,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonPrescribe = {};	// @button
 // @endregion// @endlock
 
-	var updateIntervalID = null;
+	var spinnerOpts = {
+		color: '#CCC'
+	};
+	var spinner = new Spinner(spinnerOpts);
+	
+	function startSpinner() {
+		spinner.spin($$('viewManager1').domNode);
+	}
+	
+	function stopSpinner() {
+		spinner.stop();
+	}
 
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
 	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
@@ -181,7 +192,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onSuccess: function(event) {
 					if (event.result.success) {
 						console.log('writePrescription', event);
-						notify('New prescription written with ' + event.result.testCount + ' test(s)');
+						notify(event.result.testCount + ' test(s) prescribed');
 						clearPrescriptionForm();
 					}
 					else {
@@ -286,6 +297,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function startTest() {
+		notifyProgress('Starting test, please stand by...');
+		startSpinner();
 		sources.testUnstarted.start(
 			{
 				onSuccess: function(event) {
@@ -300,9 +313,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						notifyError('Test failed to start');
 						console.log('ERROR: startTest', event);
 					}
+					stopSpinner();
 				},
 				onError: function(error) {
 					notifyError('Test failed to start: ' + JSON.stringify(error));
+					stopSpinner();
 				}
 			},
 			{
@@ -499,9 +514,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRun.click = function buttonRun_click (event)// @startlock
 	{// @endlock
+		startSpinner();
+
 		loadUnstartedTests(
 			function(e) {
 				$$('navigationView1').goToView(3);
+				stopSpinner();
 			}
 		);
 	};// @lock
