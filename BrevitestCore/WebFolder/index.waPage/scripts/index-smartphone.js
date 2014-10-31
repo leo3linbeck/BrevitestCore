@@ -109,14 +109,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 		
 	function filterAssays(startChar, endChar, buttonID) {
+		startSpinner();		
 		sources.assay.query('NOT ID in :1 AND name >= :2 AND name <= :3',
 			{
 				onSuccess: function(event) {
 					highlightAssayButton(buttonID);
 					console.log('allAssays', event);
+					stopSpinner();
 				},
 				onError: function(error) {
 					console.log('ERROR: allAssays', error);
+					stopSpinner();
 				},
 				orderBy: 'name',
 				params: [getAssayIDList(), startChar, endChar]
@@ -124,30 +127,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 	
-	function allAssays(callback) {
-		sources.assay.query('NOT ID in :1',
-			{
-				onSuccess: function(event) {
-					console.log('allAssays', event);
-					if (callback) {
-						callback(event);
-					}
-					highlightAssayButton('buttonAssayAll');
-				},
-				onError: function(error) {
-					console.log('ERROR: allAssays', error);
-				},
-				orderBy: 'name',
-				params: [getAssayIDList()]
-			}
-		);
-	}
-	
 	function loadPatientInfo() {
-		sources.patient.query('reference === :1',
-			{
-				onSuccess: function(event) {
-					console.log('textFieldPatientNumber.change', event);
+		loadDatasource(
+				sources.patient,
+				'reference === :1',
+				'reference',
+				[patientNumber],
+				function (event) {
 					if (event.dataSource.length) {
 						$$('richTextPatientInfo').setValue(event.dataSource.gender + ', DOB: ' + event.dataSource.dateOfBirth.toDateString().substring(4));
 					}
@@ -155,13 +141,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						$$('richTextPatientInfo').setValue('Patient not found');
 					}
 				},
-				onError: function(error) {
-					console.log('ERROR: textFieldPatientNumber.change', error);
+				function (error) {
 					$$('richTextPatientInfo').setValue('Error: ' + error.message);
-				},
-				params: [patientNumber]
-			}
-		);
+				}
+			);
 	}
 	
 	function updateWritePrescriptionButton() {
@@ -186,6 +169,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function writePrescription() {
+		startSpinner();
 		$$('buttonWritePrescription').disable();
 		sources.prescription.write(
 			{
@@ -194,10 +178,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						console.log('writePrescription', event);
 						notify(event.result.testCount + ' test(s) prescribed');
 						clearPrescriptionForm();
-					}
+						stopSpinner();
+				}
 					else {
 						console.log('ERROR: writePrescription', event);
 						notify('Error writing new prescription ' + JSON.stringify(event));
+						stopSpinner();
 					}
 				},
 				onError: function(error) {
@@ -227,77 +213,32 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.assayList.sync();
 	}
 	
-	function loadUnstartedTests(callback) {
-		sources.testUnstarted.query('startedOn === null',
-			{
+	function loadDatasource(dsource, queryString, orderBy, params, callback, errorCallback) {
+		startSpinner();
+		queryObj = {
 				onSuccess: function(event) {
-					console.log('loadUnstartedTests', event);
+					console.log('load ' + dsource.getClassTitle(), event);
 					if (callback) {
 						callback(event);
 					}
+					stopSpinner();
 				},
 				onError: function(error) {
-					console.log('ERROR: loadUnstartedTests', error);
-				},
-				orderBy: 'prescribedOn'
-			}
-		);
-	}
-
-	function loadTestsInProgress(callback) {
-		sources.testUnderway.query('startedOn !== null AND finishedOn === null',
-			{
-				onSuccess: function(event) {
-					console.log('loadTestsInProgress', event);
-					if (callback) {
-						callback(event);
+					console.log('ERROR: load ' + dsource.getClassTitle(), error);
+					stopSpinner();
+					if (errorCallback) {
+						errorCallback(error);
 					}
 				},
-				onError: function(error) {
-					console.log('ERROR: loadTestsInProgress', error);
-				},
-				orderBy: 'startedOn'
-			}
-		);
-	}
-
-	function loadCompletedTests(callback) {
-		sources.test.query('finishedOn !== null',
-			{
-				onSuccess: function(event) {
-					console.log('loadCompletedTests', event);
-					if (callback) {
-						callback(event);
-					}
-				},
-				onError: function(error) {
-					console.log('ERROR: loadCompletedTests', error);
-				},
-				orderBy: 'finishedOn desc'
-			}
-		);
-	}
-
-	function loadDevices(callback) {
-		sources.device.query('practice.users.username == :1',
-			{
-				onSuccess: function(event) {
-					console.log('loadDevices', event);
-					if (callback) {
-						callback(event);
-					}
-				},
-				onError: function(error) {
-					console.log('ERROR: loadDevices', error);
-				},
-				orderBy: 'modelName, serialNumber',
-				params: [WAF.directory.currentUser().userName]
-			}
-		);
+				orderBy: orderBy,
+				params: params
+			};
+			
+		dsource.query(queryString, queryObj);
 	}
 	
 	function startTest() {
-		notifyProgress('Starting test, please stand by...');
+		notify('Starting test, please stand by...');
 		startSpinner();
 		sources.testUnstarted.start(
 			{
@@ -338,24 +279,30 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	button1.click = function button1_click (event)// @startlock
 	{// @endlock
+		startSpinner();
 		sources.testUnderway.serverRefresh({
 			onSuccess: function(evt) {
 				console.log('sources.testUnderway.serverRefresh', evt);
+				stopSpinner();
 			},
 			onError: function(err) {
 				console.log('ERROR: sources.testUnderway.serverRefresh', err);
+				stopSpinner();
 			}
 		});
 	};// @lock
 
 	buttonRefreshStatus.click = function buttonRefreshStatus_click (event)// @startlock
 	{// @endlock
+		startSpinner();
 		sources.testUnderway.serverRefresh({
 			onSuccess: function(evt) {
 				console.log('sources.testUnderway.serverRefresh', evt);
+				stopSpinner();
 			},
 			onError: function(err) {
 				console.log('ERROR: sources.testUnderway.serverRefresh', err);
+				stopSpinner();
 			}
 		});
 	};// @lock
@@ -377,11 +324,15 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
-		loadDevices(
-			function(e) {
-				$$('navigationView1').goToView(8);
-			}
-		);
+		loadDatasource(
+				sources.device, 
+				'practice.users.username == :1', 
+				'modelName, serialNumber',
+				[WAF.directory.currentUser().userName],
+				function(e) {
+					$$('navigationView1').goToView(8);
+				}
+			);
 	};// @lock
 
 	assayListEvent.onCollectionChange = function assayListEvent_onCollectionChange (event)// @startlock
@@ -431,7 +382,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonAssayAll.click = function buttonAssayAll_click (event)// @startlock
 	{// @endlock
-		allAssays();
+		filterAssays('A', 'ZZZZZZ', this.id);
 	};// @lock
 
 	row1.click = function row1_click (event)// @startlock
@@ -448,7 +399,19 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	textFieldPatientNumber.change = function textFieldPatientNumber_change (event)// @startlock
 	{// @endlock
-		loadPatientInfo();
+		loadDatasource(
+				sources.patient,
+				'reference === :1',
+				'reference',
+				[patientNumber],
+				function (event) {
+					$$('richTextPatientInfo').setValue(event.dataSource.length ? event.dataSource.gender + ', DOB: ' + event.dataSource.dateOfBirth.toDateString().substring(4) : 'Patient not found');
+				},
+				function (error) {
+					$$('richTextPatientInfo').setValue('Error: ' + error.message);
+				}
+			);
+
 	};// @lock
 
 	buttonRegister.click = function buttonRegister_click (event)// @startlock
@@ -480,21 +443,29 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonReview.click = function buttonReview_click (event)// @startlock
 	{// @endlock
-		loadCompletedTests(
-			function(e) {
-				$$('navigationView1').goToView(5);
-			}
-		);
+		loadDatasource(
+				sources.test, 
+				'finishedOn !== null',
+				'finishedOn desc',
+				null,
+				function(e) {
+					$$('navigationView1').goToView(5);
+				}
+			);
 	};// @lock
 
 	buttonMonitor.click = function buttonMonitor_click (event)// @startlock
 	{// @endlock
-		loadTestsInProgress(
-			function(e) {
-				$$('navigationView1').goToView(4);
-				sources.testUnderway.updateStatus({ onSuccess: function(e) {return;} });
-			}
-		);
+		loadDatasource(
+				sources.testUnderway,
+				'startedOn !== null AND finishedOn === null',
+				'startedOn',
+				null,
+				function(e) {
+					$$('navigationView1').goToView(4);
+					sources.testUnderway.updateStatus({ onSuccess: function(e) {return;} });
+				}
+			);
 		
 //		(function loop() {
 //			setTimeout(function() {
@@ -514,14 +485,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRun.click = function buttonRun_click (event)// @startlock
 	{// @endlock
-		startSpinner();
-
-		loadUnstartedTests(
-			function(e) {
-				$$('navigationView1').goToView(3);
-				stopSpinner();
-			}
-		);
+		loadDatasource(
+				sources.testUnstarted,
+				'startedOn === null',
+				'prescribedOn',
+				null,
+				function(e) {
+					$$('navigationView1').goToView(3);
+					stopSpinner();
+				}
+			);
 	};// @lock
 
 	buttonPrescribe.click = function buttonPrescribe_click (event)// @startlock
