@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var textField19 = {};	// @textField
 	var row4 = {};	// @container
 	var button1 = {};	// @button
 	var buttonRefreshStatus = {};	// @button
@@ -108,17 +109,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		return assayIDs;
 	}
 		
-	function filterAssays(startChar, endChar, buttonID) {
+	function filterAssays(startChar, endChar, buttonID, callback) {
 		startSpinner();		
 		sources.assay.query('NOT ID in :1 AND name >= :2 AND name <= :3',
 			{
 				onSuccess: function(event) {
 					highlightAssayButton(buttonID);
-					console.log('allAssays', event);
+					console.log('filterAssays', event);
+					if (callback) {
+						callback(event);
+					}
 					stopSpinner();
 				},
 				onError: function(error) {
-					console.log('ERROR: allAssays', error);
+					console.log('ERROR: filterAssays', error);
 					stopSpinner();
 				},
 				orderBy: 'name',
@@ -200,14 +204,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 	
-	function loadAssayList() {
-		allAssays(
-			function(event) {
-				$$('navigationView1').goToView(7);
-			}
-		);
-	}
-
 	function removeLastAssay() {
 		assayList.splice(assayList.length - 1, 1);
 		sources.assayList.sync();
@@ -271,6 +267,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	
 // eventHandlers// @lock
+
+	textField19.keyup = function textField19_keyup (event)// @startlock
+	{// @endlock
+		loadDatasource(
+				sources.test, 
+				'finishedOn !== null AND patientNumber == :1',
+				'finishedOn desc',
+				[this.getValue() + WAF.wildchar]
+			);
+	};// @lock
 
 	row4.click = function row4_click (event)// @startlock
 	{// @endlock
@@ -347,7 +353,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	imageButton1.click = function imageButton1_click (event)// @startlock
 	{// @endlock
-		loadAssayList();
+		filterAssays('A', 'ZZZZZZ', this.id,
+			function(event) {
+				$$('navigationView1').goToView(7);
+			}
+		);
 	};// @lock
 
 	patientEvent.onCurrentElementChange = function patientEvent_onCurrentElementChange (event)// @startlock
@@ -504,6 +514,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("textField19", "keyup", textField19.keyup, "WAF");
 	WAF.addListener("row4", "click", row4.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonRefreshStatus", "click", buttonRefreshStatus.click, "WAF");
