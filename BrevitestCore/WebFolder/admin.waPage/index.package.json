@@ -3,6 +3,23 @@
 	"version": "1.0.0",
 	"loadDependencies": [
 		{
+			"id": "Desktop_Core",
+			"version": "1.0.0",
+			"type": "core"
+		},
+		{
+			"id": "Widget/button",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/textField",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/label",
+			"type": "widget"
+		},
+		{
 			"id": "default",
 			"type": "theme"
 		},
@@ -15,6 +32,11 @@
 			"id": "application.css",
 			"path": "WEBFOLDER",
 			"type": "style"
+		},
+		{
+			"id": "admin.waPage/scripts/index.js",
+			"path": "WEBFOLDER",
+			"type": "script"
 		}
 	]
 }

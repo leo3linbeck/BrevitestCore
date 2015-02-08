@@ -1,1 +1,1 @@
-﻿var spark = require('sparkCore');var sparkCoreID = '53ff6e066667574844262367';var accessToken = spark.getAccessToken(sparkCoreID);var status = spark.readSerialNumber(sparkCoreID);(status);
+﻿var spark = require('sparkCore');var sparkCoreID = '53ff6e066667574844262367';var status = spark.read_serial_number(sparkCoreID);//var status = spark.read_sensor_data(sparkCoreID);//var status = spark.initialize_device(sparkCoreID);//var status = spark.run_assay(sparkCoreID);//var status = spark.get_status(sparkCoreID);(status);
