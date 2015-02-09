@@ -20,7 +20,8 @@
 			"type": "widget"
 		},
 		{
-			"id": "default",
+			"id": "brevitest/package.json",
+			"path": "THEMES_CUSTOM",
 			"type": "theme"
 		},
 		{
@@ -34,7 +35,22 @@
 			"type": "style"
 		},
 		{
+			"id": "admin.waPage/styles/original.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
 			"id": "admin.waPage/scripts/index.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "index.waPage/scripts/humane.min.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "admin.waPage/scripts/humane.min.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		}

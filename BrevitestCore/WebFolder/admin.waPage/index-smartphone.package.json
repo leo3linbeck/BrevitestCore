@@ -1,0 +1,30 @@
+{
+	"name": "BrevitestCore/admin.waPage/index-smartphone.html",
+	"version": "1.0.0",
+	"loadDependencies": [
+		{
+			"id": "Mobile_Core",
+			"version": "1.0.0",
+			"type": "core"
+		},
+		{
+			"id": "Widget/button",
+			"type": "widget"
+		},
+		{
+			"id": "btios7/package.json",
+			"path": "THEMES_CUSTOM",
+			"type": "theme"
+		},
+		{
+			"id": "admin.waPage/styles/index-smartphone.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "application.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		}
+	]
+}

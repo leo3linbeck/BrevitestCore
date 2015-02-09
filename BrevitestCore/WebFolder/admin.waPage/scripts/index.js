@@ -10,106 +10,85 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonWriteSerialNumber = {};	// @button
 // @endregion// @endlock
 
+	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
+	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
+
+	function callSpark(funcName, params, callback) {
+		params.splice(0, 0, $$('textFieldSparkCoreID').getValue());
+		spark[funcName + 'Async']({
+			'onSuccess': function(event) {
+				if (event.success) {
+					callback(event);
+				}
+				else {
+					notification.error('Command failed to complete');
+				}
+			},
+			'onError': function(error) {
+				notification.error('System error in ' + funcName);
+			},
+			'params': params
+		});
+	}
+	
 // eventHandlers// @lock
 
 	buttonGetAssayResults.click = function buttonGetAssayResults_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		spark.read_sensor_dataAsync({
-			'onSuccess': function(evt) {
+		callSpark('read_sensor_data', [], function(evt) {
+				notification.log('Assay results retrieved');
 				$$('textFieldAssayResults').setValue(evt.data.join('\n'));
-			},
-			'onError': function(err) {
-				
-			},
-			'params': [coreID]
-		});
-
+			}
+		);
 	};// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		spark.run_assayAsync({
-			'onSuccess': function(evt) {
-				if(evt.success) {
-					$$('textFieldRunAssay').setValue('Assay started');
-				}
-				else {
-					$$('textFieldRunAssay').setValue('Assay failed to start');
-				}
-			},
-			'onError': function(err) {
-				
-			},
-			'params': [coreID]
-		});
-
+		callSpark('run_assay', [], function(evt) {
+				notification.log('Assay successfully started');
+				$$('textFieldRunAssay').setValue('Assay started');
+			}
+		);
 	};// @lock
 
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		spark.initialize_deviceAsync({
-			'onSuccess': function(evt) {
-				if(evt.success) {
-					$$('textFieldInitializeDevice').setValue('Device initialized');
-				}
-				else {
-					$$('textFieldInitializeDevice').setValue('Device failed to initialize');
-				}
-			},
-			'onError': function(err) {
-				
-			},
-			'params': [coreID]
-		});
+		callSpark('initialize_device', [], function(evt) {
+				notification.log('Device initialization successful');
+				$$('textFieldInitializeDevice').setValue('Device initialized');
+			}
+		);
 	};// @lock
 
 	buttonGetStatus.click = function buttonGetStatus_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		spark.get_statusAsync({
-			'onSuccess': function(evt) {
-				$$('textFieldDeviceStatus').setValue(evt.value);
-			},
-			'onError': function(err) {
-				
-			},
-			'params': [coreID]
-		});
-
+		callSpark('get_status', [], function(evt) {
+				notification.log('Status update retrieved');
+				deviceStatus = evt.value;
+				sources.deviceStatus.sync();
+			}
+		);
 	};// @lock
 
 	buttonReadSerialNumber.click = function buttonReadSerialNumber_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		spark.read_serial_numberAsync({
-			'onSuccess': function(evt) {
+		callSpark('read_serial_number', [], function(evt) {
+				notification.log('Serial number retrieved');
 				$$('textFieldReadSerialNumber').setValue(evt.value);
-			},
-			'onError': function(err) {
-				
-			},
-			'params': [coreID]
-		});
-
+			}
+		);
 	};// @lock
 
 	buttonWriteSerialNumber.click = function buttonWriteSerialNumber_click (event)// @startlock
 	{// @endlock
-		var coreID = $$('textFieldSparkCoreID').getValue();
-		var sn = $$('textFieldWriteSerialNumber').getValue();
-		if (sn.length === 19) {
-			spark.write_serial_numberAsync({
-				'onSuccess': function(evt) {
-					
-				},
-				'onError': function(err) {
-					
-				},
-				'params': [coreID, sn]
-			});
+		if (serialNumber.length === 19) {
+			callSpark('write_serial_number', [serialNumber], function(evt) {
+					notification.log('Serial number written');
+				}
+			);
+		}
+		else {
+			notification.error('Serial number must be exactly 19 characters long');
 		}
 	};// @lock
 

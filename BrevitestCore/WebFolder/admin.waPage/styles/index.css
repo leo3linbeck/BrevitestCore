@@ -4,68 +4,68 @@
 */
 
 #label8 {
-	width: 69px;
-	height: 14px;
-	top: 501px;
-	left: 354px;
+	z-index: 15;
+	width: 71px;
+	height: 12px;
+	top: 503px;
+	left: 380px;
 	position: absolute;
 	text-align: center;
-	z-index: 15;
 }
 
 #label6 {
-	width: 32px;
-	height: 14px;
-	top: 398px;
-	left: 347px;
-	position: absolute;
 	z-index: 11;
+	width: 31px;
+	height: 12px;
+	top: 399px;
+	left: 348px;
+	position: absolute;
 }
 
 #label5 {
-	width: 32px;
-	height: 14px;
-	top: 338px;
-	left: 345px;
-	position: absolute;
 	z-index: 9;
+	width: 31px;
+	height: 12px;
+	top: 339px;
+	left: 346px;
+	position: absolute;
 }
 
 #label4 {
+	z-index: 8;
 	width: 70px;
-	height: 14px;
-	top: 252px;
+	height: 12px;
+	top: 253px;
 	left: 305px;
 	position: absolute;
-	z-index: 8;
 }
 
 #label3 {
-	width: 129px;
-	height: 14px;
-	top: 168px;
-	left: 308px;
-	position: absolute;
 	z-index: 5;
+	width: 117px;
+	height: 12px;
+	top: 169px;
+	left: 320px;
+	position: absolute;
 }
 
 #label2 {
-	width: 125px;
-	height: 22px;
+	z-index: 3;
+	width: 119px;
+	height: 21px;
 	top: 32px;
-	left: 166px;
+	left: 172px;
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
-	z-index: 3;
 }
 
 #label1 {
 	z-index: 2;
-	width: 123px;
-	height: 14px;
-	top: 108px;
-	left: 314px;
+	width: 109px;
+	height: 12px;
+	top: 109px;
+	left: 328px;
 	position: absolute;
 }
 
@@ -90,6 +90,7 @@
 }
 
 #textFieldSparkCoreID {
+	z-index: 4;
 	width: 313px;
 	height: 40px;
 	top: 23px;
@@ -97,106 +98,105 @@
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
-	z-index: 4;
 }
 
 #buttonReadSerialNumber {
+	z-index: 4;
 	width: 212px;
 	height: 44px;
 	top: 153px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 4;
 }
 
 #textFieldReadSerialNumber {
+	z-index: 6;
 	width: 318px;
 	height: 40px;
 	top: 155px;
 	left: 442px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 6;
 }
 
 #buttonGetStatus {
+	z-index: 7;
 	width: 212px;
 	height: 44px;
 	top: 236px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 7;
 }
 
 #textFieldDeviceStatus {
+	z-index: 8;
 	width: 380px;
 	height: 89px;
 	top: 215px;
 	left: 380px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 8;
 }
 
 #buttonInitDevice {
+	z-index: 8;
 	width: 212px;
 	height: 44px;
 	top: 323px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 8;
 }
 
 #textFieldInitializeDevice {
+	z-index: 10;
 	width: 378px;
 	height: 40px;
 	top: 325px;
 	left: 382px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 10;
 }
 
 #buttonRunAssay {
+	z-index: 10;
 	width: 212px;
 	height: 44px;
 	top: 383px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 10;
 }
 
 #textFieldRunAssay {
+	z-index: 12;
 	width: 376px;
 	height: 40px;
 	top: 385px;
 	left: 384px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 12;
 }
 
 #buttonGetAssayResults {
+	z-index: 13;
 	width: 212px;
 	height: 44px;
-	top: 445px;
-	left: 281px;
+	top: 460px;
+	left: 65px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 13;
 }
 
 #textFieldAssayResults {
-	width: 645px;
+	z-index: 15;
+	width: 699px;
 	height: 254px;
 	top: 520px;
 	left: 66px;
 	position: absolute;
-	font-size: 12px;
-	z-index: 15;
+	font-size: 16px;
 }
 
