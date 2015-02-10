@@ -15,13 +15,13 @@
 	<file path="./Model.waModel">
 		<tag name="catalog"/>
 	</file>
-	<file path="./Settings.waSettings">
-		<tag name="settings"/>
-	</file>
 	<file path="./Permissions.waPerm">
 		<tag name="permissions"/>
 	</file>
 	<file path="./bootstrap.js">
 		<tag name="bootStrap"/>
+	</file>
+	<file path="./Settings (Cloud).waSettings">
+		<tag name="settings"/>
 	</file>
 </project>
