@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonSensorData = {};	// @button
 	var buttonGetAssayResults = {};	// @button
 	var buttonRunAssay = {};	// @button
 	var buttonInitDevice = {};	// @button
@@ -33,9 +34,22 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	buttonSensorData.click = function buttonSensorData_click (event)// @startlock
+	{// @endlock
+		callSpark('collect_sensor_data', [], function(evt) {
+				notification.log('Sensor data collected');
+				$$('textFieldSensorData').setValue('Collection complete');
+			}
+		);
+	};// @lock
+
 	buttonGetAssayResults.click = function buttonGetAssayResults_click (event)// @startlock
 	{// @endlock
-		callSpark('read_sensor_data', [], function(evt) {
+		var a = [];
+		if (!$$('checkboxAllResults').getValue()) {
+			a.push(assayCode);
+		}
+		callSpark('read_sensor_data', a, function(evt) {
 				notification.log('Assay results retrieved');
 				$$('textFieldAssayResults').setValue(evt.data.join('\n'));
 			}
@@ -63,7 +77,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonGetStatus.click = function buttonGetStatus_click (event)// @startlock
 	{// @endlock
 		callSpark('get_status', [], function(evt) {
-				notification.log('Status update retrieved');
 				deviceStatus = evt.value;
 				sources.deviceStatus.sync();
 			}
@@ -93,6 +106,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonSensorData", "click", buttonSensorData.click, "WAF");
 	WAF.addListener("buttonGetAssayResults", "click", buttonGetAssayResults.click, "WAF");
 	WAF.addListener("buttonRunAssay", "click", buttonRunAssay.click, "WAF");
 	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");

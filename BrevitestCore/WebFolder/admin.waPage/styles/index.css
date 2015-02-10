@@ -3,12 +3,41 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label10 {
+	width: 31px;
+	height: 12px;
+	top: 409px;
+	left: 348px;
+	position: absolute;
+	z-index: 20;
+}
+
+#label9 {
+	z-index: 16;
+	width: 125px;
+	height: 18px;
+	top: 545px;
+	left: 118px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#label7 {
+	width: 160px;
+	height: 12px;
+	top: 583px;
+	left: 91px;
+	position: absolute;
+	text-align: center;
+	z-index: 14;
+}
+
 #label8 {
-	z-index: 15;
+	z-index: 13;
 	width: 71px;
 	height: 12px;
-	top: 503px;
-	left: 380px;
+	top: 447px;
+	left: 506px;
 	position: absolute;
 	text-align: center;
 }
@@ -17,7 +46,7 @@
 	z-index: 11;
 	width: 31px;
 	height: 12px;
-	top: 399px;
+	top: 349px;
 	left: 348px;
 	position: absolute;
 }
@@ -26,7 +55,7 @@
 	z-index: 9;
 	width: 31px;
 	height: 12px;
-	top: 339px;
+	top: 289px;
 	left: 346px;
 	position: absolute;
 }
@@ -35,7 +64,7 @@
 	z-index: 8;
 	width: 70px;
 	height: 12px;
-	top: 253px;
+	top: 229px;
 	left: 305px;
 	position: absolute;
 }
@@ -53,11 +82,12 @@
 	z-index: 3;
 	width: 119px;
 	height: 21px;
-	top: 32px;
-	left: 172px;
+	top: 8px;
+	left: 292px;
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
+	text-align: center;
 }
 
 #label1 {
@@ -81,7 +111,7 @@
 
 #textFieldWriteSerialNumber {
 	z-index: 2;
-	width: 318px;
+	width: 200px;
 	height: 40px;
 	top: 95px;
 	left: 442px;
@@ -91,10 +121,10 @@
 
 #textFieldSparkCoreID {
 	z-index: 4;
-	width: 313px;
+	width: 257px;
 	height: 40px;
-	top: 23px;
-	left: 296px;
+	top: 34px;
+	left: 223px;
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
@@ -112,19 +142,23 @@
 
 #textFieldReadSerialNumber {
 	z-index: 6;
-	width: 318px;
+	width: 200px;
 	height: 40px;
 	top: 155px;
 	left: 442px;
 	position: absolute;
 	font-size: 16px;
+	border-top-style: dashed;
+	border-left-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
 }
 
 #buttonGetStatus {
 	z-index: 7;
 	width: 212px;
 	height: 44px;
-	top: 236px;
+	top: 213px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
@@ -132,19 +166,23 @@
 
 #textFieldDeviceStatus {
 	z-index: 8;
-	width: 380px;
-	height: 89px;
+	width: 400px;
+	height: 40px;
 	top: 215px;
 	left: 380px;
 	position: absolute;
 	font-size: 16px;
+	border-top-style: dashed;
+	border-left-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
 }
 
 #buttonInitDevice {
 	z-index: 8;
 	width: 212px;
 	height: 44px;
-	top: 323px;
+	top: 273px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
@@ -152,19 +190,23 @@
 
 #textFieldInitializeDevice {
 	z-index: 10;
-	width: 378px;
+	width: 250px;
 	height: 40px;
-	top: 325px;
+	top: 275px;
 	left: 382px;
 	position: absolute;
 	font-size: 16px;
+	border-top-style: dashed;
+	border-left-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
 }
 
 #buttonRunAssay {
 	z-index: 10;
 	width: 212px;
 	height: 44px;
-	top: 383px;
+	top: 333px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
@@ -172,31 +214,78 @@
 
 #textFieldRunAssay {
 	z-index: 12;
-	width: 376px;
+	width: 250px;
 	height: 40px;
-	top: 385px;
+	top: 335px;
 	left: 384px;
 	position: absolute;
 	font-size: 16px;
+	border-top-style: dashed;
+	border-left-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
 }
 
 #buttonGetAssayResults {
-	z-index: 13;
+	z-index: 12;
 	width: 212px;
 	height: 44px;
-	top: 460px;
+	top: 473px;
 	left: 65px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #textFieldAssayResults {
-	z-index: 15;
-	width: 699px;
-	height: 254px;
-	top: 520px;
-	left: 66px;
+	z-index: 13;
+	width: 478px;
+	height: 220px;
+	top: 464px;
+	left: 303px;
 	position: absolute;
 	font-size: 16px;
+}
+
+#textFieldAssayCode {
+	width: 212px;
+	height: 40px;
+	top: 600px;
+	left: 65px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 15;
+}
+
+#checkboxAllResults {
+	z-index: 17;
+	width: 16px;
+	height: 16px;
+	top: 546px;
+	left: 97px;
+	position: absolute;
+}
+
+#buttonSensorData {
+	width: 212px;
+	height: 44px;
+	top: 393px;
+	left: 65px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 18;
+}
+
+#textFieldSensorData {
+	width: 250px;
+	height: 40px;
+	top: 395px;
+	left: 384px;
+	position: absolute;
+	font-size: 16px;
+	border-top-style: dashed;
+	border-left-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
+	z-index: 20;
 }
 

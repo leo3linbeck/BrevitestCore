@@ -20,6 +20,10 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/checkbox",
+			"type": "widget"
+		},
+		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"
