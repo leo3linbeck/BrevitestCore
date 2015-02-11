@@ -24,6 +24,14 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/richText",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/container",
+			"type": "widget"
+		},
+		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"
@@ -55,6 +63,11 @@
 		},
 		{
 			"id": "admin.waPage/scripts/humane.min.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "Javascript/spin.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		}
