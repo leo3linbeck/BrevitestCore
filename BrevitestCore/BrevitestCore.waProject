@@ -21,7 +21,7 @@
 	<file path="./bootstrap.js">
 		<tag name="bootStrap"/>
 	</file>
-	<file path="./Settings (Cloud).waSettings">
+	<file path="./Settings (Local).waSettings">
 		<tag name="settings"/>
 	</file>
 </project>
