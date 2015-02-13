@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonResetParams = {};	// @button
+	var buttonGetParam = {};	// @button
 	var documentEvent = {};	// @document
 	var checkboxAllResults = {};	// @checkbox
 	var checkboxMonitorStatus = {};	// @checkbox
@@ -100,9 +102,33 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'reset_parameters', [], function(evt) {
+				notification.log('Parameter values reset');
+			}
+		);
+
+	};// @lock
+
+	buttonGetParam.click = function buttonGetParam_click (event)// @startlock
+	{// @endlock
+//		callSpark(this, 'request_parameter', ['step_delay_raster_us'], function(evt) {
+//				notification.log('Parameter received');
+//				$$('textFieldParam').setValue(evt.value);
+//			}
+//		);
+		callSpark(this, 'request_all_parameters', [], function(evt) {
+				notification.log('Parameters received');
+				$$('textFieldParam').setValue(evt.value);
+			}
+		);
+
+	};// @lock
+
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		coreID = '53ff6e066667574844262367';
+		coreID = '54ff72066678574959300667';
 		sources.coreID.sync();
 	};// @lock
 
@@ -206,6 +232,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");
+	WAF.addListener("buttonGetParam", "click", buttonGetParam.click, "WAF");
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
 	WAF.addListener("checkboxAllResults", "change", checkboxAllResults.change, "WAF");
 	WAF.addListener("checkboxMonitorStatus", "change", checkboxMonitorStatus.change, "WAF");
