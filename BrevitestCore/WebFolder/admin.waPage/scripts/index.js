@@ -2,8 +2,11 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonChangeParameter = {};	// @button
+	var button1 = {};	// @button
+	var buttonLoadParams = {};	// @button
+	var buttonRefreshCores = {};	// @button
 	var buttonResetParams = {};	// @button
-	var buttonGetParam = {};	// @button
 	var documentEvent = {};	// @document
 	var checkboxAllResults = {};	// @checkbox
 	var checkboxMonitorStatus = {};	// @checkbox
@@ -26,9 +29,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
 	
 	var statusMonitorID = null;
+	
+	var sparkCoreList = [];
 
 	function callSpark(that, funcName, params, callback) {
-		params.splice(0, 0, coreID);
 		spinner.spin(that.domNode);
 		spark[funcName + 'Async']({
 			'onSuccess': function(event) {
@@ -53,14 +57,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			clearInterval(statusMonitorID);
 		}
 			
-		callSpark(that, 'get_status', [], function(event) {
+		callSpark(that, 'get_status', [sources.sparkCores.id], function(event) {
 				deviceStatus = event.value;
 				sources.deviceStatus.sync();
 			}
 		);
 		
 		statusMonitorID = setInterval(function(this_one) {
-			callSpark(this_one, 'get_status', [], function(event) {
+			callSpark(this_one, 'get_status', [sources.sparkCores.id], function(event) {
 					deviceStatus = event.value;
 					sources.deviceStatus.sync();
 				}
@@ -100,36 +104,69 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		return r;
 	}
 	
+	function clearSparkParameters() {
+		sparkAttr.length = 0;
+		sources.sparkAttr.sync();
+	}
+	
 // eventHandlers// @lock
+
+	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'change_parameter', [sources.sparkCores.id, sources.sparkAttr.name, sources.sparkAttr.value], function(evt) {
+				notification.log('Parameter changed');
+				sources.sparkAttr.value = evt.value;
+				sources.sparkAttr.sync();
+			}
+		);
+	};// @lock
+
+	button1.click = function button1_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'request_all_parameters', [sources.sparkCores.id], function(evt) {
+				sparkAttr = evt.data;
+				sources.sparkAttr.sync();
+			}
+		);
+	};// @lock
+
+	buttonLoadParams.click = function buttonLoadParams_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'request_all_parameters', [sources.sparkCores.id], function(evt) {
+				sparkAttr = evt.data;
+				sources.sparkAttr.sync();
+			}
+		);
+	};// @lock
+
+	buttonRefreshCores.click = function buttonRefreshCores_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'get_list_of_cores', [], function(evt) {
+				notification.log('Core list refreshed');
+				sparkCores = evt.response;
+				sources.sparkCores.sync();
+				clearSparkParameters();
+			}
+		);
+	};// @lock
 
 	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'reset_parameters', [], function(evt) {
+		callSpark(this, 'reset_parameters', [sources.sparkCores.id], function(evt) {
 				notification.log('Parameter values reset');
+				sparkAttr = evt.data;
+				sources.sparkAttr.sync();
 			}
 		);
-
-	};// @lock
-
-	buttonGetParam.click = function buttonGetParam_click (event)// @startlock
-	{// @endlock
-//		callSpark(this, 'request_parameter', ['step_delay_raster_us'], function(evt) {
-//				notification.log('Parameter received');
-//				$$('textFieldParam').setValue(evt.value);
-//			}
-//		);
-		callSpark(this, 'request_all_parameters', [], function(evt) {
-				notification.log('Parameters received');
-				$$('textFieldParam').setValue(evt.value);
-			}
-		);
-
 	};// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		coreID = '54ff72066678574959300667';
-		sources.coreID.sync();
+		callSpark(this, 'get_list_of_cores', [], function(evt) {
+				sparkCores = evt.response;
+				sources.sparkCores.sync();
+			}
+		);
 	};// @lock
 
 	checkboxAllResults.change = function checkboxAllResults_change (event)// @startlock
@@ -156,7 +193,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonSensorData.click = function buttonSensorData_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'collect_sensor_data', [], function(evt) {
+		callSpark(this, 'collect_sensor_data', [sources.sparkCores.id], function(evt) {
 				notification.log('Sensor data collected');
 				$$('textFieldResult').setValue('Collection complete');
 			}
@@ -166,14 +203,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonGetAssayResults.click = function buttonGetAssayResults_click (event)// @startlock
 	{// @endlock
 		if ($$('checkboxAllResults').getValue()) {
-			callSpark(this, 'request_all_sensor_data', [], function(evt) {
+			callSpark(this, 'request_all_sensor_data', [sources.sparkCores.id], function(evt) {
 					notification.log('Assay results retrieved');
 					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
 				}
 			);
 		}
 		else {
-			callSpark(this, 'request_sensor_data', [assayCode], function(evt) {
+			callSpark(this, 'request_sensor_data', [sources.sparkCores.id, assayCode], function(evt) {
 					notification.log('Assay results retrieved');
 					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
 				}
@@ -183,7 +220,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'run_assay', [], function(evt) {
+		callSpark(this, 'run_assay', [sources.sparkCores.id], function(evt) {
 				notification.log('Assay successfully started');
 				$$('textFieldResult').setValue('Assay started');
 			}
@@ -192,7 +229,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'initialize_device', [], function(evt) {
+		callSpark(this, 'initialize_device', [sources.sparkCores.id], function(evt) {
 				notification.log('Device initialization successful');
 				$$('textFieldResult').setValue('Device initialized');
 			}
@@ -201,7 +238,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonGetStatus.click = function buttonGetStatus_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'get_status', [], function(evt) {
+		callSpark(this, 'get_status', [sources.sparkCores.id], function(evt) {
 				deviceStatus = evt.value;
 				sources.deviceStatus.sync();
 			}
@@ -210,7 +247,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonReadSerialNumber.click = function buttonReadSerialNumber_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'request_serial_number', [], function(evt) {
+		callSpark(this, 'request_serial_number', [sources.sparkCores.id], function(evt) {
 				notification.log('Serial number retrieved');
 				$$('textFieldReadSerialNumber').setValue(evt.value);
 			}
@@ -221,7 +258,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		var v = validateSerialNumber();
 		if (v.valid) {
-			callSpark(this, 'write_serial_number', [serialNumber], function(evt) {
+			callSpark(this, 'write_serial_number', [sources.sparkCores.id, serialNumber], function(evt) {
 					notification.log('Serial number written');
 				}
 			);
@@ -232,8 +269,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
+	WAF.addListener("button1", "click", button1.click, "WAF");
+	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
+	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
 	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");
-	WAF.addListener("buttonGetParam", "click", buttonGetParam.click, "WAF");
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
 	WAF.addListener("checkboxAllResults", "change", checkboxAllResults.change, "WAF");
 	WAF.addListener("checkboxMonitorStatus", "change", checkboxMonitorStatus.change, "WAF");
