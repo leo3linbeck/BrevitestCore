@@ -3,7 +3,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
 	var buttonChangeParameter = {};	// @button
-	var button1 = {};	// @button
 	var buttonLoadParams = {};	// @button
 	var buttonRefreshCores = {};	// @button
 	var buttonResetParams = {};	// @button
@@ -114,18 +113,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'change_parameter', [sources.sparkCores.id, sources.sparkAttr.name, sources.sparkAttr.value], function(evt) {
-				notification.log('Parameter changed');
-				sources.sparkAttr.value = evt.value;
-				sources.sparkAttr.sync();
-			}
-		);
-	};// @lock
-
-	button1.click = function button1_click (event)// @startlock
-	{// @endlock
-		callSpark(this, 'request_all_parameters', [sources.sparkCores.id], function(evt) {
-				sparkAttr = evt.data;
-				sources.sparkAttr.sync();
+				if (sources.sparkAttr.value === evt.response.return_value) {
+					notification.log('Parameter successfully changed');
+				}
+				else {
+					notification.error('Parameter change failed. Reset to previous value.');
+					sources.sparkAttr.value = evt.response.return_value;
+					sources.sparkAttr.sync();
+				}
 			}
 		);
 	};// @lock
@@ -270,7 +265,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region eventManager// @startlock
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
-	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
 	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");

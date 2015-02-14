@@ -3,20 +3,25 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#dataGridAttributes .waf-widget-body .waf-dataGrid-col-value {
+	text-align: right;
+}
+
 #dataGridAttributes .waf-dataGrid-row {
 	font-size: 12px;
 }
 
 #dataGridAttributes .waf-dataGrid-header {
 	font-size: 12px;
+	text-align: center;
 }
 
 #label2 {
-	z-index: 20;
+	z-index: 6;
 	width: 67px;
 	height: 18px;
-	top: 43px;
-	left: 1196px;
+	top: 8px;
+	left: 117px;
 	position: absolute;
 	text-align: center;
 	font-size: 16px;
@@ -318,11 +323,11 @@
 }
 
 #buttonResetParams {
-	z-index: 19;
+	z-index: 1;
 	width: 270px;
 	height: 44px;
-	top: 689px;
-	left: 1097px;
+	top: 610px;
+	left: 16px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -341,6 +346,7 @@
 	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	border-top-color: rgb(255, 0, 0);
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
@@ -348,53 +354,54 @@
 }
 
 #dataGridAttributes {
-	z-index: 21;
-	width: 304px;
-	height: 432px;
-	top: 66px;
-	left: 1078px;
+	z-index: 6;
+	width: 298px;
+	height: 397px;
+	top: 31px;
+	left: 2px;
 	position: absolute;
 }
 
 #buttonRefreshCores {
+	z-index: 22;
 	width: 212px;
 	height: 44px;
 	top: 694px;
 	left: 36px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 22;
 }
 
 #buttonLoadParams {
+	z-index: 2;
 	width: 270px;
 	height: 44px;
-	top: 509px;
-	left: 1097px;
+	top: 442px;
+	left: 16px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 24;
 }
 
 #textFieldSparkAttr {
-	width: 79px;
-	height: 40px;
-	top: 576px;
-	left: 1302px;
+	z-index: 3;
+	width: 82px;
+	height: 32px;
+	top: 504px;
+	left: 209px;
 	position: absolute;
 	border-top-width: 3px;
 	border-left-width: 3px;
 	border-right-width: 3px;
 	border-bottom-width: 3px;
 	font-size: 14px;
-	z-index: 25;
 }
 
 #textFieldSparkAttrName {
-	width: 216px;
-	height: 40px;
-	top: 576px;
-	left: 1083px;
+	z-index: 4;
+	width: 205px;
+	height: 32px;
+	top: 504px;
+	left: 5px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -402,16 +409,24 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: right;
-	z-index: 26;
 }
 
 #buttonChangeParameter {
+	z-index: 5;
 	width: 270px;
 	height: 44px;
-	top: 622px;
-	left: 1097px;
+	top: 541px;
+	left: 16px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 27;
+}
+
+#containerAttributes {
+	z-index: 28;
+	width: 304px;
+	height: 676px;
+	top: 65px;
+	left: 1078px;
+	position: absolute;
 }
 
