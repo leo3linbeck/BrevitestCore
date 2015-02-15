@@ -2,19 +2,21 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonDumpArchive = {};	// @button
+	var buttonEraseArchive = {};	// @button
 	var buttonChangeParameter = {};	// @button
 	var buttonLoadParams = {};	// @button
 	var buttonRefreshCores = {};	// @button
 	var buttonResetParams = {};	// @button
 	var documentEvent = {};	// @document
-	var checkboxAllResults = {};	// @checkbox
+	var checkboxArchive = {};	// @checkbox
 	var checkboxMonitorStatus = {};	// @checkbox
 	var buttonSensorData = {};	// @button
 	var buttonGetAssayResults = {};	// @button
 	var buttonRunAssay = {};	// @button
 	var buttonInitDevice = {};	// @button
 	var buttonGetStatus = {};	// @button
-	var buttonReadSerialNumber = {};	// @button
+	var buttonReadConfiguration = {};	// @button
 	var buttonWriteSerialNumber = {};	// @button
 // @endregion// @endlock
 
@@ -24,8 +26,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};
 	var spinner = new Spinner(spinnerOpts);
 	
-	var notification = humane.create({ timeout: 2000, baseCls: 'humane-original' });
-	notification.error = humane.spawn({ addnCls: 'humane-original-error', clickToClose: true, timeout: 0 });
+	var notification = humane.create({ timeout: 2000, baseCls: 'humane-libnotify' });
+	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
 	
 	var statusMonitorID = null;
 	
@@ -40,7 +42,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					callback(event);
 				}
 				else {
-					notification.error('Command failed to complete');
+					notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
 				}
 			},
 			'onError': function(error) {
@@ -110,6 +112,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	buttonDumpArchive.click = function buttonDumpArchive_click (event)// @startlock
+	{// @endlock
+		if (window.confirm('Are you sure you want to dump the entire archive to the serial port?')) {
+			callSpark(this, 'dump_archived_data', [sources.sparkCores.id], function(evt) {
+					notification.log('Archived data dumped');
+					$$('textFieldResult').setValue('Archive dumped');
+				}
+			);
+		}
+	};// @lock
+
+	buttonEraseArchive.click = function buttonEraseArchive_click (event)// @startlock
+	{// @endlock
+		if (window.confirm('Are you sure you want to erase all assay archives?')) {
+			callSpark(this, 'erase_archived_data', [sources.sparkCores.id], function(evt) {
+					notification.log('Archived data erased');
+					$$('textFieldResult').setValue('Archive erased');
+				}
+			);
+		}
+	};// @lock
+
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'change_parameter', [sources.sparkCores.id, sources.sparkAttr.name, sources.sparkAttr.value], function(evt) {
@@ -162,15 +186,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				sources.sparkCores.sync();
 			}
 		);
+		assayNumber = 1;
+		sources.assayNumber.sync();
 	};// @lock
 
-	checkboxAllResults.change = function checkboxAllResults_change (event)// @startlock
+	checkboxArchive.change = function checkboxArchive_change (event)// @startlock
 	{// @endlock
 		if (this.getValue()) {
-			$$('textFieldAssayCode').hide();
+			callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
+					archiveSize = evt.response.return_value;
+					sources.archiveSize.sync();
+					$$('textFieldAssayNumber').show();
+					$$('textFieldArchiveSize').show();
+					$$('buttonEraseArchive').show();	
+					$$('buttonDumpArchive').show();	
+				}
+			);
 		}
 		else {
-			$$('textFieldAssayCode').show();			
+			$$('textFieldAssayNumber').hide();
+			$$('textFieldArchiveSize').hide();
+			$$('buttonEraseArchive').hide();	
+			$$('buttonDumpArchive').hide();	
 		}
 	};// @lock
 
@@ -197,16 +234,21 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonGetAssayResults.click = function buttonGetAssayResults_click (event)// @startlock
 	{// @endlock
-		if ($$('checkboxAllResults').getValue()) {
-			callSpark(this, 'request_all_sensor_data', [sources.sparkCores.id], function(evt) {
-					notification.log('Assay results retrieved');
-					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
-				}
-			);
+		if ($$('checkboxArchive').getValue()) {
+			if (assayNumber > 0 && assayNumber <= archiveSize) {
+				callSpark(this, 'request_archive_data', [sources.sparkCores.id, assayNumber - 1], function(evt) {
+						notification.log('Archived assay results retrieved');
+						$$('textFieldAssayResults').setValue(evt.data.join('\n'));
+					}
+				);
+			}
+			else {
+				notification.error('Assay record number out of range');
+			}
 		}
 		else {
-			callSpark(this, 'request_sensor_data', [sources.sparkCores.id, assayCode], function(evt) {
-					notification.log('Assay results retrieved');
+			callSpark(this, 'request_all_sensor_data', [sources.sparkCores.id], function(evt) {
+					notification.log('All assay results retrieved');
 					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
 				}
 			);
@@ -240,11 +282,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonReadSerialNumber.click = function buttonReadSerialNumber_click (event)// @startlock
+	buttonReadConfiguration.click = function buttonReadConfiguration_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'request_serial_number', [sources.sparkCores.id], function(evt) {
-				notification.log('Serial number retrieved');
-				$$('textFieldReadSerialNumber').setValue(evt.value);
+		callSpark(this, 'request_configuration', [sources.sparkCores.id], function(evt) {
+				notification.log('Configuration info retrieved');
+				$$('textFieldConfiguration').setValue(evt.value);
 			}
 		);
 	};// @lock
@@ -264,19 +306,21 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonDumpArchive", "click", buttonDumpArchive.click, "WAF");
+	WAF.addListener("buttonEraseArchive", "click", buttonEraseArchive.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
 	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
-	WAF.addListener("checkboxAllResults", "change", checkboxAllResults.change, "WAF");
+	WAF.addListener("checkboxArchive", "change", checkboxArchive.change, "WAF");
 	WAF.addListener("checkboxMonitorStatus", "change", checkboxMonitorStatus.change, "WAF");
 	WAF.addListener("buttonSensorData", "click", buttonSensorData.click, "WAF");
 	WAF.addListener("buttonGetAssayResults", "click", buttonGetAssayResults.click, "WAF");
 	WAF.addListener("buttonRunAssay", "click", buttonRunAssay.click, "WAF");
 	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");
 	WAF.addListener("buttonGetStatus", "click", buttonGetStatus.click, "WAF");
-	WAF.addListener("buttonReadSerialNumber", "click", buttonReadSerialNumber.click, "WAF");
+	WAF.addListener("buttonReadConfiguration", "click", buttonReadConfiguration.click, "WAF");
 	WAF.addListener("buttonWriteSerialNumber", "click", buttonWriteSerialNumber.click, "WAF");
 // @endregion
 };// @endlock
