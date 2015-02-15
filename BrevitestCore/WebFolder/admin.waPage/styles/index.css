@@ -485,3 +485,26 @@
 	border-bottom-color: rgb(255, 0, 0);
 }
 
+#richTextSplash {
+	z-index: 29;
+	width: 461px;
+	height: 251px;
+	top: 174px;
+	left: 467px;
+	position: absolute;
+	text-align: center;
+	font-size: 36px;
+}
+
+#richTextVersionWarning {
+	width: 461px;
+	height: 185px;
+	top: 464px;
+	left: 467px;
+	position: absolute;
+	text-align: center;
+	font-size: 36px;
+	color: rgb(255, 0, 0);
+	z-index: 30;
+}
+

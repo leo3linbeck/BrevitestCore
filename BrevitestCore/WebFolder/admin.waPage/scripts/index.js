@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var sparkCoresEvent = {};	// @dataSource
 	var buttonDumpArchive = {};	// @button
 	var buttonEraseArchive = {};	// @button
 	var buttonChangeParameter = {};	// @button
@@ -30,7 +31,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
 	
 	var statusMonitorID = null;
-	
+	var firmwareVersion = 7;
 	var sparkCoreList = [];
 
 	function callSpark(that, funcName, params, callback) {
@@ -110,7 +111,44 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.sparkAttr.sync();
 	}
 	
+	function changeSparkCore(dataSource) {
+		if (dataSource.connected) {
+			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
+					if (firmwareVersion === evt.response.return_value) {
+						$$('containerRequest').show();
+						$$('containerCommand').show();
+						$$('containerAssayResults').show();
+						$$('containerAttributes').show();
+						$$('richTextSplash').hide();
+						$$('richTextVersionWarning').hide();
+					}
+					else {
+						$$('containerRequest').hide();
+						$$('containerCommand').hide();
+						$$('containerAssayResults').hide();
+						$$('containerAttributes').hide();
+						$$('richTextSplash').show();
+						$$('richTextVersionWarning').show();
+					}
+				}
+			);
+		}
+		else {
+			$$('containerRequest').hide();
+			$$('containerCommand').hide();
+			$$('containerAssayResults').hide();
+			$$('containerAttributes').hide();
+			$$('richTextSplash').show();
+			$$('richTextVersionWarning').hide();
+		}
+	}
+	
 // eventHandlers// @lock
+
+	sparkCoresEvent.onCurrentElementChange = function sparkCoresEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		changeSparkCore(event.dataSource);
+	};// @lock
 
 	buttonDumpArchive.click = function buttonDumpArchive_click (event)// @startlock
 	{// @endlock
@@ -129,6 +167,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this, 'erase_archived_data', [sources.sparkCores.id], function(evt) {
 					notification.log('Archived data erased');
 					$$('textFieldResult').setValue('Archive erased');
+					assayNumber = 0;
+					sources.assayNumber.sync();
+					archiveSize = 0;
+					sources.archiveSize.sync();
 				}
 			);
 		}
@@ -186,8 +228,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				sources.sparkCores.sync();
 			}
 		);
-		assayNumber = 1;
-		sources.assayNumber.sync();
+
 	};// @lock
 
 	checkboxArchive.change = function checkboxArchive_change (event)// @startlock
@@ -199,7 +240,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					$$('textFieldAssayNumber').show();
 					$$('textFieldArchiveSize').show();
 					$$('buttonEraseArchive').show();	
-					$$('buttonDumpArchive').show();	
+					$$('buttonDumpArchive').show();
+					if (archiveSize > 0) {
+						assayNumber = 1;
+						sources.assayNumber.sync();
+					}
 				}
 			);
 		}
@@ -306,6 +351,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("sparkCores", "onCurrentElementChange", sparkCoresEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonDumpArchive", "click", buttonDumpArchive.click, "WAF");
 	WAF.addListener("buttonEraseArchive", "click", buttonEraseArchive.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
