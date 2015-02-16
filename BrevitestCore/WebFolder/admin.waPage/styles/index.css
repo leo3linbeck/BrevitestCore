@@ -3,12 +3,22 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label1 {
+	z-index: 11;
+	width: 146px;
+	height: 18px;
+	top: 243px;
+	left: 270px;
+	position: absolute;
+	font-size: 16px;
+}
+
 #label10 {
-	z-index: 10;
+	z-index: 9;
 	width: 10px;
 	height: 14px;
 	top: 129px;
-	left: 166px;
+	left: 151px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -26,17 +36,6 @@
 	text-align: center;
 }
 
-#label2 {
-	z-index: 6;
-	width: 82px;
-	height: 18px;
-	top: 8px;
-	left: 110px;
-	position: absolute;
-	text-align: center;
-	font-size: 16px;
-}
-
 #dataGridSparkCores .waf-dataGrid-row {
 	font-size: 16px;
 	font-weight: normal;
@@ -47,22 +46,12 @@
 	text-align: center;
 }
 
-#label11 {
-	z-index: 9;
-	width: 146px;
-	height: 18px;
-	top: 130px;
-	left: 618px;
-	position: absolute;
-	font-size: 16px;
-}
-
 #label9 {
 	z-index: 4;
 	width: 109px;
 	height: 18px;
 	top: 84px;
-	left: 95px;
+	left: 75px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -72,40 +61,29 @@
 	width: 62px;
 	height: 14px;
 	top: 129px;
-	left: 23px;
+	left: 18px;
 	position: absolute;
 	text-align: center;
 	font-weight: normal;
 	font-size: 12px;
 }
 
-#label4 {
-	z-index: 10;
-	width: 99px;
-	height: 18px;
-	top: 8px;
-	left: 517px;
-	position: absolute;
-	text-align: center;
-	font-size: 16px;
-}
-
 #buttonGetStatus {
 	z-index: 8;
-	width: 212px;
+	width: 210px;
 	height: 44px;
-	top: 78px;
-	left: 569px;
+	top: 228px;
+	left: 18px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #textFieldDeviceStatus {
 	z-index: 10;
-	width: 424px;
-	height: 40px;
-	top: 31px;
-	left: 355px;
+	height: 190px;
+	top: 34px;
+	left: 260px;
+	right: 10px;
 	position: absolute;
 	font-size: 16px;
 	border-top-style: dotted;
@@ -119,7 +97,7 @@
 	width: 212px;
 	height: 44px;
 	top: 12px;
-	left: 37px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -128,8 +106,8 @@
 	z-index: 2;
 	width: 212px;
 	height: 44px;
-	top: 72px;
-	left: 37px;
+	top: 66px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -139,7 +117,7 @@
 	width: 212px;
 	height: 44px;
 	top: 32px;
-	left: 37px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -148,27 +126,27 @@
 	z-index: 4;
 	width: 212px;
 	height: 44px;
-	top: 132px;
-	left: 37px;
+	top: 120px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #checkboxMonitorStatus {
 	z-index: 9;
-	width: 16px;
+	width: 14px;
 	height: 16px;
-	top: 131px;
-	left: 597px;
+	top: 244px;
+	left: 251px;
 	position: absolute;
 }
 
 #richTextTitle {
 	z-index: 13;
-	width: 1327px;
 	height: 42px;
-	top: 12px;
-	left: 36px;
+	top: 10px;
+	left: 10px;
+	right: 10px;
 	position: absolute;
 	font-size: 36px;
 	text-align: center;
@@ -179,39 +157,28 @@
 
 #containerCommand {
 	z-index: 15;
-	width: 800px;
-	height: 196px;
+	height: 286px;
 	top: 65px;
 	left: 277px;
+	right: 320px;
 	position: absolute;
 }
 
 #containerAssayResults {
 	z-index: 16;
-	width: 800px;
-	height: 481px;
-	top: 260px;
+	top: 350px;
+	bottom: 10px;
 	left: 277px;
+	right: 320px;
 	position: absolute;
-}
-
-#label8 {
-	z-index: 2;
-	width: 102px;
-	height: 18px;
-	top: 8px;
-	left: 484px;
-	position: absolute;
-	text-align: center;
-	font-size: 16px;
 }
 
 #textFieldAssayResults {
 	z-index: 2;
-	width: 503px;
-	height: 439px;
 	top: 31px;
-	left: 284px;
+	bottom: 9px;
+	left: 260px;
+	right: 10px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -223,10 +190,10 @@
 
 #buttonResetParams {
 	z-index: 1;
-	width: 270px;
 	height: 44px;
-	top: 610px;
+	bottom: 20px;
 	left: 16px;
+	right: 16px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -234,8 +201,8 @@
 #dataGridSparkCores {
 	z-index: 20;
 	width: 270px;
-	height: 619px;
 	top: 66px;
+	bottom: 65px;
 	left: 6px;
 	position: absolute;
 	border-top-width: 4px;
@@ -254,10 +221,10 @@
 
 #dataGridAttributes {
 	z-index: 6;
-	width: 298px;
-	height: 397px;
 	top: 31px;
+	bottom: 246px;
 	left: 2px;
+	right: 2px;
 	position: absolute;
 }
 
@@ -265,7 +232,7 @@
 	z-index: 22;
 	width: 212px;
 	height: 44px;
-	top: 694px;
+	bottom: 10px;
 	left: 36px;
 	position: absolute;
 	font-size: 16px;
@@ -273,10 +240,10 @@
 
 #buttonLoadParams {
 	z-index: 2;
-	width: 270px;
 	height: 44px;
-	top: 442px;
+	bottom: 188px;
 	left: 16px;
+	right: 16px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -285,8 +252,8 @@
 	z-index: 3;
 	width: 82px;
 	height: 32px;
-	top: 504px;
-	left: 211px;
+	bottom: 138px;
+	right: 9px;
 	position: absolute;
 	border-top-width: 3px;
 	border-left-width: 3px;
@@ -301,10 +268,10 @@
 
 #textFieldSparkAttrName {
 	z-index: 4;
-	width: 205px;
 	height: 32px;
-	top: 504px;
+	bottom: 138px;
 	left: 5px;
+	right: 92px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -316,20 +283,20 @@
 
 #buttonChangeParameter {
 	z-index: 5;
-	width: 270px;
 	height: 44px;
-	top: 541px;
+	bottom: 89px;
 	left: 16px;
+	right: 16px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #containerAttributes {
 	z-index: 27;
-	width: 304px;
-	height: 676px;
+	width: 310px;
 	top: 65px;
-	left: 1078px;
+	bottom: 10px;
+	right: 10px;
 	position: absolute;
 }
 
@@ -338,7 +305,7 @@
 	width: 16px;
 	height: 16px;
 	top: 85px;
-	left: 74px;
+	left: 54px;
 	position: absolute;
 }
 
@@ -346,8 +313,8 @@
 	z-index: 8;
 	width: 110px;
 	height: 44px;
-	top: 420px;
-	left: 157px;
+	bottom: 15px;
+	left: 137px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -356,18 +323,18 @@
 	z-index: 5;
 	width: 110px;
 	height: 44px;
-	top: 420px;
-	left: 27px;
+	bottom: 15px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #textFieldArchiveSize {
-	z-index: 10;
-	width: 87px;
+	z-index: 9;
+	width: 60px;
 	height: 40px;
 	top: 116px;
-	left: 181px;
+	left: 166px;
 	position: absolute;
 	font-size: 16px;
 	border-top-style: dotted;
@@ -379,10 +346,10 @@
 
 #textFieldAssayNumber {
 	z-index: 3;
-	width: 71px;
+	width: 60px;
 	height: 40px;
 	top: 116px;
-	left: 90px;
+	left: 85px;
 	position: absolute;
 	font-size: 16px;
 	border-top-width: 3px;
@@ -396,22 +363,22 @@
 }
 
 #richTextSplash {
-	z-index: 29;
-	width: 461px;
-	height: 251px;
-	top: 174px;
-	left: 467px;
+	z-index: 28;
+	height: 418px;
+	top: 100px;
+	left: 300px;
+	right: 340px;
 	position: absolute;
 	text-align: center;
 	font-size: 36px;
 }
 
 #richTextVersionWarning {
-	z-index: 30;
-	width: 461px;
-	height: 185px;
-	top: 464px;
-	left: 467px;
+	z-index: 29;
+	height: 300px;
+	bottom: 80px;
+	left: 300px;
+	right: 340px;
 	position: absolute;
 	text-align: center;
 	font-size: 36px;
@@ -419,12 +386,45 @@
 }
 
 #buttonCancelProcess {
+	z-index: 7;
 	width: 212px;
 	height: 44px;
-	top: 132px;
-	left: 297px;
+	top: 174px;
+	left: 17px;
 	position: absolute;
 	font-size: 16px;
+}
+
+#richTextParameterTitle {
 	z-index: 7;
+	height: 21px;
+	top: 8px;
+	left: 2px;
+	right: 2px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+}
+
+#richTextAssayResults {
+	height: 21px;
+	top: 8px;
+	left: 260px;
+	right: 10px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+	z-index: 10;
+}
+
+#richTextDeviceStatus {
+	height: 21px;
+	top: 10px;
+	left: 260px;
+	right: 10px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+	z-index: 12;
 }
 
