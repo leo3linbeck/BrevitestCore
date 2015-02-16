@@ -19,10 +19,9 @@ body {
   text-align: center;
   font-size: 20px;
   top: 10px;
-  left: 20%;
-  right: 20%;
+  left: 15%;
+  right: 15%;
   opacity: 0;
-  width: 800px;
   color: #fff;
   padding: 10px;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAABQCAYAAADYxx/bAAAABmJLR0QA/wD/AP+gvaeTAAAANElEQVQYlWNgYGB4ysTAwMDAxMjICCUQXDQWAwMDAxMTExMedcRyB6d5CAMQ5hGrjSrmAQBQdgIXlosSTwAAAABJRU5ErkJggg==');

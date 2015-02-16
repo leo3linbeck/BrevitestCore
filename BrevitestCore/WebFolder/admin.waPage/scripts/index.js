@@ -227,7 +227,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
 					archiveSize = evt.response.return_value;
 					sources.archiveSize.sync();
-					$$('buttonGetAssayResults').setValue('Get Archived Assay');
+					$$('buttonGetAssayResults').setValue('Get Archive Data');
 					$$('textFieldAssayNumber').show();
 					$$('textFieldArchiveSize').show();
 					if (archiveSize > 0) {
@@ -238,7 +238,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			);
 		}
 		else {
-			$$('buttonGetAssayResults').setValue('Get Current Assay');
+			$$('buttonGetAssayResults').setValue('Get Current Data');
 			$$('textFieldAssayNumber').hide();
 			$$('textFieldArchiveSize').hide();
 		}
