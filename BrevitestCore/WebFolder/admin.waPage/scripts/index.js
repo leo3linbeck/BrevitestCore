@@ -4,8 +4,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 // @region namespaceDeclaration// @startlock
 	var buttonCancelProcess = {};	// @button
 	var sparkCoresEvent = {};	// @dataSource
-	var buttonDumpArchive = {};	// @button
-	var buttonEraseArchive = {};	// @button
 	var buttonChangeParameter = {};	// @button
 	var buttonLoadParams = {};	// @button
 	var buttonRefreshCores = {};	// @button
@@ -167,30 +165,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		changeSparkCore(event.dataSource);
 	};// @lock
 
-	buttonDumpArchive.click = function buttonDumpArchive_click (event)// @startlock
-	{// @endlock
-		if (window.confirm('Are you sure you want to dump the entire archive to the serial port?')) {
-			callSpark(this, 'dump_archived_data', [sources.sparkCores.id], function(evt) {
-					notification.log('Archived data dumped');
-				}
-			);
-		}
-	};// @lock
-
-	buttonEraseArchive.click = function buttonEraseArchive_click (event)// @startlock
-	{// @endlock
-		if (window.confirm('Are you sure you want to erase all assay archives?')) {
-			callSpark(this, 'erase_archived_data', [sources.sparkCores.id], function(evt) {
-					notification.log('Archived data erased');
-					assayNumber = 0;
-					sources.assayNumber.sync();
-					archiveSize = 0;
-					sources.archiveSize.sync();
-				}
-			);
-		}
-	};// @lock
-
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'change_parameter', [sources.sparkCores.id, sources.sparkAttr.name, sources.sparkAttr.value], function(evt) {
@@ -253,11 +227,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
 					archiveSize = evt.response.return_value;
 					sources.archiveSize.sync();
-					$$('buttonGetAssayResults').setValue('Get Archived Assay >>');
+					$$('buttonGetAssayResults').setValue('Get Archived Assay');
 					$$('textFieldAssayNumber').show();
 					$$('textFieldArchiveSize').show();
-					$$('buttonEraseArchive').show();	
-					$$('buttonDumpArchive').show();
 					if (archiveSize > 0) {
 						assayNumber = 1;
 						sources.assayNumber.sync();
@@ -266,11 +238,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			);
 		}
 		else {
-			$$('buttonGetAssayResults').setValue('Get Current Assay >>');
+			$$('buttonGetAssayResults').setValue('Get Current Assay');
 			$$('textFieldAssayNumber').hide();
 			$$('textFieldArchiveSize').hide();
-			$$('buttonEraseArchive').hide();	
-			$$('buttonDumpArchive').hide();	
 		}
 	};// @lock
 
@@ -345,8 +315,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 // @region eventManager// @startlock
 	WAF.addListener("buttonCancelProcess", "click", buttonCancelProcess.click, "WAF");
 	WAF.addListener("sparkCores", "onCurrentElementChange", sparkCoresEvent.onCurrentElementChange, "WAF");
-	WAF.addListener("buttonDumpArchive", "click", buttonDumpArchive.click, "WAF");
-	WAF.addListener("buttonEraseArchive", "click", buttonEraseArchive.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
