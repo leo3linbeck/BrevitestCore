@@ -231,7 +231,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					$$('textFieldAssayNumber').show();
 					$$('textFieldArchiveSize').show();
 					if (archiveSize > 0) {
-						assayNumber = 1;
+						assayNumber = archiveSize;
 						sources.assayNumber.sync();
 					}
 				}

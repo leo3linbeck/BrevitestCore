@@ -18,7 +18,7 @@
 	width: 10px;
 	height: 14px;
 	top: 26px;
-	left: 347px;
+	left: 327px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -51,7 +51,7 @@
 	width: 54px;
 	height: 18px;
 	top: 26px;
-	left: 226px;
+	left: 206px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -103,7 +103,7 @@
 
 #buttonGetAssayResults {
 	z-index: 1;
-	width: 180px;
+	width: 160px;
 	height: 44px;
 	top: 12px;
 	left: 17px;
@@ -294,7 +294,7 @@
 	width: 16px;
 	height: 16px;
 	top: 27px;
-	left: 205px;
+	left: 185px;
 	position: absolute;
 }
 
@@ -303,7 +303,7 @@
 	width: 60px;
 	height: 37px;
 	top: 15px;
-	left: 362px;
+	left: 342px;
 	position: absolute;
 	font-size: 16px;
 	border-top-style: dotted;
@@ -318,7 +318,7 @@
 	width: 50px;
 	height: 36px;
 	top: 16px;
-	left: 292px;
+	left: 272px;
 	position: absolute;
 	font-size: 16px;
 	border-top-width: 3px;
