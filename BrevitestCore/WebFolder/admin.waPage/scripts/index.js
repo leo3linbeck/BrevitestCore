@@ -289,8 +289,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'run_assay', [sources.sparkCores.id], function(evt) {
-				notification.log('Assay started');
+		callSpark(this, 'ready_to_run_assay', [sources.sparkCores.id], function(evt) {
+				if (evt.response.return_value !== -1) {
+					callSpark(this, 'run_assay', [sources.sparkCores.id], function(e) {
+							notification.log('Assay started');
+						}
+					);
+				}
+				else {
+					notification.error('Device not ready - please initialize and insert cartridge');
+				}
 			}
 		);
 	};// @lock
