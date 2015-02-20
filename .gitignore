@@ -26,5 +26,5 @@ sessionID.json
 *.waBackup
 # Wakanda Remote Model Cache
 *.waRemoteModel
-# Wakanda Settings
-*.waSettings
+# Wakanda Project
+*.waProject
