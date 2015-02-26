@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonInitializeDevice = {};	// @button
 	var textField19 = {};	// @textField
 	var row4 = {};	// @container
 	var button1 = {};	// @button
@@ -265,8 +266,40 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 
+	function initializeDevice() {
+		notify('Initializing device, please stand by...');
+		startSpinner();
+		sources.device.start(
+			{
+				onSuccess: function(event) {
+					if (event.result && event.result.success) {
+						notify('Initialization started. Wait for device to reset before proceeding.');
+					}
+					else {
+						notifyError('Initialization failed to start');
+						console.log('ERROR: startTest', event);
+					}
+					stopSpinner();
+				},
+				onError: function(error) {
+					notifyError('Initialization failed to start: ' + JSON.stringify(error));
+					stopSpinner();
+				}
+			},
+			{
+				deviceID: sources.device.ID,
+				username: WAF.directory.currentUser().userName
+			}
+		);
+	}
+
 	
 // eventHandlers// @lock
+
+	buttonInitializeDevice.click = function buttonInitializeDevice_click (event)// @startlock
+	{// @endlock
+		initializeDevice();
+	};// @lock
 
 	textField19.keyup = function textField19_keyup (event)// @startlock
 	{// @endlock
@@ -514,6 +547,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonInitializeDevice", "click", buttonInitializeDevice.click, "WAF");
 	WAF.addListener("textField19", "keyup", textField19.keyup, "WAF");
 	WAF.addListener("row4", "click", row4.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");

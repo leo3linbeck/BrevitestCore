@@ -2,9 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonCancelProcess = {};	// @button
 	var sparkCoresEvent = {};	// @dataSource
-	var buttonDumpArchive = {};	// @button
-	var buttonEraseArchive = {};	// @button
 	var buttonChangeParameter = {};	// @button
 	var buttonLoadParams = {};	// @button
 	var buttonRefreshCores = {};	// @button
@@ -17,8 +16,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonRunAssay = {};	// @button
 	var buttonInitDevice = {};	// @button
 	var buttonGetStatus = {};	// @button
-	var buttonReadConfiguration = {};	// @button
-	var buttonWriteSerialNumber = {};	// @button
 // @endregion// @endlock
 
 	var allCaps = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -31,16 +28,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
 	
 	var statusMonitorID = null;
-	var firmwareVersion = 7;
+	var firmwareVersion = 8;
 	var sparkCoreList = [];
 
-	function callSpark(that, funcName, params, callback) {
+	function callSpark(that, funcName, params, callback, errorCallback) {
 		spinner.spin(that.domNode);
 		spark[funcName + 'Async']({
 			'onSuccess': function(event) {
 				spinner.stop();
 				if (event.success) {
-					callback(event);
+					if (callback) {
+						callback(event);
+					}
 				}
 				else {
 					notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
@@ -48,7 +47,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			},
 			'onError': function(error) {
 				spinner.stop();
-				notification.error('System error in ' + funcName);
+				if (errorCallback) {
+					errorCallback(error);
+				}
+				else {
+					notification.error('System error in ' + funcName);
+				}
 			},
 			'params': params
 		});
@@ -62,6 +66,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		callSpark(that, 'get_status', [sources.sparkCores.id], function(event) {
 				deviceStatus = event.value;
 				sources.deviceStatus.sync();
+			},
+			function(error) {
+				return; // ignore error when continuously monitoriing
 			}
 		);
 		
@@ -69,6 +76,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this_one, 'get_status', [sources.sparkCores.id], function(event) {
 					deviceStatus = event.value;
 					sources.deviceStatus.sync();
+				},
+				function(error) {
+					return; // ignore error when continuously monitoriing
 				}
 			);
 		}, 5000, that);
@@ -115,7 +125,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		if (dataSource.connected) {
 			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
 					if (firmwareVersion === evt.response.return_value) {
-						$$('containerRequest').show();
 						$$('containerCommand').show();
 						$$('containerAssayResults').show();
 						$$('containerAttributes').show();
@@ -123,7 +132,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						$$('richTextVersionWarning').hide();
 					}
 					else {
-						$$('containerRequest').hide();
 						$$('containerCommand').hide();
 						$$('containerAssayResults').hide();
 						$$('containerAttributes').hide();
@@ -134,7 +142,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			);
 		}
 		else {
-			$$('containerRequest').hide();
 			$$('containerCommand').hide();
 			$$('containerAssayResults').hide();
 			$$('containerAttributes').hide();
@@ -145,35 +152,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	buttonCancelProcess.click = function buttonCancelProcess_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'cancel_process', [sources.sparkCores.id], function(evt) {
+				notification.log('Process cancelled');
+			}
+		);
+	};// @lock
+
 	sparkCoresEvent.onCurrentElementChange = function sparkCoresEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		changeSparkCore(event.dataSource);
-	};// @lock
-
-	buttonDumpArchive.click = function buttonDumpArchive_click (event)// @startlock
-	{// @endlock
-		if (window.confirm('Are you sure you want to dump the entire archive to the serial port?')) {
-			callSpark(this, 'dump_archived_data', [sources.sparkCores.id], function(evt) {
-					notification.log('Archived data dumped');
-					$$('textFieldResult').setValue('Archive dumped');
-				}
-			);
-		}
-	};// @lock
-
-	buttonEraseArchive.click = function buttonEraseArchive_click (event)// @startlock
-	{// @endlock
-		if (window.confirm('Are you sure you want to erase all assay archives?')) {
-			callSpark(this, 'erase_archived_data', [sources.sparkCores.id], function(evt) {
-					notification.log('Archived data erased');
-					$$('textFieldResult').setValue('Archive erased');
-					assayNumber = 0;
-					sources.assayNumber.sync();
-					archiveSize = 0;
-					sources.archiveSize.sync();
-				}
-			);
-		}
 	};// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
@@ -194,6 +183,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonLoadParams.click = function buttonLoadParams_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'request_all_parameters', [sources.sparkCores.id], function(evt) {
+				notification.log('Parameters loaded');
 				sparkAttr = evt.data;
 				sources.sparkAttr.sync();
 			}
@@ -214,7 +204,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'reset_parameters', [sources.sparkCores.id], function(evt) {
-				notification.log('Parameter values reset');
+				notification.log('Parameters reset to default values');
 				sparkAttr = evt.data;
 				sources.sparkAttr.sync();
 			}
@@ -237,24 +227,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
 					archiveSize = evt.response.return_value;
 					sources.archiveSize.sync();
-					$$('buttonGetAssayResults').setValue('Get Archived Assay >>');
+					$$('buttonGetAssayResults').setValue('Get Archive Data');
 					$$('textFieldAssayNumber').show();
 					$$('textFieldArchiveSize').show();
-					$$('buttonEraseArchive').show();	
-					$$('buttonDumpArchive').show();
 					if (archiveSize > 0) {
-						assayNumber = 1;
+						assayNumber = archiveSize;
 						sources.assayNumber.sync();
 					}
 				}
 			);
 		}
 		else {
-			$$('buttonGetAssayResults').setValue('Get Current Assay >>');
+			$$('buttonGetAssayResults').setValue('Get Current Data');
 			$$('textFieldAssayNumber').hide();
 			$$('textFieldArchiveSize').hide();
-			$$('buttonEraseArchive').hide();	
-			$$('buttonDumpArchive').hide();	
 		}
 	};// @lock
 
@@ -273,8 +259,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonSensorData.click = function buttonSensorData_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'collect_sensor_data', [sources.sparkCores.id], function(evt) {
-				notification.log('Sensor data collected');
-				$$('textFieldResult').setValue('Collection complete');
+				notification.log('Sensor data collection started');
 			}
 		);
 	};// @lock
@@ -295,7 +280,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 		else {
 			callSpark(this, 'request_all_sensor_data', [sources.sparkCores.id], function(evt) {
-					notification.log('All assay results retrieved');
+					notification.log('Latest assay results retrieved');
 					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
 				}
 			);
@@ -304,9 +289,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'run_assay', [sources.sparkCores.id], function(evt) {
-				notification.log('Assay successfully started');
-				$$('textFieldResult').setValue('Assay started');
+		callSpark(this, 'ready_to_run_assay', [sources.sparkCores.id], function(evt) {
+				if (evt.response.return_value !== -1) {
+					callSpark(this, 'run_assay', [sources.sparkCores.id], function(e) {
+							notification.log('Assay started');
+						}
+					);
+				}
+				else {
+					notification.error('Device not ready - please initialize and insert cartridge');
+				}
 			}
 		);
 	};// @lock
@@ -314,8 +306,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'initialize_device', [sources.sparkCores.id], function(evt) {
-				notification.log('Device initialization successful');
-				$$('textFieldResult').setValue('Device initialized');
+				notification.log('Device initialization started');
 			}
 		);
 	};// @lock
@@ -329,33 +320,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonReadConfiguration.click = function buttonReadConfiguration_click (event)// @startlock
-	{// @endlock
-		callSpark(this, 'request_configuration', [sources.sparkCores.id], function(evt) {
-				notification.log('Configuration info retrieved');
-				$$('textFieldConfiguration').setValue(evt.value);
-			}
-		);
-	};// @lock
-
-	buttonWriteSerialNumber.click = function buttonWriteSerialNumber_click (event)// @startlock
-	{// @endlock
-		var v = validateSerialNumber();
-		if (v.valid) {
-			callSpark(this, 'write_serial_number', [sources.sparkCores.id, serialNumber], function(evt) {
-					notification.log('Serial number written');
-				}
-			);
-		}
-		else {
-			notification.error(v.errorMsg);
-		}
-	};// @lock
-
 // @region eventManager// @startlock
+	WAF.addListener("buttonCancelProcess", "click", buttonCancelProcess.click, "WAF");
 	WAF.addListener("sparkCores", "onCurrentElementChange", sparkCoresEvent.onCurrentElementChange, "WAF");
-	WAF.addListener("buttonDumpArchive", "click", buttonDumpArchive.click, "WAF");
-	WAF.addListener("buttonEraseArchive", "click", buttonEraseArchive.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
@@ -368,7 +335,5 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonRunAssay", "click", buttonRunAssay.click, "WAF");
 	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");
 	WAF.addListener("buttonGetStatus", "click", buttonGetStatus.click, "WAF");
-	WAF.addListener("buttonReadConfiguration", "click", buttonReadConfiguration.click, "WAF");
-	WAF.addListener("buttonWriteSerialNumber", "click", buttonWriteSerialNumber.click, "WAF");
 // @endregion
 };// @endlock

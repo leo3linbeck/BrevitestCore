@@ -1,1 +1,98 @@
-﻿{"name":"BrevitestCore/index.waPage/index-smartphone.html","version":"1.0.0","loadDependencies":[{"id":"Mobile_Core","version":"1.0.0","type":"core"},{"id":"Widget/navigationView","type":"widget"},{"id":"Widget/container","type":"widget"},{"id":"Widget/richText","type":"widget"},{"id":"Widget/button","type":"widget"},{"id":"Widget/login","type":"widget"},{"id":"Widget/textField","type":"widget"},{"id":"Widget/label","type":"widget"},{"id":"Widget/list","type":"widget"},{"id":"Widget/matrix","type":"widget"},{"id":"Widget/icon","type":"widget"},{"id":"Widget/image","type":"widget"},{"id":"Widget/dataGrid","type":"widget"},{"id":"Widget/buttonImage","type":"widget"},{"id":"btios7/package.json","path":"THEMES_CUSTOM","type":"theme"},{"id":"index.waPage/styles/index-smartphone.css","path":"WEBFOLDER","type":"style"},{"id":"application.css","path":"WEBFOLDER","type":"style"},{"id":"index.waPage/styles/original.css","path":"WEBFOLDER","type":"style"},{"id":"index.waPage/scripts/index-smartphone.js","path":"WEBFOLDER","type":"script"},{"id":"index.waPage/scripts/humane.min.js","path":"WEBFOLDER","type":"script"},{"id":"Javascript/spin.js","path":"WEBFOLDER","type":"script"}]}
+{
+	"name": "BrevitestCore/index.waPage/index-smartphone.html",
+	"version": "1.0.0",
+	"loadDependencies": [
+		{
+			"id": "Mobile_Core",
+			"version": "1.0.0",
+			"type": "core"
+		},
+		{
+			"id": "Widget/navigationView",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/container",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/richText",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/button",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/login",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/textField",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/label",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/list",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/matrix",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/icon",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/image",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/dataGrid",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/buttonImage",
+			"type": "widget"
+		},
+		{
+			"id": "btios7/package.json",
+			"path": "THEMES_CUSTOM",
+			"type": "theme"
+		},
+		{
+			"id": "index.waPage/styles/index-smartphone.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "application.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "index.waPage/styles/original.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "index.waPage/scripts/index-smartphone.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "index.waPage/scripts/humane.min.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "Javascript/spin.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		}
+	]
+}
