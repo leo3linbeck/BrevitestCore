@@ -3,28 +3,81 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#htmlTag2 {
+	position: absolute;
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+}
+
+#container1 {
+	z-index: 5;
+	width: 300px;
+	height: 187px;
+	bottom: 24px;
+	left: 24px;
+	position: absolute;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#comboboxNewCommand input {
+	font-size: 16px;
+}
+
+#label2 {
+	z-index: 5;
+	height: 18px;
+	top: 15px;
+	left: 70px;
+	right: 66px;
+	position: absolute;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#label5 {
+	z-index: 1;
+	width: 74px;
+	height: 16px;
+	top: 80px;
+	left: 108px;
+	position: absolute;
+	text-align: center;
+	font-size: 14px;
+}
+
+#dataGridBrevicode .waf-dataGrid-header {
+	text-align: center;
+}
+
 #dataGridAssay .waf-dataGrid-footer {
 	font-size: 16px;
 	line-height: 32px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
 }
 
-#button1 {
-	z-index: 5;
-	width: 92px;
-	height: 22px;
-	top: 0px;
-	left: 0px;
-}
-
 #label4 {
+	z-index: 3;
 	height: 18px;
 	top: 121px;
 	left: 94px;
-	right: 652px;
+	right: 669px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 3;
 }
 
 #label3 {
@@ -32,25 +85,9 @@
 	height: 18px;
 	top: 33px;
 	left: 134px;
-	right: 650px;
+	right: 667px;
 	position: absolute;
 	font-size: 16px;
-}
-
-#textField1 {
-	z-index: 4;
-	width: 130px;
-	height: 22px;
-	top: 0px;
-	left: 0px;
-}
-
-#label2 {
-	z-index: 3;
-	width: 26px;
-	height: 12px;
-	top: 5px;
-	left: -31px;
 }
 
 #dataGridAssay .waf-dataGrid-header {
@@ -441,10 +478,10 @@
 
 #tabViewControl {
 	z-index: 1;
-	top: 50px;
-	bottom: 4px;
+	top: 67px;
+	bottom: 63px;
 	left: 4px;
-	right: 4px;
+	right: 1px;
 	position: absolute;
 }
 
@@ -461,15 +498,15 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 1066px;
+	bottom: 990px;
 	left: 0px;
-	right: 1001px;
+	right: 5px;
 	position: absolute;
 }
 
 #containerAssay {
 	z-index: 4;
-	top: 23px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -478,7 +515,7 @@
 
 #containerTest {
 	z-index: 5;
-	top: 23px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -487,7 +524,7 @@
 
 #containerDevice {
 	z-index: 6;
-	top: 23px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -545,13 +582,14 @@
 	z-index: 1;
 	width: 300px;
 	top: 24px;
-	bottom: 24px;
+	bottom: 214px;
 	left: 24px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #textFieldAssayName {
+	z-index: 1;
 	height: 32px;
 	top: 26px;
 	left: 182px;
@@ -566,15 +604,14 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 1;
 }
 
 #containerAssayInfo {
 	z-index: 3;
-	height: 274px;
 	top: 24px;
+	bottom: 24px;
 	left: 344px;
-	right: 34px;
+	right: 24px;
 	position: absolute;
 	border-top-right-radius: 10px;
 	-moz-border-radius-topright: 10px;
@@ -587,6 +624,7 @@
 }
 
 #textFieldAssayDescription {
+	z-index: 3;
 	height: 119px;
 	top: 71px;
 	left: 180px;
@@ -601,46 +639,250 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 3;
 }
 
 #buttonCreateAssay {
-	width: 160px;
+	z-index: 6;
+	width: 208px;
 	height: 44px;
-	top: 207px;
-	right: 563px;
+	top: 20px;
+	right: 45px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 6;
 }
 
 #buttonCancelAssay {
+	z-index: 6;
 	width: 160px;
 	height: 44px;
 	top: 207px;
 	right: 24px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 7;
 }
 
 #buttonDeleteAssay {
+	z-index: 8;
+	width: 206px;
+	height: 44px;
+	top: 101px;
+	left: 47px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#buttonSaveAssay {
+	z-index: 6;
 	width: 160px;
 	height: 44px;
 	top: 207px;
 	right: 204px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 9;
 }
 
-#buttonSaveAssay {
-	width: 160px;
-	height: 44px;
-	top: 207px;
-	right: 384px;
+#dataGridBrevicode {
+	z-index: 8;
+	top: 310px;
+	bottom: 24px;
+	left: 305px;
+	right: 201px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#textFieldNewCommand {
+	z-index: 1;
+	width: 272px;
+	height: 30px;
+	top: 101px;
+	left: 9px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+}
+
+#buttonInsertTop {
+	z-index: 2;
+	width: 128px;
+	height: 38px;
+	top: 240px;
+	left: 12px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonAppendEnd {
+	z-index: 3;
+	width: 128px;
+	height: 38px;
+	top: 285px;
+	left: 12px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonInsertAbove {
+	z-index: 4;
+	width: 128px;
+	height: 38px;
+	top: 240px;
+	left: 152px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonInsertBelow {
+	z-index: 4;
+	width: 128px;
+	height: 38px;
+	top: 285px;
+	left: 152px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#containerNewCommand {
+	z-index: 13;
+	width: 290px;
+	height: 335px;
+	top: 310px;
+	left: 8px;
+	position: absolute;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#comboboxNewCommand {
+	z-index: 6;
+	height: 35px;
+	top: 38px;
+	left: 12px;
+	right: 8px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 8;
+}
+
+#buttonMoveToTop {
+	z-index: 4;
+	width: 128px;
+	height: 38px;
+	top: 21px;
+	left: 30px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonMoveToBottom {
+	z-index: 5;
+	width: 128px;
+	height: 38px;
+	top: 172px;
+	left: 29px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonMoveUp {
+	z-index: 6;
+	width: 128px;
+	height: 38px;
+	top: 71px;
+	left: 29px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonMoveDown {
+	z-index: 7;
+	width: 128px;
+	height: 38px;
+	top: 121px;
+	left: 29px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonDeleteCommand {
+	z-index: 9;
+	width: 128px;
+	height: 38px;
+	top: 362px;
+	left: 29px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#containerMoveCommand {
+	z-index: 14;
+	width: 191px;
+	height: 418px;
+	top: 310px;
+	right: 3px;
+	position: absolute;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#textFieldCommandDescription {
+	z-index: 7;
+	height: 94px;
+	bottom: 104px;
+	left: 9px;
+	right: 8px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	text-align: left;
+	font-size: 12px;
+}
+
+#buttonCopyGCODE {
+	z-index: 10;
+	width: 129px;
+	height: 38px;
+	top: 242px;
+	left: 29px;
+	position: absolute;
+	font-size: 14px;
+}
+
+#buttonPasteGCODE {
+	z-index: 11;
+	width: 127px;
+	height: 38px;
+	top: 292px;
+	left: 31px;
+	position: absolute;
+	font-size: 14px;
 }
 
