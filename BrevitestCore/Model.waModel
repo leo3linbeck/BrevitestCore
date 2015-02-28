@@ -250,8 +250,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 48,
-			"workspaceTop": 984,
+			"workspaceLeft": 370,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -266,6 +266,9 @@
 				"Device": {
 					"method": "Device/Device-methods.js",
 					"computed": "Device/Device-events.js"
+				},
+				"Assay": {
+					"events": "Assay/Assay-events.js"
 				}
 			}
 		}
@@ -613,6 +616,13 @@
 					"type": "OrderItems",
 					"reversePath": true,
 					"path": "assay"
+				}
+			],
+			"events": [
+				{
+					"kind": "validate",
+					"from": "$mainModel.Assay.events.validate",
+					"userDefined": true
 				}
 			]
 		},
@@ -1184,7 +1194,7 @@
 				{
 					"name": "initialize",
 					"applyTo": "dataClass",
-					"scope": "publicOnServer",
+					"scope": "public",
 					"from": "$mainModel.Device.methods.initialize",
 					"userDefined": true
 				}

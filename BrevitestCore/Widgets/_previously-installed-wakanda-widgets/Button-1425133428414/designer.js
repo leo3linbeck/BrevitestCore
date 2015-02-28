@@ -27,8 +27,9 @@
         this.url.onChange(showUrl);
         this.subscribe('datasourceBindingChange', 'url', showUrl, this);
 
-        showAction.call(this);
-        this.subscribe('datasourceBindingChange', 'actionSource', showAction, this);
+        // need #9948 to activate this functionnality
+        //showAction.call(this);
+        //this.subscribe('datasourceBindingChange', 'actionSource', showAction, this);
 
         // disable click
         $(this.node).off('click', this._handleClick);

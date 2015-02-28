@@ -1,1 +1,1 @@
-﻿function startSparkCoreWorker() {        var theWorker = new SharedWorker("Workers/SparkCoreWorker.js", "SparkCore");        var thePort = theWorker.port; // MessagePort    thePort.onmessage = function(evt) {		var message = evt.data;       		switch (message.type) {             			case 'error':				console.log('ERROR: SparkCoreWorker', evt);      				break;            		}      	};	wait(); //waits for new messages in onmessage}//startSparkCoreWorker();ds.Test.updateStatus();
+﻿var formatter = require('formatting');formatter.formatNumber(1234, '00000');
