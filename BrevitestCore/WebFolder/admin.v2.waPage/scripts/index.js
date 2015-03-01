@@ -2,6 +2,14 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var assayCartridgeEvent = {};	// @dataSource
+	var menuItemCartridge = {};	// @menuItem
+	var buttonRegisterCartridges = {};	// @button
+	var deviceModelEvent = {};	// @dataSource
+	var buttonCreateNewDevice = {};	// @button
+	var buttonSaveDevice = {};	// @button
+	var buttonCancelDevice = {};	// @button
+	var button1 = {};	// @button
 	var buttonPasteGCODE = {};	// @button
 	var buttonCopyGCODE = {};	// @button
 	var assayEvent = {};	// @dataSource
@@ -25,7 +33,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonLoadParams = {};	// @button
 	var buttonResetParams = {};	// @button
 	var buttonRefreshCores = {};	// @button
-	var buttonGetAssayResults = {};	// @button
 	var checkboxMonitorStatus = {};	// @checkbox
 	var buttonGetStatus = {};	// @button
 	var buttonCancelProcess = {};	// @button
@@ -126,7 +133,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		statusMonitorID = null;
 	}
 	
-	function validateSerialNumber() {
+	function validateSerialNumber(serialNumber) {
 		var r = { valid: true };
 		
 		if (serialNumber.length !== 19) {
@@ -163,37 +170,46 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
 					if (firmwareVersion === evt.response.return_value) {
 						$$('containerCommand').show();
-						$$('containerAssayResults').show();
 						$$('containerAttributes').show();
-						$$('richTextSplash').hide();
-						$$('richTextVersionWarning').hide();
-						callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
-								archiveSize = evt.response.return_value;
-								sources.archiveSize.sync();
-								if (archiveSize > 0) {
-									assayNumber = archiveSize;
-									sources.assayNumber.sync();
-								}
-							}
-						);
+
+//						callSpark(this, 'get_archive_size', [sources.sparkCores.id], function(evt) {
+//								archiveSize = evt.response.return_value;
+//								sources.archiveSize.sync();
+//								if (archiveSize > 0) {
+//									assayNumber = archiveSize;
+//									sources.assayNumber.sync();
+//								}
+//							}
+//						);
 					}
 					else {
 						$$('containerCommand').hide();
-						$$('containerAssayResults').hide();
 						$$('containerAttributes').hide();
-						$$('richTextSplash').show();
-						$$('richTextVersionWarning').show();
 					}
 				}
 			);
 		}
 		else {
 			$$('containerCommand').hide();
-			$$('containerAssayResults').hide();
 			$$('containerAttributes').hide();
-			$$('richTextSplash').show();
-			$$('richTextVersionWarning').hide();
 		}
+		sources.device.query('sparkCoreID === :1',
+				{
+					onSuccess: function(event) {
+						if(event.dataSource.ID) {
+							$$('containerSparkDevice').show();
+							sources.deviceModel.all({onSuccess: function(evt) {return;} });
+						}
+						else {
+							$$('containerSparkDevice').hide();
+						}
+					},
+					onError: function(error) {
+						$$('containerSparkDevice').hide();
+					},
+					params: [dataSource.id]
+				}
+		);
 	}
 	
 	function getCommandObject() {
@@ -245,8 +261,118 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		
 		return a;
 	}
+	
+	function loadUnusedCartridges(assayID) {
+		sources.cartridge.query('startedOn === null AND assay.ID === :1',
+				{
+					onSuccess: function(evt) {
+						return;
+					},
+					onError: function(err) {
+						notification.error('ERROR: ' + err.error[0].message);
+					},
+					params: [assayID]
+				}
+		);
+	}
 
 // eventHandlers// @lock
+
+	assayCartridgeEvent.onCurrentElementChange = function assayCartridgeEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		loadUnusedCartridges(event.dataSource.ID);
+	};// @lock
+
+	menuItemCartridge.click = function menuItemCartridge_click (event)// @startlock
+	{// @endlock
+		sources.assayCartridge.all({
+			onSuccess: function(evt) {
+					loadUnusedCartridges(evt.dataSource.ID);
+			}
+		});
+
+	};// @lock
+
+	buttonRegisterCartridges.click = function buttonRegisterCartridges_click (event)// @startlock
+	{// @endlock
+		sources.cartridge.manufacture(
+			{
+				onSuccess: function(evt) {
+						notification.log(evt.result + ' cartridges registered');
+						loadUnusedCartridges(sources.assayCartridge.ID);
+					},
+				onError: function(err) {
+						notification.error('ERROR: ' + err.error[0].message);
+					}
+			},
+			{
+				assayID: sources.assayCartridge.ID,
+				quantity: numberOfCartridges
+			}
+		);
+	};// @lock
+
+	deviceModelEvent.onCurrentElementChange = function deviceModelEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		sources.device.deviceModel.set(event.dataSource);
+	};// @lock
+
+	buttonCreateNewDevice.click = function buttonCreateNewDevice_click (event)// @startlock
+	{// @endlock
+		sources.device.addNewElement();
+		sources.device.sparkCoreID = sources.sparkCores.id;
+		$$('containerSparkDevice').show();
+	};// @lock
+
+	buttonSaveDevice.click = function buttonSaveDevice_click (event)// @startlock
+	{// @endlock
+		var r = validateSerialNumber(sources.device.serialNumber);
+		if (r.valid) {
+			sources.device.deviceModel.set(sources.deviceModel);
+			sources.device.save(
+				{
+					onSuccess: function(evt) {
+							notification.log('Device saved');
+						},
+					onError: function(err) {
+							notification.error('ERROR: ' + err.error[0].message);
+						}
+				}
+			);
+		}
+		else {
+			notification.error(r.errorMsg);	
+		}
+	};// @lock
+
+	buttonCancelDevice.click = function buttonCancelDevice_click (event)// @startlock
+	{// @endlock
+		sources.assay.serverRefresh(
+			{
+				onSuccess: function(evt) {
+						notification.log('Assay changes discarded');
+					},
+				onError: function(err) {
+						notification.error('ERROR: ' + err.error[0].message);
+					},
+				forceReload: true
+			}
+		);
+	};// @lock
+
+	button1.click = function button1_click (event)// @startlock
+	{// @endlock
+		if (assayNumber > 0 && assayNumber <= archiveSize) {
+			callSpark(this, 'request_archive_data', [sources.sparkCores.id, assayNumber - 1], function(evt) {
+					notification.log('Archived assay results retrieved');
+					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
+				}
+			);
+		}
+		else {
+			notification.error('Assay record number out of range');
+		}
+	};// @lock
 
 	buttonPasteGCODE.click = function buttonPasteGCODE_click (event)// @startlock
 	{// @endlock
@@ -478,17 +604,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonCreateAssay.click = function buttonCreateAssay_click (event)// @startlock
 	{// @endlock
-		sources.assay.addNewElement(
-			{
-				onSuccess: function(evt) {
-						notification.log('Assay added');
-//						sources.assay.serverRefresh({onSuccess: function(ev) {return;}});
-					},
-				onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
-					}
-			}
-		);
+		sources.assay.addNewElement();
 	};// @lock
 
 	sparkCoresEvent.onCurrentElementChange = function sparkCoresEvent_onCurrentElementChange (event)// @startlock
@@ -551,20 +667,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonGetAssayResults.click = function buttonGetAssayResults_click (event)// @startlock
-	{// @endlock
-		if (assayNumber > 0 && assayNumber <= archiveSize) {
-			callSpark(this, 'request_archive_data', [sources.sparkCores.id, assayNumber - 1], function(evt) {
-					notification.log('Archived assay results retrieved');
-					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
-				}
-			);
-		}
-		else {
-			notification.error('Assay record number out of range');
-		}
-	};// @lock
-
 	checkboxMonitorStatus.change = function checkboxMonitorStatus_change (event)// @startlock
 	{// @endlock
 		if(this.getValue()) { // turn on continuous status monitoring
@@ -604,21 +706,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonSetSerialNumber.click = function buttonSetSerialNumber_click (event)// @startlock
 	{// @endlock
-		var serial_number = Window.prompt('Enter serial number:', 'XXXX-XXXX-XXXX-XXXX');
-		var r = validateSerialNumber(serial_number);
-		if (r.valid) {
-			callSpark(this, 'set_serial_number', [sources.sparkCores.id, serial_number], function(evt) {
-					if (evt.response.return_value !== -1) {
-						notification.log('Serial number changed');
+		var serial_number = window.prompt('Enter serial number:', 'XXXX-XXXX-XXXX-XXXX');
+		if (serial_number) {
+			var r = validateSerialNumber(serial_number);
+			if (r.valid) {
+				callSpark(this, 'set_serial_number', [sources.sparkCores.id, serial_number], function(evt) {
+						if (evt.response.return_value !== -1) {
+							notification.log('Serial number changed');
+						}
+						else {
+							notification.error('ERROR: Serial number not changed');
+						}
 					}
-					else {
-						notification.error('ERROR: Serial number not changed');
-					}
-				}
-			);
-		}
-		else {
-			notification.error(r.errorMsg);	
+				);
+			}
+			else {
+				notification.error(r.errorMsg);	
+			}
 		}
 	};// @lock
 
@@ -631,6 +735,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("assayCartridge", "onCurrentElementChange", assayCartridgeEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("menuItemCartridge", "click", menuItemCartridge.click, "WAF");
+	WAF.addListener("buttonRegisterCartridges", "click", buttonRegisterCartridges.click, "WAF");
+	WAF.addListener("deviceModel", "onCurrentElementChange", deviceModelEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("buttonCreateNewDevice", "click", buttonCreateNewDevice.click, "WAF");
+	WAF.addListener("buttonSaveDevice", "click", buttonSaveDevice.click, "WAF");
+	WAF.addListener("buttonCancelDevice", "click", buttonCancelDevice.click, "WAF");
+	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonPasteGCODE", "click", buttonPasteGCODE.click, "WAF");
 	WAF.addListener("buttonCopyGCODE", "click", buttonCopyGCODE.click, "WAF");
 	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
@@ -654,7 +766,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");
 	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
-	WAF.addListener("buttonGetAssayResults", "click", buttonGetAssayResults.click, "WAF");
 	WAF.addListener("checkboxMonitorStatus", "change", checkboxMonitorStatus.change, "WAF");
 	WAF.addListener("buttonGetStatus", "click", buttonGetStatus.click, "WAF");
 	WAF.addListener("buttonCancelProcess", "click", buttonCancelProcess.click, "WAF");

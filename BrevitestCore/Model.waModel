@@ -58,8 +58,8 @@
 				"panel": {
 					"isOpen": "true",
 					"position": {
-						"X": 930,
-						"Y": 729
+						"X": 1287,
+						"Y": 340
 					}
 				}
 			},
@@ -250,8 +250,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 370,
-			"workspaceTop": 0,
+			"workspaceLeft": 48,
+			"workspaceTop": 984,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -620,8 +620,12 @@
 			],
 			"events": [
 				{
-					"kind": "validate",
-					"from": "$mainModel.Assay.events.validate",
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save",
 					"userDefined": true
 				}
 			]
@@ -1181,6 +1185,19 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "notes",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "deviceModelName",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "deviceModel.name"
 				}
 			],
 			"methods": [

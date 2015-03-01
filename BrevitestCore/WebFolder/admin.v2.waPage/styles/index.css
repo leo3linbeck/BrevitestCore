@@ -3,6 +3,170 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label9 {
+	z-index: 2;
+	width: 233px;
+	height: 18px;
+	top: 475px;
+	left: 387px;
+	position: absolute;
+	text-align: center;
+	letter-spacing: normal;
+	font-size: 16px;
+}
+
+#label13 {
+	z-index: 12;
+	top: 121px;
+	bottom: 597px;
+	left: 71px;
+	right: 126px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+}
+
+#label12 {
+	z-index: 10;
+	height: 18px;
+	top: 78px;
+	left: 80px;
+	right: 450px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#label8 {
+	z-index: 3;
+	height: 18px;
+	bottom: 127px;
+	left: 133px;
+	right: 453px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#label7 {
+	z-index: 2;
+	width: 103px;
+	height: 18px;
+	top: 33px;
+	left: 74px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#label6 {
+	z-index: 5;
+	width: 10px;
+	height: 14px;
+	top: 26px;
+	left: 247px;
+	position: absolute;
+	font-size: 12px;
+}
+
+#richText6 {
+	z-index: 6;
+	height: 25px;
+	top: 70px;
+	left: 10px;
+	right: 10px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+}
+
+#textField3 {
+	z-index: 5;
+	width: 60px;
+	height: 37px;
+	top: 15px;
+	left: 262px;
+	position: absolute;
+	font-size: 16px;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	text-align: left;
+}
+
+#textField2 {
+	z-index: 4;
+	top: 95px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+	font-size: 10px;
+}
+
+#textField1 {
+	z-index: 3;
+	width: 50px;
+	height: 36px;
+	top: 16px;
+	left: 192px;
+	position: absolute;
+	font-size: 16px;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+}
+
+#button1 {
+	z-index: 2;
+	width: 160px;
+	height: 44px;
+	top: 12px;
+	left: 17px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#container2 {
+	z-index: 1;
+	top: 294px;
+	bottom: 10px;
+	left: 281px;
+	right: 320px;
+	position: absolute;
+}
+
+#richText5 {
+	z-index: 1;
+	width: 66px;
+	height: 0px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItemCartridge.waf-state-selected {
+	line-height: 22px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#richText4 {
+	z-index: 1;
+	width: 66px;
+	height: 0px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
 #htmlTag2 {
 	position: absolute;
 	z-index: 0;
@@ -10,27 +174,6 @@
 	height: 0px;
 	top: auto;
 	left: auto;
-}
-
-#container1 {
-	z-index: 5;
-	width: 300px;
-	height: 187px;
-	bottom: 24px;
-	left: 24px;
-	position: absolute;
-	border-top-right-radius: 10px;
-	-moz-border-radius-topright: 10px;
-	border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
-	border-top-left-radius: 10px;
-	-moz-border-radius-topleft: 10px;
-	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 }
 
 #comboboxNewCommand input {
@@ -75,7 +218,7 @@
 	height: 18px;
 	top: 121px;
 	left: 94px;
-	right: 669px;
+	right: 682px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -85,36 +228,13 @@
 	height: 18px;
 	top: 33px;
 	left: 134px;
-	right: 667px;
+	right: 680px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #dataGridAssay .waf-dataGrid-header {
 	text-align: center;
-}
-
-#richTextVersionWarning {
-	z-index: 7;
-	height: 300px;
-	bottom: 80px;
-	left: 300px;
-	right: 340px;
-	position: absolute;
-	text-align: center;
-	font-size: 36px;
-	color: rgb(255, 0, 0);
-}
-
-#richTextSplash {
-	z-index: 6;
-	height: 418px;
-	top: 100px;
-	left: 300px;
-	right: 340px;
-	position: absolute;
-	text-align: center;
-	font-size: 36px;
 }
 
 #richTextParameterTitle {
@@ -220,13 +340,21 @@
 	bottom: 10px;
 	right: 10px;
 	position: absolute;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
 }
 
 #buttonRefreshCores {
 	z-index: 4;
 	width: 212px;
 	height: 44px;
-	bottom: 10px;
+	bottom: 78px;
 	left: 36px;
 	position: absolute;
 	font-size: 16px;
@@ -236,7 +364,7 @@
 	z-index: 3;
 	width: 270px;
 	top: 6px;
-	bottom: 65px;
+	bottom: 131px;
 	left: 6px;
 	position: absolute;
 	border-top-width: 4px;
@@ -261,94 +389,6 @@
 #dataGridSparkCores .waf-dataGrid-row {
 	font-size: 16px;
 	font-weight: normal;
-}
-
-#label10 {
-	z-index: 7;
-	width: 10px;
-	height: 14px;
-	top: 26px;
-	left: 247px;
-	position: absolute;
-	font-size: 12px;
-}
-
-#richTextAssayResults {
-	z-index: 8;
-	height: 25px;
-	top: 70px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	font-size: 16px;
-	text-align: center;
-}
-
-#textFieldArchiveSize {
-	z-index: 7;
-	width: 60px;
-	height: 37px;
-	top: 15px;
-	left: 262px;
-	position: absolute;
-	font-size: 16px;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	text-align: left;
-}
-
-#textFieldAssayResults {
-	z-index: 6;
-	top: 95px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 10px;
-}
-
-#textFieldAssayNumber {
-	z-index: 4;
-	width: 50px;
-	height: 36px;
-	top: 16px;
-	left: 192px;
-	position: absolute;
-	font-size: 16px;
-	border-top-width: 3px;
-	border-left-width: 3px;
-	border-right-width: 3px;
-	border-bottom-width: 3px;
-	border-top-color: rgb(255, 0, 0);
-	border-left-color: rgb(255, 0, 0);
-	border-right-color: rgb(255, 0, 0);
-	border-bottom-color: rgb(255, 0, 0);
-}
-
-#buttonGetAssayResults {
-	z-index: 3;
-	width: 160px;
-	height: 44px;
-	top: 12px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#containerAssayResults {
-	z-index: 2;
-	top: 290px;
-	bottom: 10px;
-	left: 277px;
-	right: 320px;
-	position: absolute;
 }
 
 #label1 {
@@ -429,10 +469,18 @@
 #containerCommand {
 	z-index: 1;
 	height: 286px;
-	top: 5px;
+	bottom: 5px;
 	left: 277px;
 	right: 320px;
 	position: absolute;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
 }
 
 #richTextTitle {
@@ -479,9 +527,9 @@
 #tabViewControl {
 	z-index: 1;
 	top: 67px;
-	bottom: 63px;
-	left: 4px;
-	right: 1px;
+	bottom: -17px;
+	left: 1px;
+	right: -8px;
 	position: absolute;
 }
 
@@ -498,9 +546,9 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 990px;
+	bottom: 1055px;
 	left: 0px;
-	right: 5px;
+	right: -11px;
 	position: absolute;
 }
 
@@ -645,7 +693,7 @@
 	z-index: 6;
 	width: 208px;
 	height: 44px;
-	top: 20px;
+	top: 30px;
 	right: 45px;
 	position: absolute;
 	font-size: 16px;
@@ -665,7 +713,7 @@
 	z-index: 8;
 	width: 206px;
 	height: 44px;
-	top: 101px;
+	top: 111px;
 	left: 47px;
 	position: absolute;
 	font-size: 16px;
@@ -884,5 +932,273 @@
 	left: 31px;
 	position: absolute;
 	font-size: 14px;
+}
+
+#containerAssayActions {
+	z-index: 5;
+	width: 300px;
+	height: 187px;
+	bottom: 24px;
+	left: 24px;
+	position: absolute;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#containerCartridge {
+	z-index: 7;
+	top: 0px;
+	bottom: 18px;
+	left: 0px;
+	right: -16px;
+	position: absolute;
+}
+
+#menuItemCartridge {
+	z-index: 4;
+	width: 66px;
+	height: 0px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	line-height: 22px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#menuItemResults {
+	z-index: 5;
+	width: 66px;
+	height: 0px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	line-height: 22px;
+}
+
+#containerResults {
+	z-index: 8;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#buttonCreateNewDevice {
+	z-index: 7;
+	width: 212px;
+	height: 44px;
+	bottom: 18px;
+	left: 36px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#textFieldDeviceSerialNumber {
+	z-index: 2;
+	height: 32px;
+	top: 26px;
+	left: 182px;
+	right: 24px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+}
+
+#textFieldDeviceNotes {
+	z-index: 3;
+	height: 119px;
+	bottom: 76px;
+	left: 180px;
+	right: 24px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+}
+
+#buttonSaveDevice {
+	z-index: 5;
+	width: 160px;
+	height: 44px;
+	bottom: 15px;
+	right: 204px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#buttonCancelDevice {
+	z-index: 4;
+	width: 160px;
+	height: 44px;
+	bottom: 15px;
+	right: 24px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#textFieldDeviceModelName {
+	z-index: 9;
+	height: 30px;
+	top: 72px;
+	left: 183px;
+	right: 25px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
+}
+
+#dataGridDeviceModel .waf-widget-body .waf-dataGrid-col-value {
+	text-align: right;
+}
+
+#dataGridDeviceModel .waf-dataGrid-row {
+	font-size: 16px;
+}
+
+#dataGridDeviceModel .waf-dataGrid-header {
+	text-align: center;
+	font-size: 16px;
+}
+
+#dataGridDeviceModel {
+	z-index: 11;
+	top: 144px;
+	bottom: 205px;
+	left: 181px;
+	right: 24px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#containerSparkDevice {
+	z-index: 6;
+	top: 5px;
+	bottom: 292px;
+	left: 277px;
+	right: 320px;
+	position: absolute;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+}
+
+#textFieldNumberOfCatridges {
+	z-index: 3;
+	width: 91px;
+	height: 47px;
+	top: 498px;
+	left: 458px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	text-align: center;
+	font-size: 36px;
+}
+
+#buttonRegisterCartridges {
+	z-index: 1;
+	width: 225px;
+	height: 44px;
+	top: 562px;
+	left: 389px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#dataGridAssayCartridge {
+	z-index: 1;
+	width: 300px;
+	top: 36px;
+	bottom: 28px;
+	left: 36px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#dataGridAssayCartridge .waf-dataGrid-header {
+	text-align: center;
+}
+
+#dataGridAssayCartridge .waf-dataGrid-footer {
+	font-size: 16px;
+	line-height: 32px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#dataGridCartridges .waf-dataGrid-footer {
+	font-size: 16px;
+	line-height: 32px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#dataGridCartridges .waf-dataGrid-header {
+	text-align: center;
+}
+
+#dataGridCartridges {
+	z-index: 4;
+	width: 429px;
+	top: 185px;
+	bottom: 25px;
+	right: 74px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#barCodeCartridge {
+	z-index: 5;
+	width: 500px;
+	height: 85px;
+	top: 43px;
+	left: 658px;
+	position: absolute;
+}
+
+#qRCartridge {
+	z-index: 6;
+	width: 260px;
+	height: 259px;
+	top: 40px;
+	left: 373px;
+	position: absolute;
 }
 
