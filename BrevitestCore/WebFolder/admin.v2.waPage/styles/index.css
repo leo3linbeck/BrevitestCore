@@ -3,6 +3,16 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label15 {
+	width: 110px;
+	height: 18px;
+	bottom: 30px;
+	left: 69px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 4;
+}
+
 #label10 {
 	width: 94px;
 	height: 18px;
@@ -160,21 +170,6 @@
 	text-align: left;
 }
 
-#textField2 {
-	z-index: 4;
-	top: 95px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 10px;
-}
-
 #textField1 {
 	z-index: 3;
 	width: 50px;
@@ -191,25 +186,6 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-}
-
-#button1 {
-	z-index: 2;
-	width: 160px;
-	height: 44px;
-	top: 12px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#container2 {
-	z-index: 1;
-	top: 294px;
-	bottom: 10px;
-	left: 281px;
-	right: 320px;
-	position: absolute;
 }
 
 #richText5 {
@@ -1048,7 +1024,7 @@
 	width: 66px;
 	height: 0px;
 	top: 0px;
-	left: 0px;
+	left: NaNpx;
 	position: absolute;
 	line-height: 22px;
 }
@@ -1404,5 +1380,88 @@
 	font-size: 16px;
 	line-height: 32px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#dataGridDeviceResults .waf-dataGrid-footer {
+	font-size: 16px;
+	line-height: 32px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#dataGridDeviceResults .waf-dataGrid-header {
+	text-align: center;
+}
+
+#dataGridDeviceResults {
+	width: 432px;
+	top: 24px;
+	bottom: 75px;
+	left: 24px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 2;
+}
+
+#containerDeviceResults {
+	z-index: 1;
+	top: 24px;
+	bottom: 24px;
+	left: 474px;
+	right: 24px;
+	position: absolute;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#textFieldResultsDeviceOnline {
+	width: 227px;
+	height: 34px;
+	bottom: 21px;
+	left: 184px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(255, 0, 0);
+	font-weight: bold;
+	text-align: center;
+	z-index: 4;
+}
+
+#buttonGetStoredData {
+	z-index: 2;
+	width: 160px;
+	height: 44px;
+	top: 12px;
+	left: 17px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#textFieldAssayResults {
+	z-index: 4;
+	top: 95px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+	font-size: 10px;
 }
 
