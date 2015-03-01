@@ -3,15 +3,37 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label14 {
+	width: 110px;
+	height: 18px;
+	top: 519px;
+	left: 472px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 7;
+}
+
+#label11 {
+	width: 44px;
+	height: 18px;
+	top: 519px;
+	left: 44px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 5;
+}
+
 #label9 {
 	z-index: 2;
-	width: 233px;
+	width: 250px;
 	height: 18px;
 	top: 475px;
-	left: 387px;
+	left: 378px;
 	position: absolute;
 	text-align: center;
 	letter-spacing: normal;
+	max-width: 250px;
+	min-width: 250px;
 	font-size: 16px;
 }
 
@@ -216,7 +238,7 @@
 #label4 {
 	z-index: 3;
 	height: 18px;
-	top: 121px;
+	top: 151px;
 	left: 94px;
 	right: 682px;
 	position: absolute;
@@ -226,8 +248,8 @@
 #label3 {
 	z-index: 1;
 	height: 18px;
-	top: 33px;
-	left: 134px;
+	top: 63px;
+	left: 132px;
 	right: 680px;
 	position: absolute;
 	font-size: 16px;
@@ -527,9 +549,9 @@
 #tabViewControl {
 	z-index: 1;
 	top: 67px;
-	bottom: -17px;
+	bottom: 1px;
 	left: 1px;
-	right: -8px;
+	right: 1px;
 	position: absolute;
 }
 
@@ -546,9 +568,9 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 1055px;
+	bottom: 1052px;
 	left: 0px;
-	right: -11px;
+	right: -5px;
 	position: absolute;
 }
 
@@ -639,8 +661,8 @@
 #textFieldAssayName {
 	z-index: 1;
 	height: 32px;
-	top: 26px;
-	left: 182px;
+	top: 56px;
+	left: 180px;
 	right: 24px;
 	position: absolute;
 	border-top-width: 3px;
@@ -674,7 +696,7 @@
 #textFieldAssayDescription {
 	z-index: 3;
 	height: 119px;
-	top: 71px;
+	top: 101px;
 	left: 180px;
 	right: 24px;
 	position: absolute;
@@ -703,7 +725,7 @@
 	z-index: 6;
 	width: 160px;
 	height: 44px;
-	top: 207px;
+	top: 237px;
 	right: 24px;
 	position: absolute;
 	font-size: 16px;
@@ -723,7 +745,7 @@
 	z-index: 6;
 	width: 160px;
 	height: 44px;
-	top: 207px;
+	top: 237px;
 	right: 204px;
 	position: absolute;
 	font-size: 16px;
@@ -798,7 +820,7 @@
 }
 
 #containerNewCommand {
-	z-index: 13;
+	z-index: 12;
 	width: 290px;
 	height: 335px;
 	top: 310px;
@@ -879,7 +901,7 @@
 }
 
 #containerMoveCommand {
-	z-index: 14;
+	z-index: 13;
 	width: 191px;
 	height: 418px;
 	top: 310px;
@@ -958,9 +980,9 @@
 #containerCartridge {
 	z-index: 7;
 	top: 0px;
-	bottom: 18px;
+	bottom: 0px;
 	left: 0px;
-	right: -16px;
+	right: 0px;
 	position: absolute;
 }
 
@@ -1176,10 +1198,10 @@
 
 #dataGridCartridges {
 	z-index: 4;
-	width: 429px;
+	width: 452px;
 	top: 185px;
 	bottom: 25px;
-	right: 74px;
+	left: 682px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -1200,5 +1222,90 @@
 	top: 40px;
 	left: 373px;
 	position: absolute;
+}
+
+#dataGridTestCartridge {
+	width: 400px;
+	height: 485px;
+	top: 10px;
+	left: 21px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 1;
+}
+
+#dataGridTestCartridge .waf-dataGrid-header {
+	text-align: center;
+}
+
+#dataGridTestCartridge .waf-dataGrid-footer {
+	font-size: 16px;
+	line-height: 32px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#richTextAssayTitle {
+	z-index: 14;
+	height: 35px;
+	top: 16px;
+	left: 50px;
+	right: 50px;
+	position: absolute;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#dataGridTestDevice {
+	width: 432px;
+	height: 485px;
+	top: 10px;
+	left: 444px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 3;
+}
+
+#dataGridTestDevice .waf-dataGrid-header {
+	text-align: center;
+}
+
+#dataGridTestDevice .waf-dataGrid-footer {
+	font-size: 16px;
+	line-height: 32px;
+	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+}
+
+#textFieldCartridgeAssay {
+	width: 317px;
+	height: 36px;
+	top: 510px;
+	left: 93px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
+	z-index: 5;
+}
+
+#textFieldDeviceOnline {
+	width: 227px;
+	height: 36px;
+	top: 510px;
+	left: 587px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(255, 0, 0);
+	font-weight: bold;
+	text-align: center;
+	z-index: 7;
 }
 
