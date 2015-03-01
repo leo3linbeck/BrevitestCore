@@ -2,6 +2,12 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var assayTestEvent = {};	// @dataSource
+	var checkboxTestStatus = {};	// @checkbox
+	var buttonTestStatus = {};	// @button
+	var buttonCancelTest = {};	// @button
+	var buttonRunAssay = {};	// @button
+	var buttonInitDevice = {};	// @button
 	var deviceEvent = {};	// @dataSource
 	var menuItemTest = {};	// @menuItem
 	var assayCartridgeEvent = {};	// @dataSource
@@ -104,12 +110,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		});
 	}
 	
-	function startStatusMonitoring(that) {
+	function startStatusMonitoring(that, sparkCoreID) {
 		if (statusMonitorID) {
 			clearInterval(statusMonitorID);
 		}
 			
-		callSpark(that, 'get_status', [sources.sparkCores.id], function(event) {
+		callSpark(that, 'get_status', [sparkCoreID], function(event) {
 				deviceStatus = event.value;
 				sources.deviceStatus.sync();
 			},
@@ -119,7 +125,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 		
 		statusMonitorID = setInterval(function(this_one) {
-			callSpark(this_one, 'get_status', [sources.sparkCores.id], function(event) {
+			callSpark(this_one, 'get_status', [sparkCoreID], function(event) {
 					deviceStatus = event.value;
 					sources.deviceStatus.sync();
 				},
@@ -264,8 +270,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		return a;
 	}
 	
-	function loadUnusedCartridgesByAssay(assayID) {
-		sources.cartridge.query('startedOn === null AND assay.ID === :1',
+	function loadUnusedCartridgesByAssay(assayID, dataSource) {
+		dataSource.query('startedOn === null AND assay.ID === :1',
 				{
 					onSuccess: function(evt) {
 						return;
@@ -306,9 +312,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 
-	function getSparkCoreList(that) {
+	function getSparkCoreList(that, notify) {
 		callSpark(that, 'get_list_of_cores', [], function(evt) {
-				notification.log('Core list refreshed');
+				if (notify) {
+					notification.log('Core list refreshed');
+				}
 				sparkCores = evt.response;
 				sources.sparkCores.sync();
 				clearSparkParameters();
@@ -318,6 +326,64 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 // eventHandlers// @lock
 
+	assayTestEvent.onCurrentElementChange = function assayTestEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		loadUnusedCartridgesByAssay(event.dataSource.ID, sources.cartridgeUnused);
+	};// @lock
+
+	checkboxTestStatus.change = function checkboxTestStatus_change (event)// @startlock
+	{// @endlock
+		if(this.getValue()) { // turn on continuous status monitoring
+			$$('buttonTestStatus').disable();
+			startStatusMonitoring($$('buttonTestStatus'), sources.device.sparkCoreID);
+		}
+		else { // turn off continuous status monitoring
+			stopStatusMonitoring();
+			$$('buttonTestStatus').enable();
+		}
+	};// @lock
+
+	buttonTestStatus.click = function buttonTestStatus_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'get_status', [sources.device.sparkCoreID], function(evt) {
+				deviceStatus = evt.value;
+				sources.deviceStatus.sync();
+			}
+		);
+	};// @lock
+
+	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'cancel_process', [sources.device.sparkCoreID], function(evt) {
+				notification.log('Process cancelled');
+			}
+		);
+	};// @lock
+
+	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'ready_to_run_assay', [sources.device.sparkCoreID], function(evt) {
+				if (evt.response.return_value !== -1) {
+					callSpark(this, 'run_assay', [sources.device.sparkCoreID], function(e) {
+							notification.log('Assay started');
+						}
+					);
+				}
+				else {
+					notification.error('Device not ready - please initialize and insert cartridge');
+				}
+			}
+		);
+	};// @lock
+
+	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
+	{// @endlock
+		callSpark(this, 'initialize_device', [sources.device.sparkCoreID], function(evt) {
+				notification.log('Device initialization started');
+			}
+		);
+	};// @lock
+
 	deviceEvent.onCurrentElementChange = function deviceEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		if (event.dataSource.sparkCoreID) {
@@ -326,11 +392,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						deviceOnline = 'YES' ;
 						$$('textFieldDeviceOnline').setBackgroundColor('green');
 						sources.deviceOnline.sync();
+						$$('containerTestActions').show();
 					}
 					else {
 						deviceOnline = 'NO' ;
 						$$('textFieldDeviceOnline').setBackgroundColor('red');
 						sources.deviceOnline.sync();
+						$$('containerTestActions').hide();
 					}
 				}
 			);
@@ -339,12 +407,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			deviceOnline = 'NO';
 			$$('textFieldDeviceOnline').setBackgroundColor('red');
 			sources.deviceOnline.sync();
+			$$('containerTestActions').hide();
 		}
 	};// @lock
 
 	menuItemTest.click = function menuItemTest_click (event)// @startlock
 	{// @endlock
-		loadUnusedCartridgesByID('*');
+		sources.assayTest.all({
+			onSuccess: function(evt) {
+					loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridgeUnused);
+			}
+		});
+
 		sources.device.all({
 			onSuccess: function(evt) {
 					return;
@@ -354,14 +428,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	assayCartridgeEvent.onCurrentElementChange = function assayCartridgeEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		loadUnusedCartridgesByAssay(event.dataSource.ID);
+		loadUnusedCartridgesByAssay(event.dataSource.ID, sources.cartridge);
 	};// @lock
 
 	menuItemCartridge.click = function menuItemCartridge_click (event)// @startlock
 	{// @endlock
 		sources.assayCartridge.all({
 			onSuccess: function(evt) {
-					loadUnusedCartridgesByAssay(evt.dataSource.ID);
+					loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridge);
 			}
 		});
 	};// @lock
@@ -372,7 +446,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			{
 				onSuccess: function(evt) {
 						notification.log(evt.result + ' cartridges registered');
-						loadUnusedCartridgesByAssay(sources.assayCartridge.ID);
+						loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
 					},
 				onError: function(err) {
 						notification.error('ERROR: ' + err.error[0].message);
@@ -687,7 +761,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	menuItemDevice.click = function menuItemDevice_click (event)// @startlock
 	{// @endlock
-		getSparkCoreList(this);
+		getSparkCoreList(this, false);
 	};// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
@@ -727,14 +801,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRefreshCores.click = function buttonRefreshCores_click (event)// @startlock
 	{// @endlock
-		getSparkCoreList(this);
+		getSparkCoreList(this, true);
 	};// @lock
 
 	checkboxMonitorStatus.change = function checkboxMonitorStatus_change (event)// @startlock
 	{// @endlock
 		if(this.getValue()) { // turn on continuous status monitoring
 			$$('buttonGetStatus').disable();
-			startStatusMonitoring($$('buttonGetStatus'));
+			startStatusMonitoring($$('buttonGetStatus'), sources.sparkCores.id);
 		}
 		else { // turn off continuous status monitoring
 			stopStatusMonitoring();
@@ -798,6 +872,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("assayTest", "onCurrentElementChange", assayTestEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("checkboxTestStatus", "change", checkboxTestStatus.change, "WAF");
+	WAF.addListener("buttonTestStatus", "click", buttonTestStatus.click, "WAF");
+	WAF.addListener("buttonCancelTest", "click", buttonCancelTest.click, "WAF");
+	WAF.addListener("buttonRunAssay", "click", buttonRunAssay.click, "WAF");
+	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");
 	WAF.addListener("device", "onCurrentElementChange", deviceEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemTest", "click", menuItemTest.click, "WAF");
 	WAF.addListener("assayCartridge", "onCurrentElementChange", assayCartridgeEvent.onCurrentElementChange, "WAF");
