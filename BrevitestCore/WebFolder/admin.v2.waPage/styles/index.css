@@ -4,26 +4,27 @@
 */
 
 #label15 {
+	z-index: 4;
 	width: 110px;
 	height: 18px;
 	bottom: 30px;
 	left: 69px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 4;
 }
 
 #label10 {
+	z-index: 7;
 	width: 94px;
 	height: 18px;
 	top: 189px;
 	left: 210px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 7;
 }
 
 #richText7 {
+	z-index: 9;
 	height: 21px;
 	top: 10px;
 	left: 190px;
@@ -31,10 +32,10 @@
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
-	z-index: 9;
 }
 
 #textField4 {
+	z-index: 8;
 	height: 138px;
 	top: 34px;
 	left: 190px;
@@ -46,27 +47,26 @@
 	border-bottom-style: dotted;
 	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
 	font-size: 12px;
-	z-index: 8;
 }
 
 #buttonRunAssay {
+	z-index: 3;
 	width: 160px;
 	height: 44px;
 	top: 66px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 3;
 }
 
 #buttonInitDevice {
+	z-index: 2;
 	width: 160px;
 	height: 44px;
 	top: 12px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 2;
 }
 
 #label14 {
@@ -97,7 +97,7 @@
 	z-index: 12;
 	top: 121px;
 	bottom: 597px;
-	left: 223px;
+	left: -38px;
 	right: 126px;
 	position: absolute;
 	font-size: 16px;
@@ -262,7 +262,7 @@
 	height: 18px;
 	top: 151px;
 	left: 94px;
-	right: 682px;
+	right: 672px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -272,7 +272,7 @@
 	height: 18px;
 	top: 63px;
 	left: 132px;
-	right: 680px;
+	right: 672px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -1024,7 +1024,7 @@
 	width: 66px;
 	height: 0px;
 	top: 0px;
-	left: NaNpx;
+	left: auto;
 	position: absolute;
 	line-height: 22px;
 }
@@ -1317,35 +1317,36 @@
 }
 
 #buttonCancelTest {
+	z-index: 5;
 	width: 160px;
 	height: 44px;
 	top: 120px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 5;
 }
 
 #buttonTestStatus {
+	z-index: 6;
 	width: 160px;
 	height: 44px;
 	top: 174px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 6;
 }
 
 #checkboxTestStatus {
+	z-index: 7;
 	width: 14px;
 	height: 16px;
 	top: 190px;
 	left: 191px;
 	position: absolute;
-	z-index: 7;
 }
 
 #containerTestActions {
+	z-index: 7;
 	height: 234px;
 	bottom: 24px;
 	left: 24px;
@@ -1359,17 +1360,16 @@
 	-moz-border-radius-bottomleft: 10px;
 	border-bottom-right-radius: 10px;
 	-moz-border-radius-bottomright: 10px;
-	z-index: 7;
 }
 
 #dataGridTestAssay {
+	z-index: 8;
 	width: 300px;
 	top: 11px;
 	bottom: 326px;
 	left: 24px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 8;
 }
 
 #dataGridTestAssay .waf-dataGrid-header {
@@ -1393,13 +1393,13 @@
 }
 
 #dataGridDeviceResults {
+	z-index: 2;
 	width: 432px;
 	top: 24px;
 	bottom: 75px;
 	left: 24px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 2;
 }
 
 #containerDeviceResults {
@@ -1420,9 +1420,11 @@
 	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 }
 
 #textFieldResultsDeviceOnline {
+	z-index: 4;
 	width: 227px;
 	height: 34px;
 	bottom: 21px;
@@ -1437,7 +1439,6 @@
 	background-color: rgb(255, 0, 0);
 	font-weight: bold;
 	text-align: center;
-	z-index: 4;
 }
 
 #buttonGetStoredData {

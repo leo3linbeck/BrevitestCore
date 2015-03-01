@@ -643,7 +643,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "number",
@@ -679,11 +680,6 @@
 					"type": "Contract",
 					"path": "Contract"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -699,7 +695,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "number",
@@ -733,11 +730,6 @@
 					"scope": "public",
 					"type": "Billing",
 					"path": "Billing"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -941,7 +933,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "practice",
@@ -987,11 +980,6 @@
 					"reversePath": true,
 					"path": "contract"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -1007,7 +995,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "code",
@@ -1035,11 +1024,6 @@
 					"type": "Assays",
 					"reversePath": true,
 					"path": "cpt"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -1198,6 +1182,18 @@
 					"scope": "public",
 					"type": "string",
 					"path": "deviceModel.name"
+				},
+				{
+					"name": "sparkName",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
+				},
+				{
+					"name": "sparkLastHeard",
+					"scope": "public",
+					"type": "date",
+					"kind": "storage"
 				}
 			],
 			"methods": [
@@ -1470,7 +1466,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "orderedOn",
@@ -1561,11 +1558,6 @@
 					"scope": "public",
 					"type": "long",
 					"scriptKind": "javascript"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -1715,7 +1707,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "name",
@@ -1757,11 +1750,6 @@
 					"reversePath": true,
 					"path": "payer"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -1777,7 +1765,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "amount",
@@ -1804,11 +1793,6 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "string"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -2102,7 +2086,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "rate",
@@ -2145,11 +2130,6 @@
 					"scope": "public",
 					"type": "Contract",
 					"path": "Contract"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -2471,5 +2451,6 @@
 				}
 			]
 		}
-	]
+	],
+	"type": []
 }
