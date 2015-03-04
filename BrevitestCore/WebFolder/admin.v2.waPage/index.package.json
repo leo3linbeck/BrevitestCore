@@ -62,6 +62,10 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/login",
+			"type": "widget"
+		},
+		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"

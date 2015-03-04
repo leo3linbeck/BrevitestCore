@@ -30,7 +30,8 @@
 					"position": {
 						"X": 465,
 						"Y": 20
-					}
+					},
+					"pathVisible": true
 				}
 			},
 			"Billing": {
@@ -250,8 +251,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 48,
-			"workspaceTop": 984,
+			"workspaceLeft": 381,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -503,10 +504,11 @@
 					"path": "assay"
 				},
 				{
-					"name": "GCODE",
+					"name": "BCODE",
 					"kind": "storage",
 					"scope": "public",
-					"type": "string"
+					"type": "string",
+					"matchColumn": "GCODE"
 				},
 				{
 					"name": "redMax",
@@ -1185,15 +1187,16 @@
 				},
 				{
 					"name": "sparkName",
+					"kind": "storage",
 					"scope": "public",
-					"type": "string",
-					"kind": "storage"
+					"type": "string"
 				},
 				{
 					"name": "sparkLastHeard",
+					"kind": "storage",
 					"scope": "public",
 					"type": "date",
-					"kind": "storage"
+					"simpleDate": false
 				}
 			],
 			"methods": [
@@ -1209,6 +1212,13 @@
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Device.methods.initialize",
+					"userDefined": true
+				},
+				{
+					"name": "register",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Device.methods.register",
 					"userDefined": true
 				}
 			]
@@ -2236,10 +2246,23 @@
 					]
 				},
 				{
+					"name": "rawData",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
 					"name": "result",
 					"kind": "storage",
 					"scope": "public",
 					"type": "number"
+				},
+				{
+					"name": "BCODE",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string",
+					"matchColumn": "GCODE"
 				},
 				{
 					"name": "physicianInstruction",

@@ -2,8 +2,10 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
-	var menuItemResults = {};	// @menuItem
-	var deviceResultsEvent = {};	// @dataSource
+	var assayDataEvent = {};	// @dataSource
+	var menuItemData = {};	// @menuItem
+	var menuItemFlash = {};	// @menuItem
+	var deviceFlashEvent = {};	// @dataSource
 	var assayTestEvent = {};	// @dataSource
 	var checkboxTestStatus = {};	// @checkbox
 	var buttonTestStatus = {};	// @button
@@ -20,8 +22,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonSaveDevice = {};	// @button
 	var buttonCancelDevice = {};	// @button
 	var buttonGetStoredData = {};	// @button
-	var buttonPasteGCODE = {};	// @button
-	var buttonCopyGCODE = {};	// @button
+	var buttonPasteBCODE = {};	// @button
+	var buttonCopyBCODE = {};	// @button
 	var assayEvent = {};	// @dataSource
 	var documentEvent = {};	// @document
 	var buttonDeleteCommand = {};	// @button
@@ -66,25 +68,89 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var clipboard = '';
 	
-	var brevicodeCommands = {
-		'0': 'Start Assay',
-		'1': 'Delay',
-		'2': 'Move',
-		'3': 'Solenoid On',
-		'4': 'Device LED On',
-		'5': 'Device LED Off',
-		'6': 'Device LED Blink',
-		'7': 'Sensor LED On',
-		'8': 'Sensor LED Off',
-		'9': 'Read Sensors',
-		'10': 'Read QR Code',
-		'11': 'Disable Sensor',
-		'12': 'Repeat Begin',
-		'13': 'Repeat End',
-		'14': 'Status',
-		'99': 'Finish Assay'
-	}
-
+	var brevitestCommands = [
+		{
+			num: '0',
+			name: 'Start Assay',
+			description: 'Starts the assay. Required to be the first command. Assay executes until Finish Assay command. Parameters are (sensor integration time, sensor gain).'
+		},
+		{
+			num: '1',
+			name: 'Delay',
+			description: 'Waits for specified period of time. Parameter is (delay in milliseconds).'
+		},
+		{
+			num: '2',
+			name: 'Move',
+			description: 'Moves the stage a specified number of steps at a specified speed. Parameters are (number of steps, step delay time in microseconds).'
+		},
+		{
+			num: '3',
+			name: 'Solenoid On',
+			description: 'Energizes the solenoid for a specified amount of time. Parameter is (energize period in milliseconds).'
+		},
+		{
+			num: '4',
+			name: 'Device LED On',
+			description: 'Turns on the device LED, which is visible outside the device. No parameters.'
+		},
+		{
+			num: '5',
+			name: 'Device LED Off',
+			description: 'Turns off the device LED. No parameters.'
+		},
+		{
+			num: '6',
+			name: 'Device LED Blink',
+			description: 'Blinks the device LED at a specified rate. Parameter is (period in milliseconds between change in LED state).'
+		},
+		{
+			num: '7',
+			name: 'Sensor LED On',
+			description: 'Turns on the sensor LED at a given power. Parameter is (power, from 0 to 255).'
+		},
+		{
+			num: '8',
+			name: 'Sensor LED Off',
+			description: 'Turns off the sensor LED. No parameters.'
+		},
+		{
+			num: '9',
+			name: 'Read Sensors',
+			description: 'Takes readings from the sensors. Parameter is (number of samples, from 1 to 10).'
+		},
+		{
+			num: '10',
+			name: 'Read QR Code',
+			description: 'Reads the cartridge QR code. No parameters. [NOT IMPLEMENTED]'
+		},
+		{
+			num: '11',
+			name: 'Disable Sensor',
+			description: 'Disables the sensors, switching them to low-power mode. No parameters.'
+		},
+		{
+			num: '12',
+			name: 'Repeat Begin',
+			description: 'Begins a block of commands that will be repeated a specified number of times. Nesting is acceptable. Parameter is (number of interations).'
+		},
+		{
+			num: '13',
+			name: 'Repeat End',
+			description: 'Ends the innermost block of repeated commands. No parameters.'
+		},
+		{
+			num: '14',
+			name: 'Status',
+			description: 'Changes the device status register, which used in remote monitoring. Parameters are (message length, message text).'
+		},
+		{
+			num: '99',
+			name: 'Finish Assay',
+			description: 'Finishes the assay. Required to be the final command. No parameters.'
+		}
+	];
+	
 	function callSpark(that, funcName, params, callback, errorCallback) {
 		spinner.spin(that.domNode);
 		spark[funcName + 'Async']({
@@ -176,32 +242,43 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function changeSparkCore(dataSource) {
-		if (dataSource.connected) {
-			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
-					if (firmwareVersion === evt.response.return_value) {
-						$$('containerCommand').show();
-						$$('containerAttributes').show();
-					}
-					else {
-						$$('containerCommand').hide();
-						$$('containerAttributes').hide();
-					}
-				}
-			);
-		}
-		else {
-			$$('containerCommand').hide();
-			$$('containerAttributes').hide();
-		}
+//		if (dataSource.connected) {
+//			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
+//					if (firmwareVersion === evt.response.return_value) {
+//						$$('containerCommand').show();
+//						$$('containerAttributes').show();
+//					}
+//					else {
+//						$$('containerCommand').hide();
+//						$$('containerAttributes').hide();
+//					}
+//				}
+//			);
+//		}
+//		else {
+//			$$('containerCommand').hide();
+//			$$('containerAttributes').hide();
+//		}
 		sources.deviceSpark.query('sparkCoreID === :1',
 				{
 					onSuccess: function(event) {
 						if(event.dataSource.ID) {
-							$$('containerSparkDevice').show();
-							sources.deviceModel.all({onSuccess: function(evt) {return;} });
+							if (event.dataSource.online) {
+								$$('containerSparkDevice').show();
+								$$('containerCommand').show();
+								$$('containerAttributes').show();
+								sources.deviceModel.all({onSuccess: function(evt) {return;} });
+							}
+							else {
+								$$('containerSparkDevice').hide();
+								$$('containerCommand').hide();
+								$$('containerAttributes').hide();
+							}
 						}
 						else {
 							$$('containerSparkDevice').hide();
+							$$('containerCommand').hide();
+							$$('containerAttributes').hide();
 						}
 					},
 					onError: function(error) {
@@ -245,7 +322,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function convertAttributeToCommands(attr) {
-		var cmd, i, p;
+		var c, cmd, i, indx, p;
 		var a = [];
 		
 		if (attr) {
@@ -253,8 +330,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			
 			for (i = 0; i < cmd.length; i += 1) {
 				if (cmd[i]) {
-					p = cmd[i].split(',');
-					a.push({ 'code': p[0], 'command': convertCodeToCommand(p[0]), 'params': (p.length > 1 ? p[1] : '') });
+					indx = cmd[i].indexOf(',');
+					if (indx === -1) {
+						c = cmd[i];
+						p = '';
+					}
+					else {
+						c = cmd[i].substr(0, indx);
+						p = cmd[i].substr(indx + 1);
+					}
+					a.push({ 'code': c, 'command': convertCodeToCommand(c), 'params': p });
 				}
 			}
 		}
@@ -316,50 +401,67 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 
+	function loadCompletedTestsByAssay(assayID, dataSource) {
+		dataSource.query('startedOn != null AND finishedOn != null AND assay.ID === :1',
+				{
+					onSuccess: function(evt) {
+						return;
+					},
+					onError: function(err) {
+						notification.error('ERROR: ' + err.error[0].message);
+					},
+					params: [assayID]
+				}
+		);
+	}
+
 // eventHandlers// @lock
 
-	menuItemResults.click = function menuItemResults_click (event)// @startlock
+	assayDataEvent.onCurrentElementChange = function assayDataEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		sources.deviceResults.all({
-			onSuccess: function(evt) {
-					return;
-			}
-		});
+		loadCompletedTestsByAssay(event.dataSource.ID, sources.test);
 	};// @lock
 
-	deviceResultsEvent.onCurrentElementChange = function deviceResultsEvent_onCurrentElementChange (event)// @startlock
+	menuItemData.click = function menuItemData_click (event)// @startlock
+	{// @endlock
+		sources.assayData.all({ onSuccess: function(evt) {return;} });
+	};// @lock
+
+	menuItemFlash.click = function menuItemFlash_click (event)// @startlock
+	{// @endlock
+		sources.deviceFlash.all({ onSuccess: function(evt) {return;} });
+	};// @lock
+
+	deviceFlashEvent.onCurrentElementChange = function deviceFlashEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		if (event.dataSource.sparkCoreID) {
-			callSpark(this, 'get_core_status', [event.dataSource.sparkCoreID], function(evt) {
-					if (evt.response.connected) {
-						deviceOnline = 'YES' ;
-						$$('textFieldResultsDeviceOnline').setBackgroundColor('green');
-						sources.deviceOnline.sync();
-						$$('containerDeviceResults').show();
-						callSpark(this, 'get_archive_size', [event.dataSource.sparkCoreID], function(ev) {
-								archiveSize = ev.response.return_value;
-								sources.archiveSize.sync();
-								if (archiveSize > 0) {
-									assayNumber = archiveSize;
-									sources.assayNumber.sync();
-								}
-							}
-						);
+			if (event.dataSource.online) {
+				deviceOnline = 'YES - ONLINE' ;
+				sources.deviceOnline.sync();
+				$$('textFieldFlashDeviceOnline').setBackgroundColor('green');
+				$$('containerDeviceFlash').show();
+				callSpark(this, 'get_archive_size', [event.dataSource.sparkCoreID], function(ev) {
+						archiveSize = ev.response.return_value;
+						sources.archiveSize.sync();
+						if (archiveSize > 0) {
+							assayNumber = archiveSize;
+							sources.assayNumber.sync();
+						}
 					}
-					else {
-						deviceOnline = 'NO' ;
-						$$('textFieldResultsDeviceOnline').setBackgroundColor('red');
-						sources.deviceOnline.sync();
-						$$('containerDeviceResults').hide();
-					}
-				}
-			);
+				);
+			}
+			else {
+				deviceOnline = 'NO - OFFLINE' ;
+				sources.deviceOnline.sync();
+				$$('textFieldFlashDeviceOnline').setBackgroundColor('red');
+				$$('containerDeviceFlash').hide();
+			}
 		}
 		else {
-			deviceOnline = 'NO';
-			$$('textFieldResultsDeviceOnline').setBackgroundColor('red');
+			deviceOnline = 'UNREGISTERED DEVICE';
 			sources.deviceOnline.sync();
-			$$('containerDeviceResults').hide();
+			$$('textFieldFlashDeviceOnline').setBackgroundColor('red');
+			$$('containerDeviceFlash').hide();
 		}
 		if (event.dataSource.sparkCoreID) {
 		}
@@ -401,18 +503,39 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'ready_to_run_assay', [sources.device.sparkCoreID], function(evt) {
-				if (evt.response.return_value !== -1) {
-					callSpark(this, 'run_assay', [sources.device.sparkCoreID], function(e) {
-							notification.log('Assay started');
+		sources.test.start(
+			{
+				onSuccess: function(evt) {
+						if (evt.result.success) {
+							notification.log('Test started');
+							loadUnusedCartridgesByAssay(sources.assayTest.ID, sources.cartridgeUnused);
 						}
-					);
-				}
-				else {
-					notification.error('Device not ready - please initialize and insert cartridge');
-				}
+						else {
+							notification.error('ERROR: ' + evt.result.message + ' - test not started');
+						}
+					},
+				onError: function(err) {
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
+					}
+			},
+			{
+				username: WAF.directory.currentUser().userName,
+				deviceID: sources.device.ID,
+				cartridgeID: sources.cartridgeUnused.ID
 			}
 		);
+//		callSpark(this, 'ready_to_run_assay', [sources.device.sparkCoreID], function(evt) {
+//				if (evt.response.return_value !== -1) {
+//					callSpark(this, 'run_assay', [sources.device.sparkCoreID], function(e) {
+//							notification.log('Assay started');
+//						}
+//					);
+//				}
+//				else {
+//					notification.error('Device not ready - please initialize and insert cartridge');
+//				}
+//			}
+//		);
 	};// @lock
 
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
@@ -426,26 +549,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	deviceEvent.onCurrentElementChange = function deviceEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		if (event.dataSource.sparkCoreID) {
-			callSpark(this, 'get_core_status', [event.dataSource.sparkCoreID], function(evt) {
-					if (evt.response.connected) {
-						deviceOnline = 'YES' ;
-						$$('textFieldDeviceOnline').setBackgroundColor('green');
-						sources.deviceOnline.sync();
-						$$('containerTestActions').show();
-					}
-					else {
-						deviceOnline = 'NO' ;
-						$$('textFieldDeviceOnline').setBackgroundColor('red');
-						sources.deviceOnline.sync();
-						$$('containerTestActions').hide();
-					}
-				}
-			);
+			if (event.dataSource.online) {
+				deviceOnline = 'YES - ONLINE' ;
+				sources.deviceOnline.sync();
+				$$('textFieldDeviceOnline').setBackgroundColor('green');
+				$$('containerTestActions').show();
+			}
+			else {
+				deviceOnline = 'NO - OFFLINE' ;
+				sources.deviceOnline.sync();
+				$$('textFieldDeviceOnline').setBackgroundColor('red');
+				$$('containerTestActions').hide();
+			}
 		}
 		else {
-			deviceOnline = 'NO';
-			$$('textFieldDeviceOnline').setBackgroundColor('red');
+			deviceOnline = 'UNREGISTERED DEVICE';
 			sources.deviceOnline.sync();
+			$$('textFieldDeviceOnline').setBackgroundColor('red');
 			$$('containerTestActions').hide();
 		}
 	};// @lock
@@ -484,14 +604,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.cartridge.manufacture(
 			{
 				onSuccess: function(evt) {
-						notification.log(evt.result + ' cartridges registered');
-						loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
+						if (evt.result) {
+							notification.log(evt.result + ' cartridges registered');
+							loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
+						}
+						else {
+							notification.error('ERROR: No cartridges registered');
+						}
 					},
 				onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 					}
 			},
 			{
+				username: WAF.directory.currentUser().userName,
 				assayID: sources.assayCartridge.ID,
 				quantity: (numberOfCartridges > 10 ? 10 : numberOfCartridges)
 			}
@@ -549,9 +675,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonGetStoredData.click = function buttonGetStoredData_click (event)// @startlock
 	{// @endlock
 		if (assayNumber > 0 && assayNumber <= archiveSize) {
-			callSpark(this, 'request_archive_data', [sources.deviceResults.sparkCoreID, assayNumber - 1], function(evt) {
-					notification.log('Archived assay results retrieved');
-					$$('textFieldAssayResults').setValue(evt.data.join('\n'));
+			callSpark(this, 'request_archive_data', [sources.deviceFlash.sparkCoreID, assayNumber - 1], function(evt) {
+					notification.log('Archived assay results retrieved from device flash');
+					$$('textFieldAssayFlash').setValue(evt.data.join('\n'));
 				}
 			);
 		}
@@ -560,13 +686,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	};// @lock
 
-	buttonPasteGCODE.click = function buttonPasteGCODE_click (event)// @startlock
+	buttonPasteBCODE.click = function buttonPasteBCODE_click (event)// @startlock
 	{// @endlock
 		brevicode = convertAttributeToCommands(clipboard);
 		sources.brevicode.sync();
 	};// @lock
 
-	buttonCopyGCODE.click = function buttonCopyGCODE_click (event)// @startlock
+	buttonCopyBCODE.click = function buttonCopyBCODE_click (event)// @startlock
 	{// @endlock
 		clipboard = convertCommandsToAttribute();
 		notification.log('Command list copied');
@@ -574,94 +700,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	assayEvent.onCurrentElementChange = function assayEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		brevicode = convertAttributeToCommands(event.dataSource.GCODE);
+		brevicode = convertAttributeToCommands(event.dataSource.BCODE);
 		sources.brevicode.sync();
 	};// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		commands = [
-			{
-				num: '0',
-				name: 'Start Assay',
-				description: 'Starts the assay. Required to be the first command. Assay executes until Finish Assay command. Parameters are (sensor integration time, sensor gain).'
-			},
-			{
-				num: '1',
-				name: 'Delay',
-				description: 'Waits for specified period of time. Parameter is (delay in milliseconds).'
-			},
-			{
-				num: '2',
-				name: 'Move',
-				description: 'Moves the stage a specified number of steps at a specified speed. Parameters are (number of steps, step delay time in microseconds).'
-			},
-			{
-				num: '3',
-				name: 'Solenoid On',
-				description: 'Energizes the solenoid for a specified amount of time. Parameter is (energize period in milliseconds).'
-			},
-			{
-				num: '4',
-				name: 'Device LED On',
-				description: 'Turns on the device LED, which is visible outside the device. No parameters.'
-			},
-			{
-				num: '5',
-				name: 'Device LED Off',
-				description: 'Turns off the device LED. No parameters.'
-			},
-			{
-				num: '6',
-				name: 'Device LED Blink',
-				description: 'Blinks the device LED at a specified rate. Parameter is (period in milliseconds between change in LED state).'
-			},
-			{
-				num: '7',
-				name: 'Sensor LED On',
-				description: 'Turns on the sensor LED at a given power. Parameter is (power, from 0 to 255).'
-			},
-			{
-				num: '8',
-				name: 'Sensor LED Off',
-				description: 'Turns off the sensor LED. No parameters.'
-			},
-			{
-				num: '9',
-				name: 'Read Sensors',
-				description: 'Takes readings from the sensors. Parameter is (number of samples, from 1 to 10).'
-			},
-			{
-				num: '10',
-				name: 'Read QR Code',
-				description: 'Reads the cartridge QR code. No parameters. [NOT IMPLEMENTED]'
-			},
-			{
-				num: '11',
-				name: 'Disable Sensor',
-				description: 'Disables the sensors, switching them to low-power mode. No parameters.'
-			},
-			{
-				num: '12',
-				name: 'Repeat Begin',
-				description: 'Begins a block of commands that will be repeated a specified number of times. Nesting is acceptable. Parameter is (number of interations).'
-			},
-			{
-				num: '12',
-				name: 'Repeat End',
-				description: 'Ends the innermost block of repeated commands. No parameters.'
-			},
-			{
-				num: '12',
-				name: 'Status',
-				description: 'Changes the device status register, which used in remote monitoring. DO NOT USE COMMAS! Parameters are (message length, message text).'
-			},
-			{
-				num: '99',
-				name: 'Finish Assay',
-				description: 'Finishes the assay. Required to be the final command. No parameters.'
-			}
-		];
+		commands = brevitestCommands;
 		sources.commands.sync();
 	};// @lock
 
@@ -760,7 +805,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonSaveAssay.click = function buttonSaveAssay_click (event)// @startlock
 	{// @endlock
-		sources.assay.GCODE = convertCommandsToAttribute();
+		sources.assay.BCODE = convertCommandsToAttribute();
 		sources.assay.save(
 			{
 				onSuccess: function(evt) {
@@ -911,8 +956,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
-	WAF.addListener("menuItemResults", "click", menuItemResults.click, "WAF");
-	WAF.addListener("deviceResults", "onCurrentElementChange", deviceResultsEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("assayData", "onCurrentElementChange", assayDataEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("menuItemData", "click", menuItemData.click, "WAF");
+	WAF.addListener("menuItemFlash", "click", menuItemFlash.click, "WAF");
+	WAF.addListener("deviceFlash", "onCurrentElementChange", deviceFlashEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("assayTest", "onCurrentElementChange", assayTestEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("checkboxTestStatus", "change", checkboxTestStatus.change, "WAF");
 	WAF.addListener("buttonTestStatus", "click", buttonTestStatus.click, "WAF");
@@ -929,8 +976,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonSaveDevice", "click", buttonSaveDevice.click, "WAF");
 	WAF.addListener("buttonCancelDevice", "click", buttonCancelDevice.click, "WAF");
 	WAF.addListener("buttonGetStoredData", "click", buttonGetStoredData.click, "WAF");
-	WAF.addListener("buttonPasteGCODE", "click", buttonPasteGCODE.click, "WAF");
-	WAF.addListener("buttonCopyGCODE", "click", buttonCopyGCODE.click, "WAF");
+	WAF.addListener("buttonPasteBCODE", "click", buttonPasteBCODE.click, "WAF");
+	WAF.addListener("buttonCopyBCODE", "click", buttonCopyBCODE.click, "WAF");
 	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
 	WAF.addListener("buttonDeleteCommand", "click", buttonDeleteCommand.click, "WAF");
