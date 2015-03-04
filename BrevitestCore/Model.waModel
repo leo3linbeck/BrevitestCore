@@ -27,11 +27,11 @@
 				"panelColor": "#D88CFF",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 465,
 						"Y": 20
-					},
-					"pathVisible": true
+					}
 				}
 			},
 			"Billing": {
@@ -58,6 +58,7 @@
 				"panelColor": "#76923C",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 1287,
 						"Y": 340
@@ -251,8 +252,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 381,
-			"workspaceTop": 0,
+			"workspaceLeft": 48,
+			"workspaceTop": 984,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -506,9 +507,9 @@
 				{
 					"name": "BCODE",
 					"kind": "storage",
+					"matchColumn": "GCODE",
 					"scope": "public",
-					"type": "string",
-					"matchColumn": "GCODE"
+					"type": "string"
 				},
 				{
 					"name": "redMax",
@@ -874,6 +875,13 @@
 					"scope": "public",
 					"type": "Shipment",
 					"path": "Shipment"
+				},
+				{
+					"name": "registeredBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
 				}
 			],
 			"methods": [
@@ -1197,6 +1205,20 @@
 					"scope": "public",
 					"type": "date",
 					"simpleDate": false
+				},
+				{
+					"name": "registeredBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
+				},
+				{
+					"name": "registrar",
+					"scope": "public",
+					"type": "string",
+					"kind": "alias",
+					"path": "registeredBy.username"
 				}
 			],
 			"methods": [
@@ -2260,9 +2282,9 @@
 				{
 					"name": "BCODE",
 					"kind": "storage",
+					"matchColumn": "GCODE",
 					"scope": "public",
-					"type": "string",
-					"matchColumn": "GCODE"
+					"type": "string"
 				},
 				{
 					"name": "physicianInstruction",
@@ -2471,6 +2493,22 @@
 					"scope": "public",
 					"type": "Practice",
 					"path": "Practice"
+				},
+				{
+					"name": "cartridges",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Cartridges",
+					"reversePath": true,
+					"path": "registeredBy"
+				},
+				{
+					"name": "devices",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Devices",
+					"reversePath": true,
+					"path": "registeredBy"
 				}
 			]
 		}

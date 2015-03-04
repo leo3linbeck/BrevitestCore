@@ -3,6 +3,45 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label23 {
+	height: 18px;
+	top: 103px;
+	left: 56px;
+	right: 0px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 17;
+}
+
+#label22 {
+	height: 18px;
+	top: 173px;
+	left: 75px;
+	right: 0px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 15;
+}
+
+#label17 {
+	height: 18px;
+	top: 138px;
+	left: 77px;
+	right: 0px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 12;
+}
+
+#htmlTag2 {
+	position: absolute;
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+}
+
 #richText8 {
 	z-index: 1;
 	width: 66px;
@@ -150,9 +189,9 @@
 }
 
 #label13 {
-	z-index: 12;
+	z-index: 11;
 	width: 220px;
-	top: 102px;
+	top: 248px;
 	bottom: 249px;
 	left: 61px;
 	position: absolute;
@@ -172,9 +211,9 @@
 
 #label8 {
 	z-index: 3;
-	top: 101px;
+	top: 246px;
 	bottom: 250px;
-	left: 322px;
+	left: 471.5px;
 	right: -104px;
 	position: absolute;
 	font-size: 16px;
@@ -232,7 +271,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: 70px;
+	left: -64px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -443,7 +482,7 @@
 	z-index: 7;
 	width: 94px;
 	height: 18px;
-	top: 243px;
+	top: 163px;
 	left: 210px;
 	position: absolute;
 	font-size: 16px;
@@ -462,7 +501,7 @@
 
 #textFieldDeviceStatus {
 	z-index: 8;
-	height: 190px;
+	height: 108px;
 	top: 34px;
 	left: 190px;
 	right: 10px;
@@ -479,7 +518,7 @@
 	z-index: 7;
 	width: 14px;
 	height: 16px;
-	top: 244px;
+	top: 164px;
 	left: 191px;
 	position: absolute;
 }
@@ -488,7 +527,7 @@
 	z-index: 6;
 	width: 160px;
 	height: 44px;
-	top: 228px;
+	top: 148px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
@@ -498,7 +537,7 @@
 	z-index: 5;
 	width: 160px;
 	height: 44px;
-	top: 174px;
+	top: 93px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
@@ -508,7 +547,7 @@
 	z-index: 4;
 	width: 160px;
 	height: 44px;
-	top: 120px;
+	top: 40px;
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
@@ -516,7 +555,7 @@
 
 #containerCommand {
 	z-index: 1;
-	height: 286px;
+	height: 213px;
 	bottom: 5px;
 	left: 277px;
 	right: 320px;
@@ -594,7 +633,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 670px;
+	bottom: 1058px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
@@ -628,21 +667,11 @@
 }
 
 #buttonRegisterDevice {
-	z-index: 2;
-	width: 160px;
+	z-index: 5;
 	height: 44px;
-	top: 12px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#buttonSetSerialNumber {
-	z-index: 3;
-	width: 160px;
-	height: 44px;
-	top: 66px;
-	left: 17px;
+	bottom: 117px;
+	left: 417px;
+	right: 82px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -1033,8 +1062,8 @@
 
 #textFieldDeviceNotes {
 	z-index: 3;
-	top: 124px;
-	bottom: 67px;
+	top: 269px;
+	bottom: 173px;
 	left: 343px;
 	right: 15px;
 	position: absolute;
@@ -1051,20 +1080,20 @@
 
 #buttonSaveDevice {
 	z-index: 5;
-	width: 160px;
 	height: 44px;
-	bottom: 15px;
-	right: 194px;
+	bottom: 64px;
+	left: 418px;
+	right: 81px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #buttonCancelDevice {
 	z-index: 4;
-	width: 160px;
 	height: 44px;
-	bottom: 15px;
-	right: 14px;
+	bottom: 11px;
+	left: 418px;
+	right: 81px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -1100,7 +1129,7 @@
 #dataGridDeviceModel {
 	z-index: 11;
 	width: 317px;
-	top: 125px;
+	top: 271px;
 	bottom: 14px;
 	left: 13px;
 	position: absolute;
@@ -1110,7 +1139,7 @@
 #containerSparkDevice {
 	z-index: 6;
 	top: 5px;
-	bottom: 292px;
+	bottom: 219px;
 	left: 277px;
 	right: 320px;
 	position: absolute;
@@ -1355,21 +1384,6 @@
 	left: 17px;
 	position: absolute;
 	font-size: 16px;
-}
-
-#textFieldAssayResults {
-	z-index: 4;
-	top: 95px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 10px;
 }
 
 #menuItemFlash {
@@ -1738,5 +1752,65 @@
 	left: 31px;
 	position: absolute;
 	font-size: 14px;
+}
+
+#textFieldRegisteredBy {
+	height: 30px;
+	top: 132px;
+	left: 183px;
+	right: 29px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
+	z-index: 13;
+}
+
+#textFieldRegisteredOn {
+	height: 30px;
+	top: 167px;
+	left: 183px;
+	right: 29px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
+	z-index: 15;
+}
+
+#textFieldManufacturedOn {
+	height: 30px;
+	top: 97px;
+	left: 183px;
+	right: 33px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
+	z-index: 17;
+}
+
+#textFieldAssayFlash {
+	z-index: 4;
+	top: 95px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+	font-size: 10px;
 }
 

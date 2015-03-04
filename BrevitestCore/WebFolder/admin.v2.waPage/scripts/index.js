@@ -49,7 +49,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonGetStatus = {};	// @button
 	var buttonCancelProcess = {};	// @button
 	var buttonSensorData = {};	// @button
-	var buttonSetSerialNumber = {};	// @button
 	var buttonRegisterDevice = {};	// @button
 // @endregion// @endlock
 
@@ -263,17 +262,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				{
 					onSuccess: function(event) {
 						if(event.dataSource.ID) {
-							if (event.dataSource.online) {
-								$$('containerSparkDevice').show();
-								$$('containerCommand').show();
-								$$('containerAttributes').show();
-								sources.deviceModel.all({onSuccess: function(evt) {return;} });
-							}
-							else {
-								$$('containerSparkDevice').hide();
-								$$('containerCommand').hide();
-								$$('containerAttributes').hide();
-							}
+							$$('containerSparkDevice').show();
+							$$('containerCommand').show();
+							$$('containerAttributes').show();
 						}
 						else {
 							$$('containerSparkDevice').hide();
@@ -414,6 +405,75 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				}
 		);
 	}
+	
+	function saveDevice(callback) {
+		var r = validateSerialNumber(sources.deviceSpark.serialNumber);
+		if (r.valid) {
+			sources.deviceSpark.deviceModel.set(sources.deviceModel);
+			sources.deviceSpark.online = sources.sparkCores.connected;
+			sources.deviceSpark.save(
+				{
+					onSuccess: function(event) {
+							if (callback) {
+								callback(event);
+							}
+							else {
+								notification.log('Device saved');
+							}
+						},
+					onError: function(error) {
+							notification.error('ERROR: ' + error.error[0].message);
+						}
+				}
+			);
+		}
+		else {
+			notification.error(r.errorMsg);	
+		}
+	}
+	
+	function registerDevice() {
+		if (sources.sparkCores.connected) {
+			if (sources.deviceSpark.registeredOn) {
+				notification.error('This device is already registered');
+			}
+			else {
+				var user = WAF.directory.currentUser();
+				if (user) {
+					sources.deviceSpark.register(
+						{
+							onSuccess: function(event) {
+									sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
+									if (event.result) {
+										notification.log('Device registered');
+									}
+									else {
+										notification.error('ERROR: Device not registered');
+									}
+								},
+							onError: function(err) {
+									notification.error('SYSTEM ERROR: ' + err.error[0].message);
+								}
+						},
+						{
+							username: user.userName,
+							deviceID: sources.deviceSpark.ID,
+							sparkCoreID: sources.sparkCores.id,
+							sparkCoreName: sources.sparkCores.name,
+							sparkCoreLastHeard: sources.sparkCores.last_heard,
+							serialNumber: sources.deviceSpark.serialNumber
+						}
+					);
+				}
+				else {
+					notification.error('You must be signed in to register cartridges');
+				}
+			}
+		}
+		else {
+			notification.error('Device must be online to register');
+		}
+	}
 
 // eventHandlers// @lock
 
@@ -503,39 +563,34 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
 	{// @endlock
-		sources.test.start(
-			{
-				onSuccess: function(evt) {
-						if (evt.result.success) {
-							notification.log('Test started');
-							loadUnusedCartridgesByAssay(sources.assayTest.ID, sources.cartridgeUnused);
+		var user = WAF.directory.currentUser();
+		
+		if (user) {
+			sources.test.start(
+				{
+					onSuccess: function(evt) {
+							if (evt.result.success) {
+								notification.log('Test started');
+								loadUnusedCartridgesByAssay(sources.assayTest.ID, sources.cartridgeUnused);
+							}
+							else {
+								notification.error('ERROR: ' + evt.result.message + ' - test not started');
+							}
+						},
+					onError: function(err) {
+							notification.error('SYSTEM ERROR: ' + err.error[0].message);
 						}
-						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not started');
-						}
-					},
-				onError: function(err) {
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				username: WAF.directory.currentUser().userName,
-				deviceID: sources.device.ID,
-				cartridgeID: sources.cartridgeUnused.ID
-			}
-		);
-//		callSpark(this, 'ready_to_run_assay', [sources.device.sparkCoreID], function(evt) {
-//				if (evt.response.return_value !== -1) {
-//					callSpark(this, 'run_assay', [sources.device.sparkCoreID], function(e) {
-//							notification.log('Assay started');
-//						}
-//					);
-//				}
-//				else {
-//					notification.error('Device not ready - please initialize and insert cartridge');
-//				}
-//			}
-//		);
+				},
+				{
+					username: user.userName,
+					deviceID: sources.device.ID,
+					cartridgeID: sources.cartridgeUnused.ID
+				}
+			);
+		}
+		else {
+			notification.error('You must be signed in to run a test');	
+		}
 	};// @lock
 
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
@@ -601,60 +656,59 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRegisterCartridges.click = function buttonRegisterCartridges_click (event)// @startlock
 	{// @endlock
-		sources.cartridge.manufacture(
-			{
-				onSuccess: function(evt) {
-						if (evt.result) {
-							notification.log(evt.result + ' cartridges registered');
-							loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
+		var user = WAF.directory.currentUser();
+		if (user) {
+			sources.cartridge.manufacture(
+				{
+					onSuccess: function(evt) {
+							if (evt.result) {
+								notification.log(evt.result + ' cartridges registered');
+								loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
+							}
+							else {
+								notification.error('ERROR: No cartridges registered');
+							}
+						},
+					onError: function(err) {
+							notification.error('SYSTEM ERROR: ' + err.error[0].message);
 						}
-						else {
-							notification.error('ERROR: No cartridges registered');
-						}
-					},
-				onError: function(err) {
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				username: WAF.directory.currentUser().userName,
-				assayID: sources.assayCartridge.ID,
-				quantity: (numberOfCartridges > 10 ? 10 : numberOfCartridges)
-			}
-		);
+				},
+				{
+					username: user.userName,
+					assayID: sources.assayCartridge.ID,
+					quantity: (numberOfCartridges > 10 ? 10 : numberOfCartridges)
+				}
+			);
+		}
+		else {
+			notification.error('You must be signed in to register cartridges');
+		}
 	};// @lock
 
 	deviceModelEvent.onCurrentElementChange = function deviceModelEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		sources.deviceSpark.deviceModel.set(event.dataSource);
+		sources.deviceSpark.serverRefresh({ onSuccess: function() {return;} });
 	};// @lock
 
 	buttonCreateNewDevice.click = function buttonCreateNewDevice_click (event)// @startlock
 	{// @endlock
 		sources.deviceSpark.addNewElement();
 		sources.deviceSpark.sparkCoreID = sources.sparkCores.id;
-		$$('containerSparkDevice').show();
+		sources.deviceModel.all({
+			onSuccess: function(evt) {
+					$$('containerSparkDevice').show();
+				},
+			onError: function(err) {
+					notification.error('SYSTEM ERROR: ' + err.error[0].message);
+				}
+		});
+
 	};// @lock
 
 	buttonSaveDevice.click = function buttonSaveDevice_click (event)// @startlock
 	{// @endlock
-		var r = validateSerialNumber(sources.deviceSpark.serialNumber);
-		if (r.valid) {
-			sources.deviceSpark.deviceModel.set(sources.deviceModel);
-			sources.deviceSpark.save(
-				{
-					onSuccess: function(evt) {
-							notification.log('Device saved');
-						},
-					onError: function(err) {
-							notification.error('ERROR: ' + err.error[0].message);
-						}
-				}
-			);
-		}
-		else {
-			notification.error(r.errorMsg);	
-		}
+		saveDevice();
 	};// @lock
 
 	buttonCancelDevice.click = function buttonCancelDevice_click (event)// @startlock
@@ -797,7 +851,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						notification.log('Assay deleted');
 					},
 				onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 					}
 			}
 		);
@@ -812,7 +866,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						notification.log('Assay saved');
 					},
 				onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 					}
 			}
 		);
@@ -826,7 +880,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						notification.log('Assay changes discarded');
 					},
 				onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 					},
 				forceReload: true
 			}
@@ -846,6 +900,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	menuItemDevice.click = function menuItemDevice_click (event)// @startlock
 	{// @endlock
 		getSparkCoreList(this, false);
+		sources.deviceModel.all({ onSuccess: function() {return;} });
 	};// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
@@ -912,7 +967,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonCancelProcess.click = function buttonCancelProcess_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'cancel_process', [sources.sparkCores.id], function(evt) {
-				notification.log('Process cancelled');
+				notification.log('Cancelling process');
 			}
 		);
 	};// @lock
@@ -925,34 +980,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonSetSerialNumber.click = function buttonSetSerialNumber_click (event)// @startlock
-	{// @endlock
-		var serial_number = window.prompt('Enter serial number:', 'XXXX-XXXX-XXXX-XXXX');
-		if (serial_number) {
-			var r = validateSerialNumber(serial_number);
-			if (r.valid) {
-				callSpark(this, 'set_serial_number', [sources.sparkCores.id, serial_number], function(evt) {
-						if (evt.response.return_value !== -1) {
-							notification.log('Serial number changed');
-						}
-						else {
-							notification.error('ERROR: Serial number not changed');
-						}
-					}
-				);
-			}
-			else {
-				notification.error(r.errorMsg);	
-			}
-		}
-	};// @lock
-
 	buttonRegisterDevice.click = function buttonRegisterDevice_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'initialize_device', [sources.sparkCores.id], function(evt) {
-				notification.log('Device initialization started');
-			}
-		);
+		saveDevice(registerDevice);
 	};// @lock
 
 // @region eventManager// @startlock
@@ -1003,7 +1033,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonGetStatus", "click", buttonGetStatus.click, "WAF");
 	WAF.addListener("buttonCancelProcess", "click", buttonCancelProcess.click, "WAF");
 	WAF.addListener("buttonSensorData", "click", buttonSensorData.click, "WAF");
-	WAF.addListener("buttonSetSerialNumber", "click", buttonSetSerialNumber.click, "WAF");
 	WAF.addListener("buttonRegisterDevice", "click", buttonRegisterDevice.click, "WAF");
 // @endregion
 };// @endlock
