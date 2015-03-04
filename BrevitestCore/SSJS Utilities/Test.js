@@ -1,1 +1,1 @@
-﻿var formatter = require('formatting');formatter.formatNumber(1234, '00000');
+﻿var spark = require('sparkCore');spark.read_serial_number('54ff6b066678574936520267');

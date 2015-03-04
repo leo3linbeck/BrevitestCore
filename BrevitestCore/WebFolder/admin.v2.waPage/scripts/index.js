@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var comboboxNewCommand = {};	// @combobox
 	var assayDataEvent = {};	// @dataSource
 	var menuItemData = {};	// @menuItem
 	var menuItemFlash = {};	// @menuItem
@@ -476,6 +477,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 // eventHandlers// @lock
+
+	comboboxNewCommand.change = function comboboxNewCommand_change (event)// @startlock
+	{// @endlock
+		newParam = '';
+		sources.newParam.sync();
+	};// @lock
 
 	assayDataEvent.onCurrentElementChange = function assayDataEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
@@ -986,6 +993,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("comboboxNewCommand", "change", comboboxNewCommand.change, "WAF");
 	WAF.addListener("assayData", "onCurrentElementChange", assayDataEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemData", "click", menuItemData.click, "WAF");
 	WAF.addListener("menuItemFlash", "click", menuItemFlash.click, "WAF");
