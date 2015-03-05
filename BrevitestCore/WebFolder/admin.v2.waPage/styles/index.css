@@ -3,34 +3,53 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#label23 {
+#label24 {
 	height: 18px;
-	top: 103px;
+	top: 63px;
+	left: 54px;
+	right: 0px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 16;
+}
+
+#htmlTag2 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#label23 {
+	z-index: 15;
+	height: 18px;
+	top: 133px;
 	left: 56px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 17;
 }
 
 #label22 {
+	z-index: 15;
 	height: 18px;
-	top: 173px;
+	top: 203px;
 	left: 75px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 15;
 }
 
 #label17 {
+	z-index: 13;
 	height: 18px;
-	top: 138px;
+	top: 168px;
 	left: 77px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 12;
 }
 
 #richText8 {
@@ -191,9 +210,9 @@
 }
 
 #label12 {
-	z-index: 10;
+	z-index: 9;
 	height: 18px;
-	top: 68px;
+	top: 98px;
 	left: 80px;
 	right: 82px;
 	position: absolute;
@@ -204,7 +223,7 @@
 	z-index: 3;
 	top: 246px;
 	bottom: 250px;
-	left: 471.5px;
+	left: 649.5px;
 	right: -104px;
 	position: absolute;
 	font-size: 16px;
@@ -213,10 +232,10 @@
 
 #label7 {
 	z-index: 2;
-	width: 103px;
 	height: 18px;
-	top: 33px;
+	top: 28px;
 	left: 74px;
+	right: 0px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -226,7 +245,7 @@
 	width: 10px;
 	height: 14px;
 	top: 26px;
-	left: 247px;
+	left: 267px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -262,7 +281,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: 70px;
+	left: -64px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -624,7 +643,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 944px;
+	bottom: 887px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
@@ -633,34 +652,34 @@
 #containerAssay {
 	z-index: 4;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
 #containerTest {
 	z-index: 5;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
 #containerDevice {
 	z-index: 6;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
 #buttonRegisterDevice {
 	z-index: 5;
 	height: 44px;
-	bottom: 117px;
+	bottom: 169px;
 	left: 417px;
 	right: 82px;
 	position: absolute;
@@ -1006,9 +1025,9 @@
 #containerCartridge {
 	z-index: 7;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
@@ -1036,7 +1055,7 @@
 #textFieldDeviceSerialNumber {
 	z-index: 2;
 	height: 32px;
-	top: 26px;
+	top: 21px;
 	left: 182px;
 	right: 24px;
 	position: absolute;
@@ -1054,7 +1073,7 @@
 #textFieldDeviceNotes {
 	z-index: 3;
 	top: 269px;
-	bottom: 173px;
+	bottom: 229px;
 	left: 343px;
 	right: 15px;
 	position: absolute;
@@ -1092,9 +1111,9 @@
 #textFieldDeviceModelName {
 	z-index: 9;
 	height: 30px;
-	top: 62px;
+	top: 92px;
 	left: 183px;
-	right: 25px;
+	right: 24px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1369,7 +1388,7 @@
 
 #buttonGetStoredData {
 	z-index: 2;
-	width: 160px;
+	width: 178px;
 	height: 44px;
 	top: 12px;
 	left: 17px;
@@ -1390,9 +1409,9 @@
 #containerFlash {
 	z-index: 8;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
@@ -1460,7 +1479,7 @@
 	width: 50px;
 	height: 36px;
 	top: 16px;
-	left: 192px;
+	left: 212px;
 	position: absolute;
 	font-size: 16px;
 	border-top-width: 3px;
@@ -1478,7 +1497,7 @@
 	width: 60px;
 	height: 37px;
 	top: 15px;
-	left: 262px;
+	left: 282px;
 	position: absolute;
 	font-size: 16px;
 	border-top-style: dotted;
@@ -1502,9 +1521,9 @@
 #containerData {
 	z-index: 9;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
@@ -1698,9 +1717,9 @@
 #containerHome {
 	z-index: 10;
 	top: 0px;
-	bottom: 15px;
+	bottom: 0px;
 	left: 0px;
-	right: 15px;
+	right: 0px;
 	position: absolute;
 }
 
@@ -1746,10 +1765,11 @@
 }
 
 #textFieldRegisteredBy {
+	z-index: 13;
 	height: 30px;
-	top: 132px;
+	top: 162px;
 	left: 183px;
-	right: 29px;
+	right: 24px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1757,14 +1777,14 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: left;
-	z-index: 13;
 }
 
 #textFieldRegisteredOn {
+	z-index: 15;
 	height: 30px;
-	top: 167px;
+	top: 197px;
 	left: 183px;
-	right: 29px;
+	right: 24px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1772,14 +1792,14 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: left;
-	z-index: 15;
 }
 
 #textFieldManufacturedOn {
+	z-index: 15;
 	height: 30px;
-	top: 97px;
+	top: 127px;
 	left: 183px;
-	right: 33px;
+	right: 24px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1787,7 +1807,6 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: left;
-	z-index: 17;
 }
 
 #textFieldAssayFlash {
@@ -1803,5 +1822,43 @@
 	border-bottom-style: dotted;
 	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
 	font-size: 10px;
+}
+
+#textFieldCalibrationSteps {
+	height: 32px;
+	top: 56px;
+	left: 182px;
+	right: 24px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	z-index: 17;
+}
+
+#buttonCheckCalibration {
+	height: 44px;
+	bottom: 117px;
+	left: 417px;
+	right: 86px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 18;
+}
+
+#buttonEraseAllFlashData {
+	width: 246px;
+	height: 44px;
+	top: 12px;
+	left: 397px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 7;
 }
 

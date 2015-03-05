@@ -1,1 +1,1 @@
-﻿var spark = require('sparkCore');spark.read_serial_number('54ff6b066678574936520267');
+﻿var spark = require('sparkCore');spark.read_serial_number('51ff6f065082554937400887');

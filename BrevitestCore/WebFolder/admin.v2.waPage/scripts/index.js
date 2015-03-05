@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonEraseAllFlashData = {};	// @button
+	var buttonCheckCalibration = {};	// @button
 	var comboboxNewCommand = {};	// @combobox
 	var assayDataEvent = {};	// @dataSource
 	var menuItemData = {};	// @menuItem
@@ -117,7 +119,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		{
 			num: '9',
 			name: 'Read Sensors',
-			description: 'Takes readings from the sensors. Parameter is (number of samples, from 1 to 10).'
+			description: 'Takes readings from the sensors. Parameters are (number of samples [1-10], milliseconds between samples).'
 		},
 		{
 			num: '10',
@@ -475,8 +477,54 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			notification.error('Device must be online to register');
 		}
 	}
+	
+	function checkDeviceCalibration() {
+		if (sources.sparkCores.connected) {
+			var user = WAF.directory.currentUser();
+			if (user) {
+				sources.deviceSpark.checkCalibration(
+					{
+						onSuccess: function(event) {
+								sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
+								if (event.result) {
+									notification.log('Device has moved to calibration point');
+								}
+								else {
+									notification.error('ERROR: Device not calibrated');
+								}
+							},
+						onError: function(err) {
+								notification.error('SYSTEM ERROR: ' + err.error[0].message);
+							}
+					},
+					{
+						username: user.userName,
+						deviceID: sources.deviceSpark.ID
+					}
+				);
+			}
+			else {
+				notification.error('You must be signed in to calibrate a device');
+			}
+		}
+	}
 
 // eventHandlers// @lock
+
+	buttonEraseAllFlashData.click = function buttonEraseAllFlashData_click (event)// @startlock
+	{// @endlock
+		if (window.confirm('Are you sure you want to erase all assay data in the flash memory of this device?')) {
+			callSpark(this, 'erase_archived_data', [sources.deviceFlash.sparkCoreID], function(evt) {
+					notification.log('Archived data erased');
+				}
+			);
+		}
+	};// @lock
+
+	buttonCheckCalibration.click = function buttonCheckCalibration_click (event)// @startlock
+	{// @endlock
+		saveDevice(checkDeviceCalibration);
+	};// @lock
 
 	comboboxNewCommand.change = function comboboxNewCommand_change (event)// @startlock
 	{// @endlock
@@ -634,17 +682,21 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	menuItemTest.click = function menuItemTest_click (event)// @startlock
 	{// @endlock
-		sources.assayTest.all({
-			onSuccess: function(evt) {
-					loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridgeUnused);
-			}
-		});
-
-		sources.device.all({
-			onSuccess: function(evt) {
-					return;
-			}
-		});
+		if (sources.assayTest.length === 0) {
+			sources.assayTest.all({
+				onSuccess: function(evt) {
+						loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridgeUnused);
+				}
+			});
+		}
+		
+		if (sources.device.length === 0) {
+			sources.device.all({
+				onSuccess: function(evt) {
+						return;
+				}
+			});
+		}
 	};// @lock
 
 	assayCartridgeEvent.onCurrentElementChange = function assayCartridgeEvent_onCurrentElementChange (event)// @startlock
@@ -906,8 +958,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	menuItemDevice.click = function menuItemDevice_click (event)// @startlock
 	{// @endlock
-		getSparkCoreList(this, false);
-		sources.deviceModel.all({ onSuccess: function() {return;} });
+		if (sources.sparkCores.length === 0) {
+			getSparkCoreList(this, false);
+		}
+		
+		if (sources.deviceModel.length === 0) {
+			sources.deviceModel.all({ onSuccess: function() {return;} });
+		}
 	};// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
@@ -993,6 +1050,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonEraseAllFlashData", "click", buttonEraseAllFlashData.click, "WAF");
+	WAF.addListener("buttonCheckCalibration", "click", buttonCheckCalibration.click, "WAF");
 	WAF.addListener("comboboxNewCommand", "change", comboboxNewCommand.change, "WAF");
 	WAF.addListener("assayData", "onCurrentElementChange", assayDataEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemData", "click", menuItemData.click, "WAF");

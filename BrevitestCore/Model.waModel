@@ -252,7 +252,7 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 48,
+			"workspaceLeft": 2,
 			"workspaceTop": 984,
 			"lastScriptLocation": {
 				"Cartridge": {
@@ -628,6 +628,10 @@
 				},
 				{
 					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
 					"from": "$mainModel.Assay.events.save",
 					"userDefined": true
 				}
@@ -646,8 +650,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "number",
@@ -683,6 +686,11 @@
 					"type": "Contract",
 					"path": "Contract"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -698,8 +706,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "number",
@@ -733,6 +740,11 @@
 					"scope": "public",
 					"type": "Billing",
 					"path": "Billing"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -943,8 +955,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "practice",
@@ -990,6 +1001,11 @@
 					"reversePath": true,
 					"path": "contract"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -1005,8 +1021,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "code",
@@ -1034,6 +1049,11 @@
 					"type": "Assays",
 					"reversePath": true,
 					"path": "cpt"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -1215,13 +1235,26 @@
 				},
 				{
 					"name": "registrar",
+					"kind": "alias",
 					"scope": "public",
 					"type": "string",
-					"kind": "alias",
 					"path": "registeredBy.username"
+				},
+				{
+					"name": "calibrationSteps",
+					"kind": "storage",
+					"scope": "public",
+					"type": "long"
 				}
 			],
 			"methods": [
+				{
+					"name": "checkCalibration",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Device.methods.checkCalibration",
+					"userDefined": true
+				},
 				{
 					"name": "checkSerialNumber",
 					"applyTo": "dataClass",
@@ -1498,8 +1531,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "orderedOn",
@@ -1590,6 +1622,11 @@
 					"scope": "public",
 					"type": "long",
 					"scriptKind": "javascript"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -1739,8 +1776,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "name",
@@ -1782,6 +1818,11 @@
 					"reversePath": true,
 					"path": "payer"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -1797,8 +1838,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "amount",
@@ -1825,6 +1865,11 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "string"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -2118,8 +2163,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "rate",
@@ -2162,6 +2206,11 @@
 					"scope": "public",
 					"type": "Contract",
 					"path": "Contract"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -2512,6 +2561,5 @@
 				}
 			]
 		}
-	],
-	"type": []
+	]
 }
