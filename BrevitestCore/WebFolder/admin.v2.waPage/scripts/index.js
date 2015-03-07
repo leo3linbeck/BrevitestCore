@@ -70,89 +70,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var clipboard = '';
 	
-	var brevitestCommands = [
-		{
-			num: '0',
-			name: 'Start Assay',
-			description: 'Starts the assay. Required to be the first command. Assay executes until Finish Assay command. Parameters are (sensor integration time, sensor gain).'
-		},
-		{
-			num: '1',
-			name: 'Delay',
-			description: 'Waits for specified period of time. Parameter is (delay in milliseconds).'
-		},
-		{
-			num: '2',
-			name: 'Move',
-			description: 'Moves the stage a specified number of steps at a specified speed. Parameters are (number of steps, step delay time in microseconds).'
-		},
-		{
-			num: '3',
-			name: 'Solenoid On',
-			description: 'Energizes the solenoid for a specified amount of time. Parameter is (energize period in milliseconds).'
-		},
-		{
-			num: '4',
-			name: 'Device LED On',
-			description: 'Turns on the device LED, which is visible outside the device. No parameters.'
-		},
-		{
-			num: '5',
-			name: 'Device LED Off',
-			description: 'Turns off the device LED. No parameters.'
-		},
-		{
-			num: '6',
-			name: 'Device LED Blink',
-			description: 'Blinks the device LED at a specified rate. Parameter is (period in milliseconds between change in LED state).'
-		},
-		{
-			num: '7',
-			name: 'Sensor LED On',
-			description: 'Turns on the sensor LED at a given power. Parameter is (power, from 0 to 255).'
-		},
-		{
-			num: '8',
-			name: 'Sensor LED Off',
-			description: 'Turns off the sensor LED. No parameters.'
-		},
-		{
-			num: '9',
-			name: 'Read Sensors',
-			description: 'Takes readings from the sensors. Parameters are (number of samples [1-10], milliseconds between samples).'
-		},
-		{
-			num: '10',
-			name: 'Read QR Code',
-			description: 'Reads the cartridge QR code. No parameters. [NOT IMPLEMENTED]'
-		},
-		{
-			num: '11',
-			name: 'Disable Sensor',
-			description: 'Disables the sensors, switching them to low-power mode. No parameters.'
-		},
-		{
-			num: '12',
-			name: 'Repeat Begin',
-			description: 'Begins a block of commands that will be repeated a specified number of times. Nesting is acceptable. Parameter is (number of interations).'
-		},
-		{
-			num: '13',
-			name: 'Repeat End',
-			description: 'Ends the innermost block of repeated commands. No parameters.'
-		},
-		{
-			num: '14',
-			name: 'Status',
-			description: 'Changes the device status register, which used in remote monitoring. Parameters are (message length, message text).'
-		},
-		{
-			num: '99',
-			name: 'Finish Assay',
-			description: 'Finishes the assay. Required to be the final command. No parameters.'
-		}
-	];
-	
 	function callSpark(that, funcName, params, callback, errorCallback) {
 		spinner.spin(that.domNode);
 		spark[funcName + 'Async']({
@@ -544,7 +461,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	menuItemFlash.click = function menuItemFlash_click (event)// @startlock
 	{// @endlock
-		sources.deviceFlash.all({ onSuccess: function(evt) {return;} });
+		if (sources.deviceFlash.length === 0) {
+			sources.deviceFlash.all({ onSuccess: function(evt) {return;} });
+		}
 	};// @lock
 
 	deviceFlashEvent.onCurrentElementChange = function deviceFlashEvent_onCurrentElementChange (event)// @startlock
@@ -788,14 +707,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonGetStoredData.click = function buttonGetStoredData_click (event)// @startlock
 	{// @endlock
 		if (assayNumber > 0 && assayNumber <= archiveSize) {
-			callSpark(this, 'request_archive_data', [sources.deviceFlash.sparkCoreID, assayNumber - 1], function(evt) {
-					notification.log('Archived assay results retrieved from device flash');
-					$$('textFieldAssayFlash').setValue(evt.data.join('\n'));
+			callSpark(this, 'request_test_data', [sources.deviceFlash.sparkCoreID, assayNumber - 1], function(evt) {
+					notification.log('Test results retrieved from device flash');
+					$$('textFieldTestFlash').setValue(evt.value);
 				}
 			);
 		}
 		else {
-			notification.error('Assay record number out of range');
+			notification.error('Test number out of range');
 		}
 	};// @lock
 
@@ -819,8 +738,21 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		commands = brevitestCommands;
-		sources.commands.sync();
+		spark.get_BCODE_commandsAsync({
+			'onSuccess': function(evt) {
+				if (evt.success) {
+					commands = evt.commands;
+					sources.commands.sync();
+					sources.assay.dispatch('onCurrentElementChange');
+				}
+				else {
+					notification.error('ERROR: BCODE commands failed to load');
+				}
+			},
+			'onError': function(err) {
+					notification.error('SYSTEM ERROR: ' + err.error[0].message);
+			}
+		});
 	};// @lock
 
 	buttonDeleteCommand.click = function buttonDeleteCommand_click (event)// @startlock

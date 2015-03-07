@@ -4,22 +4,22 @@
 */
 
 #label24 {
+	z-index: 16;
 	height: 18px;
 	top: 63px;
 	left: 54px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 16;
 }
 
 #htmlTag2 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #label23 {
@@ -223,7 +223,7 @@
 	z-index: 3;
 	top: 246px;
 	bottom: 250px;
-	left: 649.5px;
+	left: 322px;
 	right: -104px;
 	position: absolute;
 	font-size: 16px;
@@ -643,7 +643,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 887px;
+	bottom: 1072px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
@@ -651,7 +651,7 @@
 
 #containerAssay {
 	z-index: 4;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -660,7 +660,7 @@
 
 #containerTest {
 	z-index: 5;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -669,7 +669,7 @@
 
 #containerDevice {
 	z-index: 6;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1024,7 +1024,7 @@
 
 #containerCartridge {
 	z-index: 7;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1408,7 +1408,7 @@
 
 #containerFlash {
 	z-index: 8;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1520,7 +1520,7 @@
 
 #containerData {
 	z-index: 9;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1716,7 +1716,7 @@
 
 #containerHome {
 	z-index: 10;
-	top: 0px;
+	top: 15px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1809,22 +1809,8 @@
 	text-align: left;
 }
 
-#textFieldAssayFlash {
-	z-index: 4;
-	top: 95px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 10px;
-}
-
 #textFieldCalibrationSteps {
+	z-index: 17;
 	height: 32px;
 	top: 56px;
 	left: 182px;
@@ -1839,26 +1825,40 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 17;
 }
 
 #buttonCheckCalibration {
+	z-index: 18;
 	height: 44px;
 	bottom: 117px;
 	left: 417px;
 	right: 86px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 18;
 }
 
 #buttonEraseAllFlashData {
+	z-index: 7;
 	width: 246px;
 	height: 44px;
 	top: 12px;
 	left: 397px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 7;
+}
+
+#textFieldTestFlash {
+	z-index: 4;
+	top: 95px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+	font-size: 10px;
 }
 
