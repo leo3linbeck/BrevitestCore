@@ -15,7 +15,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var checkboxTestStatus = {};	// @checkbox
 	var buttonTestStatus = {};	// @button
 	var buttonCancelTest = {};	// @button
-	var buttonRunAssay = {};	// @button
+	var buttonRunTest = {};	// @button
 	var buttonInitDevice = {};	// @button
 	var deviceEvent = {};	// @dataSource
 	var menuItemTest = {};	// @menuItem
@@ -475,6 +475,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					sources.assayNumber.sync();
 					archiveSize = 0;
 					sources.archiveSize.sync();
+					$$('textFieldTestFlash').setValue('');
 				}
 			);
 		}
@@ -569,7 +570,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonRunAssay.click = function buttonRunAssay_click (event)// @startlock
+	buttonRunTest.click = function buttonRunTest_click (event)// @startlock
 	{// @endlock
 		var user = WAF.directory.currentUser();
 		
@@ -1030,7 +1031,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("checkboxTestStatus", "change", checkboxTestStatus.change, "WAF");
 	WAF.addListener("buttonTestStatus", "click", buttonTestStatus.click, "WAF");
 	WAF.addListener("buttonCancelTest", "click", buttonCancelTest.click, "WAF");
-	WAF.addListener("buttonRunAssay", "click", buttonRunAssay.click, "WAF");
+	WAF.addListener("buttonRunTest", "click", buttonRunTest.click, "WAF");
 	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");
 	WAF.addListener("device", "onCurrentElementChange", deviceEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemTest", "click", menuItemTest.click, "WAF");

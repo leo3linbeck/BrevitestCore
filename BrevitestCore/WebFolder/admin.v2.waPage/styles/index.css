@@ -3,6 +3,15 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#htmlTag2 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
 #iconUpdate.waf-state-state2 {
 	background-color: rgb(255, 255, 170);
 }
@@ -12,6 +21,7 @@
 	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	border-top-left-radius: 0px;
 	-moz-border-radius-topleft: 0px;
 	border-top-right-radius: 0px;
@@ -176,16 +186,6 @@
 	font-size: 12px;
 }
 
-#buttonRunAssay {
-	z-index: 3;
-	width: 160px;
-	height: 44px;
-	top: 66px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
 #buttonInitDevice {
 	z-index: 2;
 	width: 160px;
@@ -245,7 +245,7 @@
 	z-index: 3;
 	top: 246px;
 	bottom: 250px;
-	left: 322px;
+	left: 613px;
 	right: -104px;
 	position: absolute;
 	font-size: 16px;
@@ -303,7 +303,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: 70px;
+	left: -64px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -673,7 +673,7 @@
 
 #containerAssay {
 	z-index: 4;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -682,7 +682,7 @@
 
 #containerTest {
 	z-index: 5;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -691,7 +691,7 @@
 
 #containerDevice {
 	z-index: 6;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1028,7 +1028,7 @@
 
 #containerCartridge {
 	z-index: 7;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1412,7 +1412,7 @@
 
 #containerFlash {
 	z-index: 8;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1524,7 +1524,7 @@
 
 #containerData {
 	z-index: 9;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1720,7 +1720,7 @@
 
 #containerHome {
 	z-index: 10;
-	top: 15px;
+	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -1891,5 +1891,15 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
+}
+
+#buttonRunTest {
+	z-index: 3;
+	width: 160px;
+	height: 44px;
+	top: 66px;
+	left: 17px;
+	position: absolute;
+	font-size: 16px;
 }
 
