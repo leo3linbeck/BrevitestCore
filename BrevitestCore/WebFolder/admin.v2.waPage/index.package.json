@@ -66,6 +66,10 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/icon",
+			"type": "widget"
+		},
+		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"

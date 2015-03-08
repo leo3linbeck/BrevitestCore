@@ -3,6 +3,37 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#iconUpdate.waf-state-state2 {
+	background-color: rgb(255, 255, 170);
+}
+
+#iconUpdate.waf-state-state3 {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	border-top-left-radius: 0px;
+	-moz-border-radius-topleft: 0px;
+	border-top-right-radius: 0px;
+	-moz-border-radius-topright: 0px;
+	border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	border-bottom-right-radius: 0px;
+	-moz-border-radius-bottomright: 0px;
+	border-top-style: solid;
+	border-top-width: 3px;
+	border-top-color: transparent;
+	border-left-style: solid;
+	border-left-width: 3px;
+	border-left-color: transparent;
+	border-right-style: solid;
+	border-right-width: 3px;
+	border-right-color: transparent;
+	border-bottom-style: solid;
+	border-bottom-width: 3px;
+	border-bottom-color: transparent;
+}
+
 #label24 {
 	z-index: 16;
 	height: 18px;
@@ -11,15 +42,6 @@
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-}
-
-#htmlTag2 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
 }
 
 #label23 {
@@ -281,7 +303,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: -64px;
+	left: 70px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -294,7 +316,7 @@
 	width: 74px;
 	height: 16px;
 	top: 80px;
-	left: 108px;
+	left: 91px;
 	position: absolute;
 	text-align: center;
 	font-size: 14px;
@@ -315,7 +337,7 @@
 	height: 18px;
 	top: 151px;
 	left: 94px;
-	right: 287px;
+	right: 994px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -325,7 +347,7 @@
 	height: 18px;
 	top: 63px;
 	left: 132px;
-	right: 287px;
+	right: 994px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -824,24 +846,6 @@
 	right: 201px;
 	position: absolute;
 	font-size: 14px;
-}
-
-#textFieldNewCommand {
-	z-index: 1;
-	width: 272px;
-	height: 30px;
-	top: 101px;
-	left: 9px;
-	position: absolute;
-	border-top-width: 3px;
-	border-left-width: 3px;
-	border-right-width: 3px;
-	border-bottom-width: 3px;
-	font-size: 14px;
-	border-top-color: rgb(255, 0, 0);
-	border-left-color: rgb(255, 0, 0);
-	border-right-color: rgb(255, 0, 0);
-	border-bottom-color: rgb(255, 0, 0);
 }
 
 #buttonInsertTop {
@@ -1860,5 +1864,32 @@
 	border-bottom-style: dotted;
 	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
 	font-size: 10px;
+}
+
+#iconUpdate {
+	z-index: 8;
+	width: 32px;
+	height: 32px;
+	top: 99px;
+	left: 250px;
+	position: absolute;
+}
+
+#textFieldParams {
+	z-index: 1;
+	width: 239px;
+	height: 30px;
+	top: 101px;
+	left: 9px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
 }
 

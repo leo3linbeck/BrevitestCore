@@ -2,9 +2,11 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var iconUpdate = {};	// @icon
+	var brevicodeEvent = {};	// @dataSource
+	var monitorStatusEvent = {};	// @dataSource
 	var buttonEraseAllFlashData = {};	// @button
 	var buttonCheckCalibration = {};	// @button
-	var comboboxNewCommand = {};	// @combobox
 	var assayDataEvent = {};	// @dataSource
 	var menuItemData = {};	// @menuItem
 	var menuItemFlash = {};	// @menuItem
@@ -81,7 +83,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					}
 				}
 				else {
-					notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
+					if (errorCallback) {
+						errorCallback();
+					}
+					else {
+						notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
+					}
 				}
 			},
 			'onError': function(error) {
@@ -425,14 +432,49 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		}
 	}
-
+	
+//
+//
+//
+//
 // eventHandlers// @lock
+
+	iconUpdate.click = function iconUpdate_click (event)// @startlock
+	{// @endlock
+		brevicode[sources.brevicode.num] = $$('textFieldParams').getValue();
+		sources.brevicode.sync();
+	};// @lock
+//
+//
+//
+//
+	brevicodeEvent.onCurrentElementChange = function brevicodeEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		sources.commands.selectByKey(event.dataSource.code);
+	};// @lock
+
+	monitorStatusEvent.onAttributeChange = function monitorStatusEvent_onAttributeChange (event)// @startlock
+	{// @endlock
+		if (monitorStatus) {
+			$$('buttonTestStatus').disable();
+			$$('buttonGetStatus').disable();
+		}
+		else {
+			$$('buttonTestStatus').enable();
+			$$('buttonGetStatus').enable();
+		}
+
+	};// @lock
 
 	buttonEraseAllFlashData.click = function buttonEraseAllFlashData_click (event)// @startlock
 	{// @endlock
 		if (window.confirm('Are you sure you want to erase all assay data in the flash memory of this device?')) {
 			callSpark(this, 'erase_archived_data', [sources.deviceFlash.sparkCoreID], function(evt) {
 					notification.log('Archived data erased');
+					assayNumber = 0;
+					sources.assayNumber.sync();
+					archiveSize = 0;
+					sources.archiveSize.sync();
 				}
 			);
 		}
@@ -441,12 +483,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonCheckCalibration.click = function buttonCheckCalibration_click (event)// @startlock
 	{// @endlock
 		saveDevice(checkDeviceCalibration);
-	};// @lock
-
-	comboboxNewCommand.change = function comboboxNewCommand_change (event)// @startlock
-	{// @endlock
-		newParam = '';
-		sources.newParam.sync();
 	};// @lock
 
 	assayDataEvent.onCurrentElementChange = function assayDataEvent_onCurrentElementChange (event)// @startlock
@@ -508,13 +544,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	checkboxTestStatus.change = function checkboxTestStatus_change (event)// @startlock
 	{// @endlock
-		if(this.getValue()) { // turn on continuous status monitoring
-			$$('buttonTestStatus').disable();
+		if(monitorStatus) { // turn on continuous status monitoring
 			startStatusMonitoring($$('buttonTestStatus'), sources.device.sparkCoreID);
 		}
 		else { // turn off continuous status monitoring
 			stopStatusMonitoring();
-			$$('buttonTestStatus').enable();
 		}
 	};// @lock
 
@@ -941,13 +975,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	checkboxMonitorStatus.change = function checkboxMonitorStatus_change (event)// @startlock
 	{// @endlock
-		if(this.getValue()) { // turn on continuous status monitoring
-			$$('buttonGetStatus').disable();
+		if(monitorStatus) { // turn on continuous status monitoring
 			startStatusMonitoring($$('buttonGetStatus'), sources.sparkCores.id);
 		}
 		else { // turn off continuous status monitoring
 			stopStatusMonitoring();
-			$$('buttonGetStatus').enable();
 		}
 	};// @lock
 
@@ -956,6 +988,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		callSpark(this, 'get_status', [sources.sparkCores.id], function(evt) {
 				deviceStatus = evt.value;
 				sources.deviceStatus.sync();
+			},
+			function(err) {
+				return;	
 			}
 		);
 	};// @lock
@@ -982,9 +1017,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("iconUpdate", "click", iconUpdate.click, "WAF");
+	WAF.addListener("brevicode", "onCurrentElementChange", brevicodeEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("monitorStatus", "onAttributeChange", monitorStatusEvent.onAttributeChange, "WAF");
 	WAF.addListener("buttonEraseAllFlashData", "click", buttonEraseAllFlashData.click, "WAF");
 	WAF.addListener("buttonCheckCalibration", "click", buttonCheckCalibration.click, "WAF");
-	WAF.addListener("comboboxNewCommand", "change", comboboxNewCommand.change, "WAF");
 	WAF.addListener("assayData", "onCurrentElementChange", assayDataEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemData", "click", menuItemData.click, "WAF");
 	WAF.addListener("menuItemFlash", "click", menuItemFlash.click, "WAF");
