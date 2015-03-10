@@ -1,0 +1,63 @@
+TEST INFORMATION
+Record number:   0
+Test start time: Mon, 09 Mar 2015 20:26:48 GMT
+Test finish time: Mon, 09 Mar 2015 20:27:21 GMT
+Test UUID: 49C50BED66154497A33DB71E11FACE6E
+Number of sensor samples:  11
+BCODE version:   1
+BCODE length:  110
+
+DEVICE PARAMETERS
+step_delay_us:  1200
+stepper_wifi_ping_rate:   100
+stepper_wake_delay_ms:     5
+solenoid_surge_power: 255
+solenoid_surge_period_ms:   200
+solenoid_sustain_power: 100
+sensor_params: 393569
+sensor_ms_between_samples:   1000
+sensor_led_power:  20
+sensor_led_warmup_ms:  10000
+
+BCODE COMMANDS
+Start Assay  	235,1
+Move         	1000,1500
+Solenoid On  	275
+Read Sensors 	5,500
+Repeat Begin 	5
+Sensor LED On	50
+Move         	1000,1500
+Delay        	500
+Solenoid On  	275
+Delay        	500
+Repeat End   	
+Read Sensors 	6,500
+Sensor LED Off	
+Status       	14,Cycle complete
+Finish Assay 	
+
+SENSOR READINGS
+S	 n	       sensor read time       	  C  	  R  	  G  	  B
+
+Assay	 0	Mon, 09 Mar 2015 20:26:52 GMT	65535	65535	65535	65535
+Control	 0	Mon, 09 Mar 2015 20:26:52 GMT	65535	65535	65535	65535
+Assay	 1	Mon, 09 Mar 2015 20:26:52 GMT	65535	65535	65535	65535
+Control	 1	Mon, 09 Mar 2015 20:26:53 GMT	65535	65535	65535	65535
+Assay	 2	Mon, 09 Mar 2015 20:26:53 GMT	65535	65535	65535	65535
+Control	 2	Mon, 09 Mar 2015 20:26:53 GMT	65535	65535	65535	65535
+Assay	 3	Mon, 09 Mar 2015 20:26:54 GMT	65535	65535	65535	65535
+Control	 3	Mon, 09 Mar 2015 20:26:54 GMT	65535	65535	65535	65535
+Assay	 4	Mon, 09 Mar 2015 20:26:54 GMT	65535	65535	65535	65535
+Control	 4	Mon, 09 Mar 2015 20:26:55 GMT	65535	65535	65535	65535
+Assay	 0	Mon, 09 Mar 2015 20:27:17 GMT	65535	65535	65535	65535
+Control	 0	Mon, 09 Mar 2015 20:27:17 GMT	65535	65535	65535	65535
+Assay	 1	Mon, 09 Mar 2015 20:27:18 GMT	65535	65535	65535	65535
+Control	 1	Mon, 09 Mar 2015 20:27:18 GMT	65535	65535	65535	65535
+Assay	 2	Mon, 09 Mar 2015 20:27:18 GMT	65535	65535	65535	65535
+Control	 2	Mon, 09 Mar 2015 20:27:18 GMT	65535	65535	65535	65535
+Assay	 3	Mon, 09 Mar 2015 20:27:19 GMT	65535	65535	65535	65535
+Control	 3	Mon, 09 Mar 2015 20:27:19 GMT	65535	65535	65535	65535
+Assay	 4	Mon, 09 Mar 2015 20:27:20 GMT	65535	65535	65535	65535
+Control	 4	Mon, 09 Mar 2015 20:27:20 GMT	65535	65535	65535	65535
+Assay	 5	Mon, 09 Mar 2015 20:27:20 GMT	65535	65535	65535	65535
+Control	 5	Mon, 09 Mar 2015 20:27:21 GMT	65535	65535	65535	65535

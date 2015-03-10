@@ -1,5 +1,5 @@
 {
-	"name": "BrevitestCore/admin.v2.waPage/index.html",
+	"name": "BrevitestCore/control.waPage/index.html",
 	"version": "1.0.0",
 	"loadDependencies": [
 		{
@@ -8,15 +8,7 @@
 			"type": "core"
 		},
 		{
-			"id": "Widget/tabView",
-			"type": "widget"
-		},
-		{
-			"id": "Widget/menuBar",
-			"type": "widget"
-		},
-		{
-			"id": "Widget/menuItem",
+			"id": "Widget/login",
 			"type": "widget"
 		},
 		{
@@ -28,15 +20,7 @@
 			"type": "widget"
 		},
 		{
-			"id": "Widget/label",
-			"type": "widget"
-		},
-		{
 			"id": "Widget/button",
-			"type": "widget"
-		},
-		{
-			"id": "Widget/checkbox",
 			"type": "widget"
 		},
 		{
@@ -48,34 +32,12 @@
 			"type": "widget"
 		},
 		{
-			"id": "Widget/combobox",
-			"type": "widget"
-		},
-		{
-			"id": "BarCode/package.json",
-			"path": "WIDGETS_CUSTOM",
-			"type": "widget"
-		},
-		{
-			"id": "QR/package.json",
-			"path": "WIDGETS_CUSTOM",
-			"type": "widget"
-		},
-		{
-			"id": "Widget/login",
-			"type": "widget"
-		},
-		{
-			"id": "Widget/icon",
-			"type": "widget"
-		},
-		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"
 		},
 		{
-			"id": "admin.v2.waPage/styles/index.css",
+			"id": "control.waPage/styles/index.css",
 			"path": "WEBFOLDER",
 			"type": "style"
 		},
@@ -85,12 +47,22 @@
 			"type": "style"
 		},
 		{
-			"id": "admin.v2.waPage/styles/libnotify.css",
+			"id": "control.waPage/styles/libnotify.css",
 			"path": "WEBFOLDER",
 			"type": "style"
 		},
 		{
-			"id": "admin.v2.waPage/scripts/index.js",
+			"id": "control.waPage/scripts/index.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "Javascript/spin.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "admin.v2.waPage/scripts/humane.min.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		},
@@ -100,7 +72,7 @@
 			"type": "script"
 		},
 		{
-			"id": "Javascript/spin.js",
+			"id": "Javascript/d3.min.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		}

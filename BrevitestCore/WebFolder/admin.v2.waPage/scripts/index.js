@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var buttonRegisterCartridge = {};	// @button
+	var buttonResetData = {};	// @button
 	var iconUpdate = {};	// @icon
 	var brevicodeEvent = {};	// @dataSource
 	var monitorStatusEvent = {};	// @dataSource
@@ -186,24 +188,30 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 //			$$('containerAttributes').hide();
 //		}
 		sources.deviceSpark.query('sparkCoreID === :1',
-				{
-					onSuccess: function(event) {
-						if(event.dataSource.ID) {
-							$$('containerSparkDevice').show();
+			{
+				onSuccess: function(event) {
+					if(event.dataSource.ID) {
+						$$('containerSparkDevice').show();
+						if (event.dataSource.online) {
 							$$('containerCommand').show();
 							$$('containerAttributes').show();
 						}
 						else {
-							$$('containerSparkDevice').hide();
 							$$('containerCommand').hide();
 							$$('containerAttributes').hide();
 						}
-					},
-					onError: function(error) {
+					}
+					else {
 						$$('containerSparkDevice').hide();
-					},
-					params: [dataSource.id]
-				}
+						$$('containerCommand').hide();
+						$$('containerAttributes').hide();
+					}
+				},
+				onError: function(error) {
+					$$('containerSparkDevice').hide();
+				},
+				params: [dataSource.id]
+			}
 		);
 	}
 	
@@ -265,35 +273,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		return a;
 	}
 	
-	function loadUnusedCartridgesByAssay(assayID, dataSource) {
-		dataSource.query('startedOn === null AND assay.ID === :1',
-				{
-					onSuccess: function(evt) {
-						return;
-					},
-					onError: function(err) {
-						notification.error('ERROR: ' + err.error[0].message);
-					},
-					params: [assayID]
-				}
-		);
-	}
-
-	function loadUnusedCartridgesByID(cartridgeID) {
-		if (cartridgeID === '*') {
-			sources.cartridgeUnused.query('startedOn === null',
+	function loadCartridgesByAssay(assayID, raw, registered) {
+		if (raw) {
+			raw.query('registeredOn === null AND assay.ID === :1',
 					{
 						onSuccess: function(evt) {
 							return;
 						},
 						onError: function(err) {
 							notification.error('ERROR: ' + err.error[0].message);
-						}
+						},
+						params: [assayID]
 					}
 			);
 		}
-		else {
-			sources.cartridgeUnused.query('startedOn === null AND ID === :1',
+		
+		if (registered) {
+			registered.query('registeredOn !== null AND startedOn === null AND assay.ID === :1',
 					{
 						onSuccess: function(evt) {
 							return;
@@ -301,7 +297,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						onError: function(err) {
 							notification.error('ERROR: ' + err.error[0].message);
 						},
-						params: [cartridgeID]
+						params: [assayID]
 					}
 			);
 		}
@@ -320,7 +316,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function loadCompletedTestsByAssay(assayID, dataSource) {
-		dataSource.query('startedOn != null AND finishedOn != null AND assay.ID === :1',
+		dataSource.query('finishedOn != null AND assay.ID === :1',
 				{
 					onSuccess: function(evt) {
 						return;
@@ -373,13 +369,19 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 									sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
 									if (event.result) {
 										notification.log('Device registered');
+										$$('containerCommand').show();
+										$$('containerAttributes').show();
 									}
 									else {
 										notification.error('ERROR: Device not registered');
+										$$('containerCommand').hide();
+										$$('containerAttributes').hide();
 									}
 								},
 							onError: function(err) {
 									notification.error('SYSTEM ERROR: ' + err.error[0].message);
+									$$('containerCommand').hide();
+									$$('containerAttributes').hide();
 								}
 						},
 						{
@@ -393,7 +395,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					);
 				}
 				else {
-					notification.error('You must be signed in to register cartridges');
+					notification.error('You must be signed in to register a device');
 				}
 			}
 		}
@@ -432,12 +434,59 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		}
 	}
-	
+		
 //
 //
 //
 //
 // eventHandlers// @lock
+
+	buttonRegisterCartridge.click = function buttonRegisterCartridge_click (event)// @startlock
+	{// @endlock
+		var user = WAF.directory.currentUser();
+		if (user) {
+			sources.cartridgeRaw.register(
+				{
+					onSuccess: function(evt) {
+							if (evt.result) {
+								notification.log('Cartridge registered');
+								loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
+							}
+							else {
+								notification.error('ERROR: Cartridge not registered');
+							}
+						},
+					onError: function(err) {
+							notification.error('SYSTEM ERROR: ' + err.error[0].message);
+						}
+				},
+				{
+					username: user.userName,
+					cartridgeID: sources.cartridgeRaw.ID
+				}
+			);
+		}
+		else {
+			notification.error('You must be signed in to register a cartridge');
+		}
+	};// @lock
+
+	buttonResetData.click = function buttonResetData_click (event)// @startlock
+	{// @endlock
+		var user = WAF.directory.currentUser();
+		
+		if (user) {
+			if (window.confirm('Are you sure you want to erase all data in the database and add back some faux data? This action cannot be undone.')) {
+				callSpark(this, 'initialize_database', [], function(evt) {
+						notification.log('Database erased and initialized');
+					}
+				);
+			}
+		}
+		else {
+			notification.error('You must be signed in to reset the database');
+		}
+	};// @lock
 
 	iconUpdate.click = function iconUpdate_click (event)// @startlock
 	{// @endlock
@@ -468,16 +517,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonEraseAllFlashData.click = function buttonEraseAllFlashData_click (event)// @startlock
 	{// @endlock
-		if (window.confirm('Are you sure you want to erase all assay data in the flash memory of this device?')) {
-			callSpark(this, 'erase_archived_data', [sources.deviceFlash.sparkCoreID], function(evt) {
-					notification.log('Archived data erased');
-					assayNumber = 0;
-					sources.assayNumber.sync();
-					archiveSize = 0;
-					sources.archiveSize.sync();
-					$$('textFieldTestFlash').setValue('');
-				}
-			);
+		var user = WAF.directory.currentUser();
+		
+		if (user) {
+			if (window.confirm('Are you sure you want to erase all assay data in the flash memory of this device? This action cannot be undone.')) {
+				callSpark(this, 'erase_archived_data', [sources.deviceFlash.sparkCoreID], function(evt) {
+						notification.log('Archived data erased');
+						assayNumber = 0;
+						sources.assayNumber.sync();
+						archiveSize = 0;
+						sources.archiveSize.sync();
+						$$('textFieldTestFlash').setValue('');
+					}
+				);
+			}
+		}
+		else {
+			notification.error('You must be signed in to erase the flash memory on a device');
 		}
 	};// @lock
 
@@ -540,7 +596,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	assayTestEvent.onCurrentElementChange = function assayTestEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		loadUnusedCartridgesByAssay(event.dataSource.ID, sources.cartridgeUnused);
+		loadCartridgesByAssay(event.dataSource.ID, null, sources.cartridgeUnused);
 	};// @lock
 
 	checkboxTestStatus.change = function checkboxTestStatus_change (event)// @startlock
@@ -580,7 +636,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					onSuccess: function(evt) {
 							if (evt.result.success) {
 								notification.log('Test started');
-								loadUnusedCartridgesByAssay(sources.assayTest.ID, sources.cartridgeUnused);
+								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeUnused);
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
@@ -639,7 +695,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		if (sources.assayTest.length === 0) {
 			sources.assayTest.all({
 				onSuccess: function(evt) {
-						loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridgeUnused);
+					loadCartridgesByAssay(evt.dataSource.ID, null, sources.cartridgeUnused);
 				}
 			});
 		}
@@ -655,14 +711,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	assayCartridgeEvent.onCurrentElementChange = function assayCartridgeEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		loadUnusedCartridgesByAssay(event.dataSource.ID, sources.cartridge);
+		loadCartridgesByAssay(event.dataSource.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
 	};// @lock
 
 	menuItemCartridge.click = function menuItemCartridge_click (event)// @startlock
 	{// @endlock
 		sources.assayCartridge.all({
 			onSuccess: function(evt) {
-					loadUnusedCartridgesByAssay(evt.dataSource.ID, sources.cartridge);
+					loadCartridgesByAssay(evt.dataSource.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
 			}
 		});
 	};// @lock
@@ -671,12 +727,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		var user = WAF.directory.currentUser();
 		if (user) {
-			sources.cartridge.manufacture(
+			sources.cartridgeRaw.register(
 				{
 					onSuccess: function(evt) {
 							if (evt.result) {
 								notification.log(evt.result + ' cartridges registered');
-								loadUnusedCartridgesByAssay(sources.assayCartridge.ID, sources.cartridge);
+								loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw);
+								sources.assayTest.dispatch('onCurrentElementChange');
 							}
 							else {
 								notification.error('ERROR: No cartridges registered');
@@ -1018,6 +1075,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("buttonRegisterCartridge", "click", buttonRegisterCartridge.click, "WAF");
+	WAF.addListener("buttonResetData", "click", buttonResetData.click, "WAF");
 	WAF.addListener("iconUpdate", "click", iconUpdate.click, "WAF");
 	WAF.addListener("brevicode", "onCurrentElementChange", brevicodeEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("monitorStatus", "onAttributeChange", monitorStatusEvent.onAttributeChange, "WAF");
