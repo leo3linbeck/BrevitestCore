@@ -98,9 +98,9 @@
 #label16 {
 	z-index: 2;
 	top: 342px;
-	bottom: 308px;
-	left: 310px;
-	right: 219px;
+	bottom: 300px;
+	left: 563px;
+	right: 226px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -631,7 +631,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 662px;
+	bottom: 647px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
@@ -640,7 +640,7 @@
 #containerAssay {
 	z-index: 4;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -649,7 +649,7 @@
 #containerTest {
 	z-index: 5;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -658,7 +658,7 @@
 #containerDevice {
 	z-index: 6;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -995,7 +995,7 @@
 #containerCartridge {
 	z-index: 7;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1344,7 +1344,7 @@
 #containerFlash {
 	z-index: 8;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1456,7 +1456,7 @@
 #containerData {
 	z-index: 9;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1652,7 +1652,7 @@
 #containerHome {
 	z-index: 10;
 	top: 0px;
-	bottom: 0px;
+	bottom: -15px;
 	left: 0px;
 	right: 0px;
 	position: absolute;

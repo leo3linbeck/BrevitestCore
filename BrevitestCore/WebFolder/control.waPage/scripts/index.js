@@ -85,15 +85,149 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		});
 	}
 	
-	function updateGraph() {
-		notification.log('Switching tests');
+	function createOneGraph(objArray, sensorChar, leftHandGraph) {
+		var h, i, m, offset, w, x, y;
+		var clear = [];
+		var red = [];
+		var green = [];
+		var blue = [];
+		var margin = 20;
+		
+		for (i = 0; i < objArray.length; i += 1) {
+			if (objArray[i].sensor === sensorChar) {
+				clear.push(objArray[i].clear);
+				red.push(objArray[i].red);
+				green.push(objArray[i].green);
+				blue.push(objArray[i].blue);
+			}
+		}
+		
+		m = Math.max(d3.max(clear), d3.max(red), d3.max(green), d3.max(blue));
+		w = $$('containerGraph').getWidth()/2 - 4 * margin;
+		h = $$('containerGraph').getHeight() - 2 * margin;
+		offset = leftHandGraph ? 0 : $$('containerGraph').getWidth() + 2 * margin;
+		y = d3.scale.linear().domain([0, m]).range([0 + margin, h - margin]);
+		x = d3.scale.linear().domain([0, clear.length]).range([offset + margin, offset + w - margin]);
+			
+		var vis = d3.select("#containerGraph")
+			.append("svg:svg")
+			.attr("width", w)
+			.attr("height", h);
+		 
+		var g = vis.append("svg:g")
+			.attr("transform", 'translate(' + margin + ', ' + h + ')');
+
+		var line = d3.svg.line()
+			.x(function(d,i) { return x(i); })
+			.y(function(d) { return -1 * y(d); });
+
+		g.append("svg:path")
+			.attr("d", line(clear))
+			.style('fill', 'none')
+			.style('stroke', 'gray')
+			.style('stroke-width', 2);
+			
+		g.append("svg:path")
+			.attr("d", line(red))
+			.style('fill', 'none')
+			.style('stroke', 'red')
+			.style('stroke-width', 2);
+			
+		g.append("svg:path")
+			.attr("d", line(green))
+			.style('fill', 'none')
+			.style('stroke', 'green')
+			.style('stroke-width', 2);
+			
+		g.append("svg:path")
+			.attr("d", line(blue))
+			.style('fill', 'none')
+			.style('stroke', 'blue')
+			.style('stroke-width', 2);
+			
+		g.append("svg:line")
+			.style('stroke', 'black')
+			.attr("x1", x(0))
+			.attr("y1", -1 * y(0))
+			.attr("x2", x(w))
+			.attr("y2", -1 * y(0));
+ 
+		g.append("svg:line")
+			.style('stroke', 'black')
+			.attr("x1", x(0))
+			.attr("y1", -1 * y(0))
+			.attr("x2", x(0))
+			.attr("y2", -1 * y(m));
+
+		g.selectAll(".xLabel")
+			.clear(x.ticks(5))
+			.enter().append("svg:text")
+				.style('font-family', 'Arial')
+				.style('font-size', '9pt')
+				.attr("class", "xLabel")
+				.text(String)
+				.attr("x", function(d) { return x(d) })
+				.attr("y", 0)
+				.attr("text-anchor", "middle");
+ 
+		g.selectAll(".yLabel")
+			.clear(y.ticks(4))
+			.enter().append("svg:text")
+				.style('font-family', 'Arial')
+				.style('font-size', '9pt')
+				.attr("class", "yLabel")
+				.text(String)
+				.attr("x", 0)
+				.attr("y", function(d) { return -1 * y(d) })
+				.attr("text-anchor", "right")
+				.attr("dy", 4);
+
+		g.selectAll(".xTicks")
+			.clear(x.ticks(5))
+			.enter().append("svg:line")
+				.style('stroke', 'black')
+				.attr("class", "xTicks")
+				.attr("x1", function(d) { return x(d); })
+				.attr("y1", -1 * y(0))
+				.attr("x2", function(d) { return x(d); })
+				.attr("y2", -1 * y(-0.2));
+ 
+		g.selectAll(".yTicks")
+			.clear(y.ticks(4))
+			.enter().append("svg:line")
+				.style('stroke', 'black')
+				.attr("class", "yTicks")
+				.attr("y1", function(d) { return -1 * y(d); })
+				.attr("x1", x(-0.1))
+				.attr("y2", function(d) { return -1 * y(d); })
+				.attr("x2", x(0));
+
 	}
+	
+	function updateGraph(objArray) {
+		createOneGraph(objArray, 'A', true);
+		createOneGraph(objArray, 'C', false);
+	}
+
 
 // eventHandlers// @lock
 
 	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		updateGraph();
+		sources.test.rawDataPoints(
+			{
+				onSuccess: function(evt) {
+					console.log(evt);
+					updateGraph(evt.result);
+				},
+				onError: function(err) {
+					notification.error('SYSTEM ERROR: ' + err.error[0].message);
+				}
+			},
+			{
+				testID: event.dataSource.ID
+			}
+		);
 	};// @lock
 
 	loginHome.logout = function loginHome_logout (event)// @startlock
@@ -117,10 +251,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		if (WAF.directory.currentUser().userName) {
-			$$('containerTestActions').show();
-			$$('containerTestResults').show();
-		}
+		$$('containerTestActions').show();
+		$$('containerTestResults').show();
 	};// @lock
 
 	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock

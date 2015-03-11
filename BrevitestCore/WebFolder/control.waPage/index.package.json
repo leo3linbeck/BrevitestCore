@@ -32,6 +32,10 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/label",
+			"type": "widget"
+		},
+		{
 			"id": "brevitest/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"

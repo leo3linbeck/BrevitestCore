@@ -716,11 +716,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	menuItemCartridge.click = function menuItemCartridge_click (event)// @startlock
 	{// @endlock
-		sources.assayCartridge.all({
-			onSuccess: function(evt) {
-					loadCartridgesByAssay(evt.dataSource.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
-			}
-		});
+		if (sources.assayCartridge.length === 0) {
+			sources.assayCartridge.all({
+				onSuccess: function(evt) {
+						loadCartridgesByAssay(evt.dataSource.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
+				}
+			});
+		}
 	};// @lock
 
 	buttonRegisterCartridges.click = function buttonRegisterCartridges_click (event)// @startlock
@@ -830,21 +832,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		spark.get_BCODE_commandsAsync({
-			'onSuccess': function(evt) {
-				if (evt.success) {
-					commands = evt.commands;
-					sources.commands.sync();
-					sources.assay.dispatch('onCurrentElementChange');
+		if (commands.length = 0) {
+			spark.get_BCODE_commandsAsync({
+				'onSuccess': function(evt) {
+					if (evt.success) {
+						commands = evt.commands;
+						sources.commands.sync();
+						sources.assay.dispatch('onCurrentElementChange');
+					}
+					else {
+						notification.error('ERROR: BCODE commands failed to load');
+					}
+				},
+				'onError': function(err) {
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 				}
-				else {
-					notification.error('ERROR: BCODE commands failed to load');
-				}
-			},
-			'onError': function(err) {
-					notification.error('SYSTEM ERROR: ' + err.error[0].message);
-			}
-		});
+			});
+		}
 	};// @lock
 
 	buttonDeleteCommand.click = function buttonDeleteCommand_click (event)// @startlock

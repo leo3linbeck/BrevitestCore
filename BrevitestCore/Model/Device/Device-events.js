@@ -1,1 +1,1 @@
-﻿model.Device.listSNText.onGet = function() {	return (this.registeredOn === null ? 'Unregistered Device' : 'SN: ' + this.serialNumber);};model.Device.listModelSN.onGet = function() {	return (this.modelName + ' (SN: ' + this.serialNumber + ')');};
+﻿model.Device.listSNText.onGet = function() {	return (this.registeredOn === null ? 'Unregistered Device' : 'SN: ' + this.serialNumber);};model.Device.listModelSN.onGet = function() {	return (this.name + ' (SN: ' + this.serialNumber + ')');};
