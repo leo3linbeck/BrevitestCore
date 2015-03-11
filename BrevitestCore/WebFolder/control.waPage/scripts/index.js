@@ -11,6 +11,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonInitDevice = {};	// @button
 // @endregion// @endlock
 
+	var userLoggedIn;
+	
 	var spinnerOpts = {
 		color: '#CCC'
 	};
@@ -160,7 +162,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			.attr("y2", -1 * y(m));
 
 		g.selectAll(".xLabel")
-			.clear(x.ticks(5))
 			.enter().append("svg:text")
 				.style('font-family', 'Arial')
 				.style('font-size', '9pt')
@@ -171,7 +172,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				.attr("text-anchor", "middle");
  
 		g.selectAll(".yLabel")
-			.clear(y.ticks(4))
 			.enter().append("svg:text")
 				.style('font-family', 'Arial')
 				.style('font-size', '9pt')
@@ -217,7 +217,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.test.rawDataPoints(
 			{
 				onSuccess: function(evt) {
-					console.log(evt);
 					updateGraph(evt.result);
 				},
 				onError: function(err) {
@@ -234,12 +233,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		$$('containerTestActions').hide();
 		$$('containerTestResults').hide();
+		userLoggedIn.clear();
 	};// @lock
 
 	loginHome.login = function loginHome_login (event)// @startlock
 	{// @endlock
 		$$('containerTestActions').show();
 		$$('containerTestResults').show();
+		userLoggedIn = new localStorage;
 	};// @lock
 
 	deviceStatusEvent.onAttributeChange = function deviceStatusEvent_onAttributeChange (event)// @startlock
@@ -251,8 +252,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		$$('containerTestActions').show();
-		$$('containerTestResults').show();
+		if (userLoggedIn) {
+			$$('containerTestActions').show();
+			$$('containerTestResults').show();
+		}
 	};// @lock
 
 	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock
