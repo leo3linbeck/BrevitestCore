@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 743,
-			"workspaceTop": 0,
+			"workspaceLeft": 715,
+			"workspaceTop": 396,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -677,8 +677,7 @@
 				},
 				{
 					"kind": "save",
-					"from": "$mainModel.Assay.events.save",
-					"userDefined": true
+					"from": "$mainModel.Assay.events.save"
 				}
 			]
 		},
@@ -1244,26 +1243,14 @@
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript",
-					"onGet": [
-						{
-							"from": "$mainModel.Device.listSNText.onGet",
-							"userDefined": true
-						}
-					]
+					"scriptKind": "javascript"
 				},
 				{
 					"name": "listModelSN",
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript",
-					"onGet": [
-						{
-							"from": "$mainModel.Device.listModelSN.onGet",
-							"userDefined": true
-						}
-					]
+					"scriptKind": "javascript"
 				},
 				{
 					"name": "notes",
@@ -2141,13 +2128,7 @@
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript",
-					"onGet": [
-						{
-							"from": "$mainModel.Practice.googleMapAddress.onGet",
-							"userDefined": true
-						}
-					]
+					"scriptKind": "javascript"
 				}
 			]
 		},
@@ -2604,25 +2585,22 @@
 			],
 			"methods": [
 				{
+					"name": "monitor",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Test.methods.monitor"
+				},
+				{
 					"name": "rawDataPoints",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.rawDataPoints",
-					"userDefined": true
+					"from": "$mainModel.Test.methods.rawDataPoints"
 				},
 				{
 					"name": "start",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.start",
-					"userDefined": true
-				},
-				{
-					"name": "updateStatus",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.updateStatus",
-					"userDefined": true
+					"from": "$mainModel.Test.methods.start"
 				}
 			]
 		},

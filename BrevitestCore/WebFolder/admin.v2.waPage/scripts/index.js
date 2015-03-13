@@ -434,6 +434,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		}
 	}
+	
+	function startTestMonitor(testID, cartridgeID) {
+		sources.test.monitor(
+			{
+				onSuccess: function(evt) {
+						if (evt.result.success) {
+							notification.log('Test completed');
+						}
+						else {
+							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
+						}
+					},
+				onError: function(err) {
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
+					}
+			},
+			{
+				testID: testID,
+				cartridgeID: cartridgeID
+			}
+		);
+	}
 		
 //
 //
@@ -631,6 +653,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunTest.click = function buttonRunTest_click (event)// @startlock
 	{// @endlock
+		var cartridgeID = sources.cartridgeRegistered.ID;
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
@@ -642,6 +665,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 							if (evt.result.success) {
 								notification.log('Test started');
 								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
+								startTestMonitor(evt.result.testID, cartridgeID);
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
@@ -655,7 +679,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				{
 					username: user.userName,
 					deviceID: sources.device.ID,
-					cartridgeID: sources.cartridgeRegistered.ID
+					cartridgeID: cartridgeID
 				}
 			);
 		}

@@ -3,6 +3,15 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#htmlTag2 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
 #label25 {
 	z-index: 20;
 	height: 18px;
@@ -274,7 +283,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: 70px;
+	left: -64px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -622,7 +631,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 987px;
+	bottom: 661px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
