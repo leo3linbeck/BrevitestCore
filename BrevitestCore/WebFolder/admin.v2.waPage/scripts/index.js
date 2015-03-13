@@ -23,7 +23,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var menuItemTest = {};	// @menuItem
 	var assayCartridgeEvent = {};	// @dataSource
 	var menuItemCartridge = {};	// @menuItem
-	var buttonRegisterCartridges = {};	// @button
+	var buttonMakeCartridges = {};	// @button
 	var deviceModelEvent = {};	// @dataSource
 	var buttonCreateNewDevice = {};	// @button
 	var buttonSaveDevice = {};	// @button
@@ -218,9 +218,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	function getCommandObject() {
 		var i, r = {};
 		
-		r.code = $$('comboboxNewCommand').getValue();
+		r.code = newCode;
 		r.command = convertCodeToCommand(r.code);
-		r.params = newParam;
+		r.params = newParams;
 		
 		return r;
 	}
@@ -490,7 +490,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	iconUpdate.click = function iconUpdate_click (event)// @startlock
 	{// @endlock
-		brevicode[sources.brevicode.num] = $$('textFieldParams').getValue();
+		brevicode[sources.brevicode.getPosition()] = getCommandObject();
 		sources.brevicode.sync();
 	};// @lock
 //
@@ -499,7 +499,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 //
 	brevicodeEvent.onCurrentElementChange = function brevicodeEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		sources.commands.selectByKey(event.dataSource.code);
+		newCode = event.dataSource.code;
+		newParams = event.dataSource.params;
+		sources.newCode.sync();
+		sources.newParams.sync();
 	};// @lock
 
 	monitorStatusEvent.onAttributeChange = function monitorStatusEvent_onAttributeChange (event)// @startlock
@@ -596,7 +599,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	assayTestEvent.onCurrentElementChange = function assayTestEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		loadCartridgesByAssay(event.dataSource.ID, null, sources.cartridgeUnused);
+		loadCartridgesByAssay(event.dataSource.ID, null, sources.cartridgeRegistered);
 	};// @lock
 
 	checkboxTestStatus.change = function checkboxTestStatus_change (event)// @startlock
@@ -631,25 +634,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
+			spinner.spin(this.domNode);
 			sources.test.start(
 				{
 					onSuccess: function(evt) {
+							spinner.stop();
 							if (evt.result.success) {
 								notification.log('Test started');
-								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeUnused);
+								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
 							}
 						},
 					onError: function(err) {
+							spinner.stop();
 							notification.error('SYSTEM ERROR: ' + err.error[0].message);
 						}
 				},
 				{
 					username: user.userName,
 					deviceID: sources.device.ID,
-					cartridgeID: sources.cartridgeUnused.ID
+					cartridgeID: sources.cartridgeRegistered.ID
 				}
 			);
 		}
@@ -695,7 +701,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		if (sources.assayTest.length === 0) {
 			sources.assayTest.all({
 				onSuccess: function(evt) {
-					loadCartridgesByAssay(evt.dataSource.ID, null, sources.cartridgeUnused);
+					loadCartridgesByAssay(evt.dataSource.ID, null, sources.cartridgeRegistered);
 				}
 			});
 		}
@@ -725,32 +731,37 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	};// @lock
 
-	buttonRegisterCartridges.click = function buttonRegisterCartridges_click (event)// @startlock
+	buttonMakeCartridges.click = function buttonMakeCartridges_click (event)// @startlock
 	{// @endlock
 		var user = WAF.directory.currentUser();
 		if (user) {
-			sources.cartridgeRaw.register(
-				{
-					onSuccess: function(evt) {
-							if (evt.result) {
-								notification.log(evt.result + ' cartridges registered');
-								loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw);
-								sources.assayTest.dispatch('onCurrentElementChange');
+			if (numberOfCartridges > 10) {
+				notification.error('You cannot make more than 10 cartridges at a time');
+			}
+			else {
+				sources.cartridgeRaw.manufacture(
+					{
+						onSuccess: function(evt) {
+								if (evt.result) {
+									notification.log(evt.result + ' cartridges registered');
+									loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw);
+									sources.assayTest.dispatch('onCurrentElementChange');
+								}
+								else {
+									notification.error('ERROR: No cartridges registered');
+								}
+							},
+						onError: function(err) {
+								notification.error('SYSTEM ERROR: ' + err.error[0].message);
 							}
-							else {
-								notification.error('ERROR: No cartridges registered');
-							}
-						},
-					onError: function(err) {
-							notification.error('SYSTEM ERROR: ' + err.error[0].message);
-						}
-				},
-				{
-					username: user.userName,
-					assayID: sources.assayCartridge.ID,
-					quantity: (numberOfCartridges > 10 ? 10 : numberOfCartridges)
-				}
-			);
+					},
+					{
+						username: user.userName,
+						assayID: sources.assayCartridge.ID,
+						quantity: (numberOfCartridges > 10 ? 10 : numberOfCartridges)
+					}
+				);
+			}
 		}
 		else {
 			notification.error('You must be signed in to register cartridges');
@@ -832,7 +843,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		if (commands.length = 0) {
+		if (commands.length === 0) {
 			spark.get_BCODE_commandsAsync({
 				'onSuccess': function(evt) {
 					if (evt.success) {
@@ -909,6 +920,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonInsertAbove.click = function buttonInsertAbove_click (event)// @startlock
 	{// @endlock
+
 		var pos = sources.brevicode.getPosition();
 		pos = (pos < 0 ? 0 : pos);
 		brevicode.splice(pos, 0, getCommandObject());
@@ -1100,7 +1112,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("menuItemTest", "click", menuItemTest.click, "WAF");
 	WAF.addListener("assayCartridge", "onCurrentElementChange", assayCartridgeEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemCartridge", "click", menuItemCartridge.click, "WAF");
-	WAF.addListener("buttonRegisterCartridges", "click", buttonRegisterCartridges.click, "WAF");
+	WAF.addListener("buttonMakeCartridges", "click", buttonMakeCartridges.click, "WAF");
 	WAF.addListener("deviceModel", "onCurrentElementChange", deviceModelEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonCreateNewDevice", "click", buttonCreateNewDevice.click, "WAF");
 	WAF.addListener("buttonSaveDevice", "click", buttonSaveDevice.click, "WAF");

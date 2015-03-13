@@ -13,15 +13,6 @@
 	font-size: 16px;
 }
 
-#htmlTag2 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
-}
-
 #iconUpdate.waf-state-state2 {
 	background-color: rgb(255, 255, 170);
 }
@@ -99,7 +90,7 @@
 	z-index: 2;
 	top: 342px;
 	bottom: 300px;
-	left: 563px;
+	left: 310px;
 	right: 226px;
 	position: absolute;
 	font-size: 16px;
@@ -283,7 +274,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: -64px;
+	left: 70px;
 	right: 66px;
 	position: absolute;
 	text-align: center;
@@ -326,7 +317,7 @@
 	z-index: 1;
 	height: 18px;
 	top: 63px;
-	left: 130px;
+	left: 132px;
 	right: 994px;
 	position: absolute;
 	font-size: 16px;
@@ -611,7 +602,7 @@
 
 #tabViewControl {
 	z-index: 1;
-	top: 75px;
+	top: 76px;
 	bottom: 1px;
 	left: 1px;
 	right: 1px;
@@ -631,7 +622,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 647px;
+	bottom: 987px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
@@ -640,7 +631,7 @@
 #containerAssay {
 	z-index: 4;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -649,7 +640,7 @@
 #containerTest {
 	z-index: 5;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -658,7 +649,7 @@
 #containerDevice {
 	z-index: 6;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -995,7 +986,7 @@
 #containerCartridge {
 	z-index: 7;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1134,16 +1125,6 @@
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
 	text-align: center;
-	font-size: 16px;
-}
-
-#buttonRegisterCartridges {
-	z-index: 1;
-	width: 163px;
-	height: 44px;
-	bottom: 36px;
-	left: 11px;
-	position: absolute;
 	font-size: 16px;
 }
 
@@ -1344,7 +1325,7 @@
 #containerFlash {
 	z-index: 8;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1456,7 +1437,7 @@
 #containerData {
 	z-index: 9;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1652,7 +1633,7 @@
 #containerHome {
 	z-index: 10;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1895,5 +1876,15 @@
 	left: 330px;
 	position: absolute;
 	font-size: 12px;
+}
+
+#buttonMakeCartridges {
+	z-index: 1;
+	width: 163px;
+	height: 44px;
+	bottom: 36px;
+	left: 11px;
+	position: absolute;
+	font-size: 16px;
 }
 

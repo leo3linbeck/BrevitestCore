@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 717,
-			"workspaceTop": 421,
+			"workspaceLeft": 743,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -627,6 +627,10 @@
 				}
 			],
 			"events": [
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
 				{
 					"kind": "save",
 					"from": "$mainModel.Assay.events.save"
@@ -2406,6 +2410,12 @@
 					"onGet": [
 						{
 							"from": "$mainModel.Test.isComplete.onGet",
+							"userDefined": true
+						}
+					],
+					"onQuery": [
+						{
+							"from": "$mainModel.Test.isComplete.onQuery",
 							"userDefined": true
 						}
 					]
