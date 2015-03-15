@@ -456,6 +456,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);
 	}
+	
+	function updateBCODEDuration(BCODE) {
+		var str = BCODE ? BCODE : convertCommandsToAttribute();
+		spark.get_BCODE_durationAsync({
+			'onSuccess': function(event) {
+				estimatedDuration = event;
+				sources.estimatedDuration.sync();
+			},
+			'params': [str]
+		});
+	}
+
 		
 //
 //
@@ -514,6 +526,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		brevicode[sources.brevicode.getPosition()] = getCommandObject();
 		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 //
 //
@@ -851,6 +864,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		brevicode = convertAttributeToCommands(clipboard);
 		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonCopyBCODE.click = function buttonCopyBCODE_click (event)// @startlock
@@ -863,6 +877,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		brevicode = convertAttributeToCommands(event.dataSource.BCODE);
 		sources.brevicode.sync();
+		updateBCODEDuration(event.dataSource.BCODE);
 	};// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
@@ -889,7 +904,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonDeleteCommand.click = function buttonDeleteCommand_click (event)// @startlock
 	{// @endlock
 		brevicode.splice(sources.brevicode.getPosition(), 1);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonMoveDown.click = function buttonMoveDown_click (event)// @startlock
@@ -903,6 +919,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			brevicode.splice(pos, 0, code[0]);
 			sources.brevicode.select(pos);
 			sources.brevicode.sync();
+			updateBCODEDuration();
 		}
 	};// @lock
 
@@ -917,6 +934,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			brevicode.splice(pos, 0, code[0]);
 			sources.brevicode.select(pos);
 			sources.brevicode.sync();
+			updateBCODEDuration();
 		}
 	};// @lock
 
@@ -924,14 +942,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		brevicode.push(brevicode.splice(sources.brevicode.getPosition(), 1)[0]);
 		sources.brevicode.select(brevicode.length - 1);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonMoveToTop.click = function buttonMoveToTop_click (event)// @startlock
 	{// @endlock
 		brevicode.splice(0, 0, brevicode.splice(sources.brevicode.getPosition(), 1)[0]);
 		sources.brevicode.select(0);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonInsertBelow.click = function buttonInsertBelow_click (event)// @startlock
@@ -939,7 +959,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var pos = sources.brevicode.getPosition() + 1;
 		brevicode.splice(pos, 0, getCommandObject());
 		sources.brevicode.select(pos);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonInsertAbove.click = function buttonInsertAbove_click (event)// @startlock
@@ -949,21 +970,24 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		pos = (pos < 0 ? 0 : pos);
 		brevicode.splice(pos, 0, getCommandObject());
 		sources.brevicode.select(pos);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonAppendEnd.click = function buttonAppendEnd_click (event)// @startlock
 	{// @endlock
 		brevicode.push(getCommandObject());
 		sources.brevicode.select(brevicode.length - 1);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonInsertTop.click = function buttonInsertTop_click (event)// @startlock
 	{// @endlock
 		brevicode.splice(0, 0, getCommandObject());
 		sources.brevicode.select(0);
-		sources.brevicode.sync()
+		sources.brevicode.sync();
+		updateBCODEDuration();
 	};// @lock
 
 	buttonDeleteAssay.click = function buttonDeleteAssay_click (event)// @startlock
@@ -987,6 +1011,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			{
 				onSuccess: function(evt) {
 						notification.log('Assay saved');
+						updateBCODEDuration(sources.assay.BCODE);
 					},
 				onError: function(err) {
 						notification.error('SYSTEM ERROR: ' + err.error[0].message);

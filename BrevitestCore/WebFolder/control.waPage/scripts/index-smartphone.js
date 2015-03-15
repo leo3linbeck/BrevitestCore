@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var icon2 = {};	// @icon
 	var buttonReadyToTest = {};	// @button
 	var buttonTestResults = {};	// @button
 	var button1 = {};	// @button
@@ -11,7 +12,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonStartTest = {};	// @button
 	var buttonMonitorTest = {};	// @button
 	var buttonRun = {};	// @button
-	var login1 = {};	// @login
 // @endregion// @endlock
 
 	var spinnerOpts = {
@@ -175,6 +175,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	icon2.click = function icon2_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(1);
+	};// @lock
+
 	buttonReadyToTest.click = function buttonReadyToTest_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(3);
@@ -230,7 +235,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						},
 					onError: function(err) {
 							spinner.stop();
-							notification.error('SYSTEM ERROR: ' + err.error[0].message);
+                            notification.error('SYSTEM ERROR: ' + err.error[0].message);
 						}
 				},
 				{
@@ -247,6 +252,21 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonMonitorTest.click = function buttonMonitorTest_click (event)// @startlock
 	{// @endlock
+		sources.testInProgress.query('startedOn !== null AND finishedOn === null',
+			{
+				onSuccess: function(evt) {
+						if (evt.dataSource.length) {
+							console.log('query testInProgress');
+						}
+						else {
+							notification.log('No tests currently in progress');
+						}
+					},
+				onError: function(error) {
+						notification.error('SYSTEM ERROR: ' + error.error[0].message);
+					}
+			}
+		);
 		$$('navigationView1').goToView(4);
 	};// @lock
 
@@ -255,17 +275,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		$$('navigationView1').goToView(2);
 	};// @lock
 
-	login1.logout = function login1_logout (event)// @startlock
-	{// @endlock
-		disableAllButtons();
-	};// @lock
-
-	login1.login = function login1_login (event)// @startlock
-	{// @endlock
-		enableAllButtons();
-	};// @lock
-
 // @region eventManager// @startlock
+	WAF.addListener("icon2", "click", icon2.click, "WAF");
 	WAF.addListener("buttonReadyToTest", "click", buttonReadyToTest.click, "WAF");
 	WAF.addListener("buttonTestResults", "click", buttonTestResults.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");
@@ -275,7 +286,5 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonStartTest", "click", buttonStartTest.click, "WAF");
 	WAF.addListener("buttonMonitorTest", "click", buttonMonitorTest.click, "WAF");
 	WAF.addListener("buttonRun", "click", buttonRun.click, "WAF");
-	WAF.addListener("login1", "logout", login1.logout, "WAF");
-	WAF.addListener("login1", "login", login1.login, "WAF");
 // @endregion
 };// @endlock

@@ -52,6 +52,10 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/progressBar",
+			"type": "widget"
+		},
+		{
 			"id": "btios7/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"

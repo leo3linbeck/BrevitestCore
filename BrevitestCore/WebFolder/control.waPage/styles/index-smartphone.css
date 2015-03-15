@@ -3,7 +3,88 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label2 {
+	z-index: 4;
+	height: 16px;
+	bottom: 54px;
+	left: 8px;
+	right: 45px;
+	position: absolute;
+}
+
+#progressBar1 {
+	z-index: 4;
+	height: 29px;
+	bottom: 20px;
+	left: 8px;
+	right: 10px;
+	position: absolute;
+}
+
+#container3 .waf-widget.waf-clone-secondText3 {
+	position: absolute;
+}
+
+#secondText3 {
+	z-index: 4;
+	height: 20px;
+	top: 25px;
+	left: 20px;
+	right: 40px;
+	position: absolute;
+}
+
+#container3 .waf-widget.waf-clone-mainText3 {
+	position: absolute;
+}
+
+#mainText3 {
+	z-index: 1;
+	height: 20px;
+	top: 8px;
+	left: 20px;
+	right: 40px;
+	position: absolute;
+}
+
+#row3 {
+	z-index: 1;
+	height: 48px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#container3 {
+	z-index: 1;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#listView3 {
+	z-index: 2;
+	top: 1px;
+	bottom: 80px;
+	left: 1px;
+	right: 1px;
+	position: absolute;
+}
+
+#icon2 {
+	z-index: 3;
+	width: 28px;
+	height: 28px;
+	top: 8px;
+	right: 8px;
+	position: absolute;
+}
+
 #richText3 {
+	z-index: 14;
 	height: 22px;
 	top: 159px;
 	left: 7px;
@@ -11,10 +92,10 @@
 	position: absolute;
 	text-align: center;
 	font-weight: bold;
-	z-index: 14;
 }
 
 #textField12 {
+	z-index: 13;
 	height: 24px;
 	top: 209px;
 	left: 54px;
@@ -25,20 +106,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 13;
 }
 
 #label15 {
+	z-index: 12;
 	height: 14px;
 	top: 214px;
 	left: 17px;
-	right: 0px;
+	right: 284px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 12;
 }
 
 #textField11 {
+	z-index: 11;
 	height: 26px;
 	top: 120px;
 	left: 56px;
@@ -49,20 +130,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 11;
 }
 
 #label14 {
+	z-index: 11;
 	height: 14px;
 	top: 126px;
 	left: 16px;
-	right: 0px;
+	right: 282px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 11;
 }
 
 #textField10 {
+	z-index: 10;
 	height: 26px;
 	top: 90px;
 	left: 56px;
@@ -73,20 +154,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 10;
 }
 
 #label13 {
+	z-index: 10;
 	height: 14px;
 	top: 96px;
 	left: 18px;
-	right: 0px;
+	right: 282px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 10;
 }
 
 #richText2 {
+	z-index: 9;
 	height: 22px;
 	top: 11px;
 	left: 6px;
@@ -94,10 +175,10 @@
 	position: absolute;
 	text-align: center;
 	font-weight: bold;
-	z-index: 9;
 }
 
 #textField9 {
+	z-index: 8;
 	height: 24px;
 	top: 62px;
 	left: 56px;
@@ -108,20 +189,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 8;
 }
 
 #label12 {
+	z-index: 8;
 	height: 14px;
 	top: 67px;
 	left: 34px;
-	right: 0px;
+	right: 282px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 8;
 }
 
 #textField2 {
+	z-index: 6;
 	height: 24px;
 	top: 34px;
 	left: 56px;
@@ -132,20 +213,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 6;
 }
 
 #label11 {
+	z-index: 6;
 	height: 14px;
 	top: 39px;
 	left: 20px;
-	right: 0px;
+	right: 282px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 6;
 }
 
 #textField1 {
+	z-index: 4;
 	height: 24px;
 	top: 180px;
 	left: 55px;
@@ -156,27 +237,26 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 4;
 }
 
 #label3 {
+	z-index: 4;
 	height: 14px;
 	top: 185px;
 	left: 39px;
-	right: 0px;
+	right: 283px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 4;
 }
 
 #button1 {
+	z-index: 2;
 	height: 60px;
 	bottom: 82px;
 	left: 60px;
 	right: 60px;
 	position: absolute;
 	font-size: 20px;
-	z-index: 2;
 }
 
 #container1 .waf-widget.waf-clone-nextButton1 {
@@ -202,7 +282,7 @@
 	height: 14px;
 	top: 269px;
 	left: 13px;
-	right: 273px;
+	right: 288px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -237,7 +317,7 @@
 	height: 14px;
 	top: 124px;
 	left: 12px;
-	right: 271px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -261,7 +341,7 @@
 	height: 14px;
 	top: 94px;
 	left: 14px;
-	right: 271px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -285,7 +365,7 @@
 	height: 14px;
 	top: 65px;
 	left: 30px;
-	right: 271px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -309,7 +389,7 @@
 	height: 14px;
 	top: 37px;
 	left: 16px;
-	right: 271px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -319,7 +399,7 @@
 	height: 14px;
 	top: 240px;
 	left: 35px;
-	right: 272px;
+	right: 287px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -329,7 +409,7 @@
 	height: 14px;
 	bottom: 14px;
 	left: 12px;
-	right: 0px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -353,7 +433,7 @@
 	height: 14px;
 	bottom: 46px;
 	left: 14px;
-	right: 0px;
+	right: 286px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -846,22 +926,22 @@
 }
 
 #buttonTestResults {
+	z-index: 3;
 	height: 60px;
 	top: 254px;
 	left: 58px;
 	right: 60px;
 	position: absolute;
 	font-size: 20px;
-	z-index: 3;
 }
 
 #buttonReadyToTest {
+	z-index: 14;
 	height: 60px;
 	bottom: 22px;
 	left: 60px;
 	right: 60px;
 	position: absolute;
 	font-size: 20px;
-	z-index: 14;
 }
 
