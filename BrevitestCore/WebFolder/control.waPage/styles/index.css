@@ -3,8 +3,36 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#dataGridDeviceFlash {
+#textFieldAssayName {
 	z-index: 8;
+	height: 42px;
+	top: 13px;
+	left: 564px;
+	right: 10px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	font-size: 16px;
+}
+
+#label1 {
+	z-index: 8;
+	height: 18px;
+	top: 25px;
+	left: 473px;
+	right: 973px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#dataGridDeviceFlash {
+	z-index: 7;
 	width: 268px;
 	top: 12px;
 	bottom: 12px;
@@ -26,8 +54,8 @@
 #buttonCancelTest {
 	z-index: 3;
 	width: 160px;
-	height: 44px;
-	top: 120px;
+	height: 54px;
+	top: 144px;
 	left: 297px;
 	position: absolute;
 	font-size: 16px;
@@ -36,8 +64,8 @@
 #buttonRunTest {
 	z-index: 2;
 	width: 160px;
-	height: 44px;
-	top: 66px;
+	height: 54px;
+	top: 80px;
 	left: 297px;
 	position: absolute;
 	font-size: 16px;
@@ -46,8 +74,8 @@
 #buttonInitDevice {
 	z-index: 1;
 	width: 160px;
-	height: 44px;
-	top: 12px;
+	height: 54px;
+	top: 16px;
 	left: 297px;
 	position: absolute;
 	font-size: 16px;
@@ -55,8 +83,8 @@
 
 #containerTestActions {
 	z-index: 5;
-	height: 186px;
-	top: 153px;
+	height: 217px;
+	top: 88px;
 	left: 7px;
 	right: 7px;
 	position: absolute;
@@ -72,22 +100,22 @@
 
 #richTextTitle {
 	z-index: 2;
-	height: 42px;
-	top: 10px;
-	left: 10px;
-	right: 10px;
+	height: 56px;
+	top: 22px;
+	left: 8px;
+	right: 7px;
 	position: absolute;
-	font-size: 36px;
 	text-align: center;
 	font-weight: bold;
 	font-style: italic;
 	color: rgb(95, 0, 191);
+	font-size: 48px;
 }
 
 #loginHome {
 	z-index: 1;
 	height: 80px;
-	top: 66px;
+	top: 4px;
 	left: 6px;
 	right: 6px;
 	position: absolute;
@@ -105,9 +133,9 @@
 }
 
 #textFieldDeviceStatus {
-	z-index: 6;
-	height: 127px;
-	top: 34px;
+	z-index: 5;
+	height: 85px;
+	top: 96px;
 	left: 476px;
 	right: 10px;
 	position: absolute;
@@ -120,9 +148,9 @@
 }
 
 #richTextDeviceStatusLabel {
-	z-index: 7;
+	z-index: 6;
 	height: 21px;
-	top: 10px;
+	top: 75px;
 	left: 476px;
 	right: 10px;
 	position: absolute;
@@ -151,7 +179,7 @@
 }
 
 #containerGraph {
-	z-index: 4;
+	z-index: 3;
 	top: 12px;
 	bottom: 12px;
 	left: 316px;

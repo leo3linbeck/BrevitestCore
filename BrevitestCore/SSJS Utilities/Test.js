@@ -1,1 +1,1 @@
-﻿var spark = require('sparkCore');spark.dump_archived_data("51ff6f065082554937400887", 6400);
+﻿new SharedWorker('Workers/ScanBarcode.js', 'BarcodeScanManager');

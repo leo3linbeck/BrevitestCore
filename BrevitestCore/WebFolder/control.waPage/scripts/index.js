@@ -87,6 +87,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		});
 	}
 	
+	function startTestMonitor(testID, cartridgeID) {
+		sources.test.monitor(
+			{
+				onSuccess: function(evt) {
+						if (evt.result.success) {
+							notification.log('Test completed');
+						}
+						else {
+							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
+						}
+					},
+				onError: function(err) {
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
+					}
+			},
+			{
+				testID: testID,
+				cartridgeID: cartridgeID
+			}
+		);
+	}
+
 	function createOneGraph(objArray, sensorChar, leftHandGraph) {
 		var h, i, m, offset, w, x, y;
 		var clear = [];
@@ -276,7 +298,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					onSuccess: function(evt) {
 							if (evt.result.success) {
 								notification.log('Test started');
-								loadUnusedCartridgesByAssay(sources.assayTest.ID, sources.cartridgeUnused);
+								startTestMonitor(evt.result.testID, cartridgeID);
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
@@ -289,7 +311,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				{
 					username: user.userName,
 					deviceID: sources.device.ID,
-					cartridgeID: sources.cartridgeUnused.ID
+					cartridgeID: cartridgeID
 				}
 			);
 		}

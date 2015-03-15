@@ -21,4 +21,7 @@
 	<file path="./Settings (Local).waSettings">
 		<tag name="settings"/>
 	</file>
+	<file path="./bootstrap.js">
+		<tag name="bootStrap"/>
+	</file>
 </project>

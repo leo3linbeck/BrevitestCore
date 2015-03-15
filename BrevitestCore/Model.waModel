@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 715,
-			"workspaceTop": 396,
+			"workspaceLeft": 1192,
+			"workspaceTop": 240,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -678,6 +678,11 @@
 				{
 					"kind": "save",
 					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save",
+					"userDefined": true
 				}
 			]
 		},
@@ -961,6 +966,20 @@
 					"scope": "public",
 					"from": "$mainModel.Cartridge.methods.register",
 					"userDefined": true
+				},
+				{
+					"name": "start_scan",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.methods.start_scan",
+					"userDefined": true
+				},
+				{
+					"name": "wait_for_scan_result",
+					"applyTo": "dataClass",
+					"scope": "publicOnServer",
+					"from": "$mainModel.Cartridge.methods.wait_for_scan_result",
+					"userDefined": true
 				}
 			]
 		},
@@ -1243,14 +1262,26 @@
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript"
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Device.listSNText.onGet",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "listModelSN",
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript"
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Device.listModelSN.onGet",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "notes",
@@ -2128,7 +2159,13 @@
 					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript"
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Practice.googleMapAddress.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			]
 		},
@@ -2588,19 +2625,22 @@
 					"name": "monitor",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.monitor"
+					"from": "$mainModel.Test.methods.monitor",
+					"userDefined": true
 				},
 				{
 					"name": "rawDataPoints",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.rawDataPoints"
+					"from": "$mainModel.Test.methods.rawDataPoints",
+					"userDefined": true
 				},
 				{
 					"name": "start",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.start"
+					"from": "$mainModel.Test.methods.start",
+					"userDefined": true
 				}
 			]
 		},

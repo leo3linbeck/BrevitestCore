@@ -4,12 +4,12 @@
 */
 
 #htmlTag2 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #label25 {
@@ -284,7 +284,7 @@
 	height: 18px;
 	top: 15px;
 	left: -64px;
-	right: 66px;
+	right: 200px;
 	position: absolute;
 	text-align: center;
 	font-size: 16px;
@@ -317,7 +317,7 @@
 	height: 18px;
 	top: 151px;
 	left: 94px;
-	right: 994px;
+	right: 999px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -327,7 +327,7 @@
 	height: 18px;
 	top: 63px;
 	left: 132px;
-	right: 994px;
+	right: 999px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -631,7 +631,7 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 661px;
+	bottom: 1070px;
 	left: 0px;
 	right: 5px;
 	position: absolute;
