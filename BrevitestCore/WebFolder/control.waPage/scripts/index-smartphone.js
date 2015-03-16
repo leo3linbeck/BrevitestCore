@@ -2,12 +2,14 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var row1 = {};	// @container
+	var testTodayEvent = {};	// @dataSource
+	var icon4 = {};	// @icon
 	var icon2 = {};	// @icon
 	var buttonReadyToTest = {};	// @button
 	var buttonTestResults = {};	// @button
 	var button1 = {};	// @button
 	var buttonScanCartridge = {};	// @button
-	var container1 = {};	// @matrix
 	var icon1 = {};	// @icon
 	var buttonStartTest = {};	// @button
 	var buttonMonitorTest = {};	// @button
@@ -25,6 +27,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var statusMonitorID = null;
 	var firmwareVersion = 8;
 
+	var refreshInterval;
+		
 	function startStatusMonitoring(that, sparkCoreID) {
 		if (statusMonitorID) {
 			clearInterval(statusMonitorID);
@@ -98,6 +102,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						else {
 							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
 						}
+						loadRecentTests();
 					},
 				onError: function(err) {
 						notification.error('SYSTEM ERROR: ' + err.error[0].message);
@@ -115,10 +120,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			{
 				onSuccess: function(event) {
 						if (event.dataSource.length) {
-							notification.log('Cartridge scan successful');
+							if (event.dataSource.registeredOn === null) {
+								notification.error('ERROR: cartridge not registered');
+							}
+							else {
+								if (event.dataSource.startedOn === null) {
+									notification.log('Cartridge scan successful');
+								}
+								else {
+									notification.error('ERROR: cartridge already used');
+								}
+							}
 						}
 						else {
-							notification.error('ERROR: cartridge not found, not registerd, or already used');
+							notification.error('ERROR: cartridge not found');
 						}
 					},
 				onError: function(error) {
@@ -173,7 +188,105 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 	
+	function loadRecentTests(notifyUser) {
+		var endDate = new Date();
+		var startDate = endDate - (24 * 60 * 60);
+		sources.testToday.query('startedOn > :1 AND startedOn < :2',
+			{
+				onSuccess: function(evt) {
+						if (evt.dataSource.length) {
+							if (notifyUser) {
+								notification.log('Tests for past 24 hours updated');
+							}
+						}
+						else {
+							notification.log('No tests currently in progress');
+						}
+					},
+				onError: function(error) {
+						notification.error('SYSTEM ERROR: ' + error.error[0].message);
+					},
+				params: [startDate, endDate],
+				orderBy: 'startedOn desc'
+			}
+		);	
+	}
+	
+	function loadOnlineDevices() {
+		sources.device.query('registeredOn !== null AND online === true',
+			{
+				onSuccess: function(evt) {
+						if (evt.dataSource.length === 0) {
+							notification.log('No devices currently online');
+						}
+					},
+				onError: function(error) {
+						notification.error('SYSTEM ERROR: ' + error.error[0].message);
+					},
+				orderBy: 'name'
+			}
+		);	
+	}
+
+	
 // eventHandlers// @lock
+
+	row1.click = function row1_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(6);
+	};// @lock
+
+	testTodayEvent.onCurrentElementChange = function testTodayEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		if (event.dataSource.ID) {
+			$$('progressBarTest').setValue(event.dataSource.percentComplete, 100, 'Test started at ' + event.dataSource.startedOn.toLocaleTimeString() + ': ' + event.dataSource.percentComplete + '% complete');
+			if (event.dataSource.status === 'In progress') {
+				if (!refreshInterval) {
+					refreshInterval = setInterval(loadRecentTests, 20000);
+				}
+			}
+			else {
+				if (refreshInterval) {
+					clearInterval(refreshInterval);
+					refreshInterval = null;
+				}
+			}
+		}
+		else {
+			if (refreshInterval) {
+				clearInterval(refreshInterval);
+				refreshInterval = null;
+			}
+		}
+		$$('icon4')[event.dataSource.status === 'In progress' ? 'enable' : 'disable']();
+	};// @lock
+
+	icon4.click = function icon4_click (event)// @startlock
+	{// @endlock
+		if (window.confirm('Are you sure you want to cancel this test? The cartridge cannot be reused.')) {
+			spinner.spin(this.domNode);
+			sources.test.cancel(
+				{
+					onSuccess: function(evt) {
+							spinner.stop();
+							if (evt.result.success) {
+								notification.log('Test cancelled');
+							}
+							else {
+								notification.error('ERROR: ' + evt.result.message + ' - test not started');
+							}
+						},
+					onError: function(err) {
+							spinner.stop();
+							notification.error('SYSTEM ERROR: ' + err.error[0].message);
+						}
+				},
+				{
+					testID: sources.testToday.ID
+				}
+			);
+		}
+	};// @lock
 
 	icon2.click = function icon2_click (event)// @startlock
 	{// @endlock
@@ -205,14 +318,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		scanCartridge();
 	};// @lock
 
-	container1.click = function container1_click (event)// @startlock
-	{// @endlock
-		$$('navigationView1').goToView(6);
-	};// @lock
-
 	icon1.click = function icon1_click (event)// @startlock
 	{// @endlock
-		sources.device.serverRefresh({forceReload: true});
+		loadOnlineDevices();
 	};// @lock
 
 	buttonStartTest.click = function buttonStartTest_click (event)// @startlock
@@ -220,6 +328,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
+			notification.log('Sending test instructions to device "' + sources.device.name + '" – please stand by...');
 			spinner.spin(this.domNode);
 			sources.test.start(
 				{
@@ -227,7 +336,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 							spinner.stop();
 							if (evt.result.success) {
 								notification.log('Test started');
-								startTestMonitor(evt.result.testID, cartridgeID);
+								startTestMonitor(evt.result.testID, sources.cartridge.ID);
+								sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
+								if (!refreshInterval) {
+									refreshInterval = setInterval(loadRecentTests, 20000);
+								}
+								$$('navigationView1').goToView(4);
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
@@ -252,36 +366,25 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonMonitorTest.click = function buttonMonitorTest_click (event)// @startlock
 	{// @endlock
-		sources.testInProgress.query('startedOn !== null AND finishedOn === null',
-			{
-				onSuccess: function(evt) {
-						if (evt.dataSource.length) {
-							console.log('query testInProgress');
-						}
-						else {
-							notification.log('No tests currently in progress');
-						}
-					},
-				onError: function(error) {
-						notification.error('SYSTEM ERROR: ' + error.error[0].message);
-					}
-			}
-		);
 		$$('navigationView1').goToView(4);
+		loadRecentTests(true);
 	};// @lock
 
 	buttonRun.click = function buttonRun_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(2);
+		loadOnlineDevices();
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("row1", "click", row1.click, "WAF");
+	WAF.addListener("testToday", "onCurrentElementChange", testTodayEvent.onCurrentElementChange, "WAF");
+	WAF.addListener("icon4", "click", icon4.click, "WAF");
 	WAF.addListener("icon2", "click", icon2.click, "WAF");
 	WAF.addListener("buttonReadyToTest", "click", buttonReadyToTest.click, "WAF");
 	WAF.addListener("buttonTestResults", "click", buttonTestResults.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");
 	WAF.addListener("buttonScanCartridge", "click", buttonScanCartridge.click, "WAF");
-	WAF.addListener("container1", "click", container1.click, "WAF");
 	WAF.addListener("icon1", "click", icon1.click, "WAF");
 	WAF.addListener("buttonStartTest", "click", buttonStartTest.click, "WAF");
 	WAF.addListener("buttonMonitorTest", "click", buttonMonitorTest.click, "WAF");

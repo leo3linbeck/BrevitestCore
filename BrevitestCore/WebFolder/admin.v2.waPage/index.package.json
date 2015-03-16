@@ -52,11 +52,6 @@
 			"type": "widget"
 		},
 		{
-			"id": "BarCode/package.json",
-			"path": "WIDGETS_CUSTOM",
-			"type": "widget"
-		},
-		{
 			"id": "QR/package.json",
 			"path": "WIDGETS_CUSTOM",
 			"type": "widget"

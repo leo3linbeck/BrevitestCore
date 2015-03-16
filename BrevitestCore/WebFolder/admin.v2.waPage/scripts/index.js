@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var cartridgeRawEvent = {};	// @dataSource
 	var buttonRegisterCartridge = {};	// @button
 	var buttonResetData = {};	// @button
 	var iconUpdate = {};	// @icon
@@ -274,7 +275,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function loadCartridgesByAssay(assayID, raw, registered) {
-		if (raw) {
+		if (assayID && raw) {
 			raw.query('registeredOn === null AND assay.ID === :1',
 					{
 						onSuccess: function(evt) {
@@ -288,7 +289,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			);
 		}
 		
-		if (registered) {
+		if (assayID && registered) {
 			registered.query('registeredOn !== null AND startedOn === null AND assay.ID === :1',
 					{
 						onSuccess: function(evt) {
@@ -363,6 +364,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			else {
 				var user = WAF.directory.currentUser();
 				if (user) {
+					$$('buttonRegisterDevice').disable();
+					$$('buttonSaveDevice').disable();
 					sources.deviceSpark.register(
 						{
 							onSuccess: function(event) {
@@ -377,9 +380,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 										$$('containerCommand').hide();
 										$$('containerAttributes').hide();
 									}
+									$$('buttonRegisterDevice').enable();
+									$$('buttonSaveDevice').enable();
 								},
 							onError: function(err) {
 									notification.error('SYSTEM ERROR: ' + err.error[0].message);
+									$$('buttonRegisterDevice').enable();
+									$$('buttonSaveDevice').enable();
 									$$('containerCommand').hide();
 									$$('containerAttributes').hide();
 								}
@@ -435,7 +442,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function startTestMonitor(testID, cartridgeID) {
+	function startTestMonitor(cartridgeID) {
 		sources.test.monitor(
 			{
 				onSuccess: function(evt) {
@@ -445,13 +452,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						else {
 							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
 						}
+						testCartridge = '';
+						sources.testCartridge.sync();
 					},
 				onError: function(err) {
 						notification.error('SYSTEM ERROR: ' + err.error[0].message);
 					}
 			},
 			{
-				testID: testID,
 				cartridgeID: cartridgeID
 			}
 		);
@@ -475,6 +483,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 //
 // eventHandlers// @lock
 
+	cartridgeRawEvent.onCurrentElementChange = function cartridgeRawEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		$$('qrRawCartridge').width(120);
+		$$('qrRawCartridge').height(120);
+	};// @lock
+
 	buttonRegisterCartridge.click = function buttonRegisterCartridge_click (event)// @startlock
 	{// @endlock
 		var user = WAF.directory.currentUser();
@@ -483,7 +497,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				{
 					onSuccess: function(evt) {
 							if (evt.result) {
-								notification.log('Cartridge registered');
 								loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw, sources.cartridgeRegistered);
 							}
 							else {
@@ -513,8 +526,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			if (window.confirm('Are you sure you want to erase all data in the database and add back some faux data? This action cannot be undone.')) {
 				callSpark(this, 'initialize_database', [], function(evt) {
 						notification.log('Database erased and initialized');
+						sources.device.query('ID === null', {onSuccess:function(){return;}});
+						sources.deviceFlash.query('ID === null', {onSuccess:function(){return;}});
+						sources.assayTest.query('ID === null', {onSuccess:function(){return;}});
+						sources.assayCartridge.query('ID === null', {onSuccess:function(){return;}});
+						sources.deviceModel.query('ID === null', {onSuccess:function(){return;}});
 					}
 				);
+				
 			}
 		}
 		else {
@@ -658,8 +677,27 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'cancel_process', [sources.device.sparkCoreID], function(evt) {
-				notification.log('Process cancelled');
+		spinner.spin(this.domNode);
+		sources.test.cancel(
+			{
+				onSuccess: function(evt) {
+						spinner.stop();
+						if (evt.result.success) {
+							notification.log('Test cancelled');
+							testCartridge = '';
+							sources.testCartridge.sync();
+						}
+						else {
+							notification.error('ERROR: ' + evt.result.message + ' - test not started');
+						}
+					},
+				onError: function(err) {
+						spinner.stop();
+						notification.error('SYSTEM ERROR: ' + err.error[0].message);
+					}
+			},
+			{
+				cartridgeID: testCartridge
 			}
 		);
 	};// @lock
@@ -678,7 +716,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 							if (evt.result.success) {
 								notification.log('Test started');
 								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
-								startTestMonitor(evt.result.testID, cartridgeID);
+								startTestMonitor(cartridgeID);
+								testCartridge = cartridgeID;
+								sources.testCartridge.sync();
 							}
 							else {
 								notification.error('ERROR: ' + evt.result.message + ' - test not started');
@@ -1140,6 +1180,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("cartridgeRaw", "onCurrentElementChange", cartridgeRawEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonRegisterCartridge", "click", buttonRegisterCartridge.click, "WAF");
 	WAF.addListener("buttonResetData", "click", buttonResetData.click, "WAF");
 	WAF.addListener("iconUpdate", "click", iconUpdate.click, "WAF");

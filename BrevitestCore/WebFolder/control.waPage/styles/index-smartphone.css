@@ -3,35 +3,80 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#label2 {
-	z-index: 4;
-	height: 16px;
-	bottom: 54px;
-	left: 8px;
-	right: 45px;
+#textField13 {
+	z-index: 7;
+	height: 24px;
+	bottom: 70px;
+	left: 52px;
+	right: 17px;
+	position: absolute;
+	font-size: 12px;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+}
+
+#label16 {
+	z-index: 7;
+	height: 14px;
+	bottom: 75px;
+	left: 15px;
+	right: 271px;
+	position: absolute;
+	font-size: 12px;
+}
+
+#icon4 {
+	z-index: 5;
+	width: 24px;
+	height: 24px;
+	bottom: 17px;
+	right: 6px;
 	position: absolute;
 }
 
-#progressBar1 {
+#container3 .waf-widget.waf-clone-numberValue1 {
+	position: absolute;
+	text-align: right;
+	color: rgb(255, 0, 0);
+	font-size: 16px;
+}
+
+#numberValue1 {
 	z-index: 4;
-	height: 29px;
-	bottom: 20px;
+	width: 123px;
+	height: 18px;
+	top: 12px;
+	right: 40px;
+	position: absolute;
+	text-align: right;
+	color: rgb(255, 0, 0);
+	font-size: 16px;
+}
+
+#label2 {
+	z-index: 3;
+	height: 16px;
+	bottom: 48px;
 	left: 8px;
-	right: 10px;
+	right: 213px;
 	position: absolute;
 }
 
 #container3 .waf-widget.waf-clone-secondText3 {
 	position: absolute;
+	font-size: 12px;
 }
 
 #secondText3 {
-	z-index: 4;
+	z-index: 3;
 	height: 20px;
 	top: 25px;
 	left: 20px;
-	right: 40px;
+	right: 70px;
 	position: absolute;
+	font-size: 12px;
 }
 
 #container3 .waf-widget.waf-clone-mainText3 {
@@ -43,7 +88,7 @@
 	height: 20px;
 	top: 8px;
 	left: 20px;
-	right: 40px;
+	right: 70px;
 	position: absolute;
 }
 
@@ -68,7 +113,7 @@
 #listView3 {
 	z-index: 2;
 	top: 1px;
-	bottom: 80px;
+	bottom: 100px;
 	left: 1px;
 	right: 1px;
 	position: absolute;
@@ -264,7 +309,7 @@
 }
 
 #textField8 {
-	z-index: 12;
+	z-index: 13;
 	height: 24px;
 	top: 264px;
 	left: 50px;
@@ -278,7 +323,7 @@
 }
 
 #label10 {
-	z-index: 12;
+	z-index: 14;
 	height: 14px;
 	top: 269px;
 	left: 13px;
@@ -288,7 +333,7 @@
 }
 
 #richText1 {
-	z-index: 9;
+	z-index: 10;
 	height: 22px;
 	top: 7px;
 	left: 2px;
@@ -299,7 +344,7 @@
 }
 
 #textField7 {
-	z-index: 11;
+	z-index: 12;
 	height: 26px;
 	top: 118px;
 	left: 52px;
@@ -313,7 +358,7 @@
 }
 
 #label9 {
-	z-index: 11;
+	z-index: 13;
 	height: 14px;
 	top: 124px;
 	left: 12px;
@@ -323,7 +368,7 @@
 }
 
 #textField6 {
-	z-index: 10;
+	z-index: 11;
 	height: 26px;
 	top: 88px;
 	left: 52px;
@@ -337,7 +382,7 @@
 }
 
 #label8 {
-	z-index: 10;
+	z-index: 12;
 	height: 14px;
 	top: 94px;
 	left: 14px;
@@ -347,7 +392,7 @@
 }
 
 #textField5 {
-	z-index: 8;
+	z-index: 9;
 	height: 24px;
 	top: 60px;
 	left: 52px;
@@ -361,7 +406,7 @@
 }
 
 #label7 {
-	z-index: 7;
+	z-index: 9;
 	height: 14px;
 	top: 65px;
 	left: 30px;
@@ -371,7 +416,7 @@
 }
 
 #textField4 {
-	z-index: 7;
+	z-index: 8;
 	height: 24px;
 	top: 32px;
 	left: 52px;
@@ -385,7 +430,7 @@
 }
 
 #label6 {
-	z-index: 6;
+	z-index: 8;
 	height: 14px;
 	top: 37px;
 	left: 16px;
@@ -395,7 +440,7 @@
 }
 
 #label5 {
-	z-index: 4;
+	z-index: 6;
 	height: 14px;
 	top: 240px;
 	left: 35px;
@@ -408,8 +453,8 @@
 	z-index: 10;
 	height: 14px;
 	bottom: 14px;
-	left: 12px;
-	right: 286px;
+	left: 16px;
+	right: 271px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -433,7 +478,7 @@
 	height: 14px;
 	bottom: 46px;
 	left: 14px;
-	right: 286px;
+	right: 271px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -472,6 +517,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header6 {
@@ -526,6 +572,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header5 {
@@ -571,6 +618,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header4 {
@@ -616,6 +664,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header3 {
@@ -661,6 +710,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header2 {
@@ -743,6 +793,7 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+	font-weight: bold;
 }
 
 #header1 {
@@ -861,10 +912,10 @@
 
 #icon1 {
 	z-index: 3;
-	width: 32px;
-	height: 32px;
-	bottom: 5px;
-	right: 4px;
+	width: 26px;
+	height: 26px;
+	bottom: 8px;
+	right: 8px;
 	position: absolute;
 }
 
@@ -883,7 +934,7 @@
 }
 
 #buttonScanCartridge {
-	z-index: 3;
+	z-index: 4;
 	height: 60px;
 	top: 165px;
 	left: 66px;
@@ -893,7 +944,7 @@
 }
 
 #textFieldCartridgeID {
-	z-index: 5;
+	z-index: 6;
 	height: 24px;
 	top: 235px;
 	left: 51px;
@@ -907,7 +958,7 @@
 }
 
 #frameScanner {
-	z-index: 13;
+	z-index: 3;
 	top: 1px;
 	bottom: 1px;
 	left: 1px;
@@ -936,12 +987,21 @@
 }
 
 #buttonReadyToTest {
-	z-index: 14;
+	z-index: 15;
 	height: 60px;
 	bottom: 22px;
 	left: 60px;
 	right: 60px;
 	position: absolute;
 	font-size: 20px;
+}
+
+#progressBarTest {
+	z-index: 3;
+	height: 29px;
+	bottom: 14px;
+	left: 8px;
+	right: 36px;
+	position: absolute;
 }
 

@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 1192,
-			"workspaceTop": 240,
+			"workspaceLeft": 743,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -681,6 +681,14 @@
 				},
 				{
 					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
 					"from": "$mainModel.Assay.events.save",
 					"userDefined": true
 				}
@@ -977,7 +985,7 @@
 				{
 					"name": "wait_for_scan_result",
 					"applyTo": "dataClass",
-					"scope": "publicOnServer",
+					"scope": "public",
 					"from": "$mainModel.Cartridge.methods.wait_for_scan_result",
 					"userDefined": true
 				}
@@ -2618,9 +2626,29 @@
 					"scope": "public",
 					"type": "number",
 					"path": "assay.greenMin"
+				},
+				{
+					"name": "listViewLine2",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.listViewLine2.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			],
 			"methods": [
+				{
+					"name": "cancel",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Test.methods.cancel",
+					"userDefined": true
+				},
 				{
 					"name": "monitor",
 					"applyTo": "dataClass",

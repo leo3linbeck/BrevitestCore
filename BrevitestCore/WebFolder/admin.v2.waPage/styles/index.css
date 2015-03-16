@@ -3,14 +3,33 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label22 {
+	z-index: 11;
+	width: 157px;
+	height: 18px;
+	top: 25px;
+	left: 199px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#htmlTag2 {
+	position: absolute;
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+}
+
 #label12 {
+	z-index: 10;
 	width: 121px;
 	height: 16px;
 	top: 336px;
 	left: 26px;
 	position: absolute;
 	font-size: 14px;
-	z-index: 10;
 }
 
 #label25 {
@@ -154,7 +173,7 @@
 #richText7 {
 	z-index: 9;
 	height: 21px;
-	top: 10px;
+	top: 70px;
 	left: 190px;
 	right: 10px;
 	position: absolute;
@@ -164,8 +183,8 @@
 
 #textField4 {
 	z-index: 8;
-	height: 138px;
-	top: 34px;
+	height: 81px;
+	top: 91px;
 	left: 190px;
 	right: 10px;
 	position: absolute;
@@ -284,8 +303,8 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: 70px;
-	right: 66px;
+	left: -64px;
+	right: 200px;
 	position: absolute;
 	text-align: center;
 	font-size: 16px;
@@ -1141,8 +1160,8 @@
 #dataGridAssayCartridge {
 	z-index: 1;
 	width: 300px;
-	top: 36px;
-	bottom: 87px;
+	top: 16px;
+	bottom: 107px;
 	left: 16px;
 	position: absolute;
 	font-size: 16px;
@@ -1158,29 +1177,11 @@
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
 }
 
-#barCodeCartridge {
-	z-index: 5;
-	width: 267px;
-	height: 54px;
-	top: 584px;
-	left: 344px;
-	position: absolute;
-}
-
-#qRCartridge {
-	z-index: 6;
-	width: 120px;
-	height: 120px;
-	top: 456px;
-	left: 418px;
-	position: absolute;
-}
-
 #dataGridTestCartridge {
 	z-index: 1;
 	width: 400px;
 	top: 10px;
-	bottom: 326px;
+	bottom: 461px;
 	left: 341px;
 	position: absolute;
 	font-size: 16px;
@@ -1841,8 +1842,8 @@
 #dataGridRegisteredCartridges {
 	z-index: 7;
 	width: 290px;
-	height: 601px;
-	top: 37px;
+	top: 17px;
+	bottom: 107px;
 	left: 630px;
 	position: absolute;
 	font-size: 12px;
@@ -1862,7 +1863,7 @@
 	z-index: 8;
 	width: 225px;
 	height: 44px;
-	top: 403px;
+	bottom: 261px;
 	left: 367px;
 	position: absolute;
 	font-size: 16px;
@@ -1881,8 +1882,8 @@
 #dataGridRawCartridges {
 	z-index: 4;
 	width: 290px;
-	height: 356px;
-	top: 37px;
+	top: 17px;
+	bottom: 331px;
 	left: 330px;
 	position: absolute;
 	font-size: 12px;
@@ -1899,6 +1900,7 @@
 }
 
 #textFieldEstimateDuration {
+	z-index: 10;
 	width: 112px;
 	height: 28px;
 	top: 330px;
@@ -1910,6 +1912,38 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: left;
-	z-index: 10;
+}
+
+#qrRawCartridge {
+	z-index: 6;
+	width: 120px;
+	height: 120px;
+	bottom: 112px;
+	left: 418px;
+	position: absolute;
+}
+
+#qrRegisteredCartridge {
+	z-index: 9;
+	width: 120px;
+	height: 120px;
+	bottom: 324px;
+	left: 477px;
+	position: absolute;
+}
+
+#textFieldTestCartridge {
+	z-index: 11;
+	width: 500px;
+	height: 30px;
+	top: 19px;
+	left: 361px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	text-align: left;
 }
 
