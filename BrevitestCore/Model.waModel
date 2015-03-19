@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 743,
-			"workspaceTop": 0,
+			"workspaceLeft": 2137,
+			"workspaceTop": 103,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -276,6 +276,9 @@
 				},
 				"Practice": {
 					"computed": "Practice/Practice-events.js"
+				},
+				"User": {
+					"method": "User/User-methods.js"
 				}
 			}
 		}
@@ -962,6 +965,13 @@
 			],
 			"methods": [
 				{
+					"name": "get_data_from_device",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.entityMethods.get_data_from_device",
+					"userDefined": true
+				},
+				{
 					"name": "manufacture",
 					"applyTo": "dataClass",
 					"scope": "public",
@@ -1340,17 +1350,17 @@
 			],
 			"methods": [
 				{
-					"name": "checkCalibration",
+					"name": "check_calibration",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Device.methods.checkCalibration",
+					"from": "$mainModel.Device.methods.check_calibration",
 					"userDefined": true
 				},
 				{
-					"name": "checkSerialNumber",
+					"name": "check_serial_number",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Device.methods.checkSerialNumber",
+					"from": "$mainModel.Device.methods.check_serial_number",
 					"userDefined": true
 				},
 				{
@@ -1365,6 +1375,13 @@
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Device.methods.register",
+					"userDefined": true
+				},
+				{
+					"name": "update_status",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Device.entityMethods.update_status",
 					"userDefined": true
 				}
 			]
@@ -2650,17 +2667,17 @@
 					"userDefined": true
 				},
 				{
+					"name": "get_raw_sensor_readings",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Test.methods.get_raw_sensor_readings",
+					"userDefined": true
+				},
+				{
 					"name": "monitor",
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Test.methods.monitor",
-					"userDefined": true
-				},
-				{
-					"name": "rawDataPoints",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.rawDataPoints",
 					"userDefined": true
 				},
 				{
@@ -2730,6 +2747,15 @@
 					"type": "Tests",
 					"reversePath": true,
 					"path": "runBy"
+				}
+			],
+			"methods": [
+				{
+					"name": "start_daemons",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.User.methods.start_daemons",
+					"userDefined": true
 				}
 			]
 		}

@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var row2 = {};	// @container
 	var row1 = {};	// @container
 	var testTodayEvent = {};	// @dataSource
 	var icon4 = {};	// @icon
@@ -231,6 +232,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	row2.click = function row2_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(7);
+	};// @lock
+
 	row1.click = function row1_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(6);
@@ -377,6 +383,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("row2", "click", row2.click, "WAF");
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("testToday", "onCurrentElementChange", testTodayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("icon4", "click", icon4.click, "WAF");

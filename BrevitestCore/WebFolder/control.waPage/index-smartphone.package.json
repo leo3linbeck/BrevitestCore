@@ -56,6 +56,15 @@
 			"type": "widget"
 		},
 		{
+			"id": "Widget/select",
+			"type": "widget"
+		},
+		{
+			"id": "Container/package.json",
+			"path": "WIDGETS_CUSTOM",
+			"type": "widget"
+		},
+		{
 			"id": "btios7/package.json",
 			"path": "THEMES_CUSTOM",
 			"type": "theme"

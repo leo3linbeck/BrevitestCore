@@ -236,7 +236,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		sources.test.rawDataPoints(
+		sources.test.get_raw_sensor_readings(
 			{
 				onSuccess: function(evt) {
 					updateGraph(evt.result);

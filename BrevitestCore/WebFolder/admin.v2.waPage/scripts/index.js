@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var loginHome = {};	// @login
 	var cartridgeRawEvent = {};	// @dataSource
 	var buttonRegisterCartridge = {};	// @button
 	var buttonResetData = {};	// @button
@@ -415,7 +416,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		if (sources.sparkCores.connected) {
 			var user = WAF.directory.currentUser();
 			if (user) {
-				sources.deviceSpark.checkCalibration(
+				sources.deviceSpark.check_calibration(
 					{
 						onSuccess: function(event) {
 								sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
@@ -482,6 +483,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 //
 //
 // eventHandlers// @lock
+
+	loginHome.login = function loginHome_login (event)// @startlock
+	{// @endlock
+		sources.user.start_daemons(
+			{
+				onSuccess: function(evt) {
+					console.log(evt);
+				},
+				onError: function(err) {
+					console.log(err);
+				}
+			}
+		);
+	};// @lock
 
 	cartridgeRawEvent.onCurrentElementChange = function cartridgeRawEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
@@ -1180,6 +1195,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("loginHome", "login", loginHome.login, "WAF");
 	WAF.addListener("cartridgeRaw", "onCurrentElementChange", cartridgeRawEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonRegisterCartridge", "click", buttonRegisterCartridge.click, "WAF");
 	WAF.addListener("buttonResetData", "click", buttonResetData.click, "WAF");
