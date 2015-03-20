@@ -3,7 +3,98 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#htmlTag16 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag15 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag14 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag13 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag7 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag6 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag5 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag4 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag3 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
+#htmlTag2 {
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+	position: absolute;
+}
+
 #textField19 {
+	z-index: 11;
 	height: 24px;
 	top: 38px;
 	left: 123px;
@@ -16,10 +107,10 @@
 	border-bottom-style: dotted;
 	background-color: rgb(0, 255, 0);
 	text-align: center;
-	z-index: 11;
 }
 
 #textField18 {
+	z-index: 10;
 	height: 24px;
 	top: 38px;
 	left: 60px;
@@ -30,20 +121,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 10;
 }
 
 #label22 {
+	z-index: 10;
 	height: 14px;
 	top: 43px;
 	left: 21px;
 	right: 263px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 10;
 }
 
 #textField17 {
+	z-index: 8;
 	height: 24px;
 	top: 11px;
 	left: 60px;
@@ -54,20 +145,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 8;
 }
 
 #label21 {
+	z-index: 8;
 	height: 14px;
 	top: 16px;
 	left: 6px;
 	right: 263px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 8;
 }
 
 #textField16 {
+	z-index: 6;
 	height: 24px;
 	top: 92px;
 	left: 60px;
@@ -78,20 +169,20 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 6;
 }
 
 #label20 {
+	z-index: 6;
 	height: 14px;
 	top: 97px;
 	left: 23px;
 	right: 263px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 6;
 }
 
 #textField14 {
+	z-index: 2;
 	height: 24px;
 	top: 65px;
 	left: 60px;
@@ -102,17 +193,16 @@
 	border-left-style: dotted;
 	border-right-style: dotted;
 	border-bottom-style: dotted;
-	z-index: 2;
 }
 
 #label18 {
+	z-index: 2;
 	height: 14px;
 	top: 70px;
 	left: 20px;
 	right: 263px;
 	position: absolute;
 	font-size: 12px;
-	z-index: 2;
 }
 
 #body7 {
@@ -161,21 +251,21 @@
 }
 
 #select3 {
+	z-index: 4;
 	width: 93px;
 	height: 32px;
 	top: 10px;
 	left: 2px;
 	position: absolute;
-	z-index: 4;
 }
 
 #select2 {
+	z-index: 3;
 	width: 93px;
 	height: 32px;
 	top: 10px;
 	left: 100px;
 	position: absolute;
-	z-index: 3;
 }
 
 #select1 {
@@ -387,15 +477,6 @@
 	bottom: 100px;
 	left: 1px;
 	right: 1px;
-	position: absolute;
-}
-
-#icon2 {
-	z-index: 3;
-	width: 28px;
-	height: 28px;
-	top: 8px;
-	right: 8px;
 	position: absolute;
 }
 

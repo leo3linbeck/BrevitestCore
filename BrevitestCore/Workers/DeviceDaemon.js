@@ -24,6 +24,7 @@ function onconnect(msg) {
 				if (!daemonStarted) {
 					daemonStarted = true;
 					startTime = new Date();
+					updateDeviceData();
 					(function check() {
 						var now = new Date();
 						setTimeout(function() {

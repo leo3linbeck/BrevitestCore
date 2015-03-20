@@ -1,1 +1,1 @@
-﻿var spark = require('sparkCore');var a = ds.Assay.find('BCODE !== null');spark.BCODE_duration(a.BCODE);
+﻿var cartridge = ds.Cartridge.query('test.percentComplete < 100 AND test.percentComplete !== null AND startedOn < :1', new Date(new Date() - 1200000));cartridge.length;

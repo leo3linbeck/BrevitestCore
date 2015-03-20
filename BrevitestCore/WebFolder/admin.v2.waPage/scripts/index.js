@@ -306,7 +306,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function getSparkCoreList(that, notify) {
-		callSpark(that, 'get_list_of_cores', [], function(evt) {
+		callSpark(that, 'get_core_list', [], function(evt) {
 				if (notify) {
 					notification.log('Core list refreshed');
 				}
@@ -703,7 +703,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 							sources.testCartridge.sync();
 						}
 						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not started');
+							notification.error('ERROR: ' + evt.result.message + ' - test not cancelled');
 						}
 					},
 				onError: function(err) {

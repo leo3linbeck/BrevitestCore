@@ -2,11 +2,11 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var login1 = {};	// @login
 	var row2 = {};	// @container
 	var row1 = {};	// @container
 	var testTodayEvent = {};	// @dataSource
 	var icon4 = {};	// @icon
-	var icon2 = {};	// @icon
 	var buttonReadyToTest = {};	// @button
 	var buttonTestResults = {};	// @button
 	var button1 = {};	// @button
@@ -173,8 +173,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onSuccess: function(event) {
 						if (event.result.success) {
 							notification.log('Opening scanner');
-							var scanURI = 'zxing://scan/?ret=http://172.16.121.20:8081/return_cartridgeID/' + event.result.uuid + escape('?val={CODE}');
-							$$('frameScanner').setValue(scanURI);
+							$$('frameScanner').setValue(event.result.url);
 							$$('frameScanner').show();
 							waitForScanResult(event.result.uuid);
 						}
@@ -231,6 +230,20 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	
 // eventHandlers// @lock
+
+	login1.login = function login1_login (event)// @startlock
+	{// @endlock
+		sources.user.start_daemons(
+			{
+				onSuccess: function(evt) {
+					console.log(evt);
+				},
+				onError: function(err) {
+					console.log(err);
+				}
+			}
+		);
+	};// @lock
 
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
@@ -292,11 +305,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				}
 			);
 		}
-	};// @lock
-
-	icon2.click = function icon2_click (event)// @startlock
-	{// @endlock
-		$$('navigationView1').goToView(1);
 	};// @lock
 
 	buttonReadyToTest.click = function buttonReadyToTest_click (event)// @startlock
@@ -373,7 +381,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonMonitorTest.click = function buttonMonitorTest_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(4);
-		loadRecentTests(true);
+		loadRecentTests(false);
 	};// @lock
 
 	buttonRun.click = function buttonRun_click (event)// @startlock
@@ -383,11 +391,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("login1", "login", login1.login, "WAF");
 	WAF.addListener("row2", "click", row2.click, "WAF");
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("testToday", "onCurrentElementChange", testTodayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("icon4", "click", icon4.click, "WAF");
-	WAF.addListener("icon2", "click", icon2.click, "WAF");
 	WAF.addListener("buttonReadyToTest", "click", buttonReadyToTest.click, "WAF");
 	WAF.addListener("buttonTestResults", "click", buttonTestResults.click, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");
