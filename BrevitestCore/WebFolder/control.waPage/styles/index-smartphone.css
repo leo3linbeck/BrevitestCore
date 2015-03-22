@@ -3,94 +3,94 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#htmlTag16 {
+#htmlTag12 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
-#htmlTag15 {
+#htmlTag11 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
-#htmlTag14 {
+#htmlTag10 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
-#htmlTag13 {
+#htmlTag9 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag7 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag6 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag5 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag4 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag3 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag2 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #textField19 {
@@ -1359,7 +1359,7 @@
 
 #containerGraph {
 	z-index: 12;
-	height: 270px;
+	top: 122px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;

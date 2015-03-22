@@ -2,7 +2,6 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
-	var login1 = {};	// @login
 	var row2 = {};	// @container
 	var row1 = {};	// @container
 	var testTodayEvent = {};	// @dataSource
@@ -17,6 +16,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonRun = {};	// @button
 // @endregion// @endlock
 
+	var sse = new EventSource('/EventSource');
+	sse.onmessage = function eventsourcehandler(event) {
+		notification.log(event);
+	};
+		
 	var spinnerOpts = {
 		color: '#CCC'
 	};
@@ -25,96 +29,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-libnotify' });
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
 	
-	var statusMonitorID = null;
-	var firmwareVersion = 8;
-
-	var refreshInterval;
-		
-	function startStatusMonitoring(that, sparkCoreID) {
-		if (statusMonitorID) {
-			clearInterval(statusMonitorID);
-		}
-			
-		callSpark(that, 'get_status', [sparkCoreID], function(event) {
-				deviceStatus = event.value;
-				sources.deviceStatus.sync();
-			},
-			function(error) {
-				return; // ignore error when continuously monitoriing
-			}
-		);
-		
-		statusMonitorID = setInterval(function(this_one) {
-			callSpark(this_one, 'get_status', [sparkCoreID], function(event) {
-					deviceStatus = event.value;
-					sources.deviceStatus.sync();
-				},
-				function(error) {
-					return; // ignore error when continuously monitoriing
-				}
-			);
-		}, 5000, that);
-	}
-	
-	function stopStatusMonitoring() {
-		clearInterval(statusMonitorID);
-		statusMonitorID = null;
-	}
-	
-	function callSpark(that, funcName, params, callback, errorCallback) {
-		spinner.spin(that.domNode);
-		spark[funcName + 'Async']({
-			'onSuccess': function(event) {
-				spinner.stop();
-				if (event.success) {
-					if (callback) {
-						callback(event);
-					}
-				}
-				else {
-					if (errorCallback) {
-						errorCallback();
-					}
-					else {
-						notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
-					}
-				}
-			},
-			'onError': function(error) {
-				spinner.stop();
-				if (errorCallback) {
-					errorCallback(error);
-				}
-				else {
-					notification.error('System error in ' + funcName);
-				}
-			},
-			'params': params
-		});
-	}
-	
-	function startTestMonitor(testID, cartridgeID) {
-		sources.test.monitor(
-			{
-				onSuccess: function(evt) {
-						if (evt.result.success) {
-							notification.log('Test completed');
-						}
-						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
-						}
-						loadRecentTests();
-					},
-				onError: function(err) {
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				testID: testID,
-				cartridgeID: cartridgeID
-			}
-		);
-	}
+	var firmwareVersion = 9;
 	
 	function loadCartridge(cartridgeID) {
 		sources.cartridge.query('ID === :1',
@@ -228,26 +143,264 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);	
 	}
 
-	
-// eventHandlers// @lock
+	function loadTestFinished() {
+		var queryString = '';
+		
+		switch (testResultFilter) {
+			case 'all':
+				break;
+			case 'positive':
+				break;
+			case 'negative':
+				break;
+			case 'borderline':
+				break;
+		}
 
-	login1.login = function login1_login (event)// @startlock
-	{// @endlock
-		sources.user.start_daemons(
+		switch (testStatusFilter) {
+			case 'finished':
+				break;
+			case 'cancelled':
+				break;
+			case 'all':
+				break;
+			case 'failed':
+				break;
+		}
+
+		today = new Date();
+		switch (testDateFilter) {
+			case 'this_week':
+				break;
+			case 'today':
+				break;
+			case 'last_week':
+				break;
+			case 'this_month':
+				break;
+			case 'this_year':
+				break;
+			case 'enter_date':
+				break;
+		}
+		
+		sources.testFinished.query('startedOn !== null',
 			{
-				onSuccess: function(evt) {
-					console.log(evt);
+				onSuccess: function(event) {
+					
 				},
-				onError: function(err) {
-					console.log(err);
-				}
+				onError: function(error) {
+					
+				},
+				params: []
 			}
 		);
-	};// @lock
+	}
+	
+	function generateGraph(data) {
+		var data = [];
+		var clear = [];
+		var red = [];
+		var green = [];
+		var blue = [];
+		var margin = 20;
+		
+		var extent = {
+			xmax : 0,
+			xmin : 0,
+			xmax : 0,
+			ymin : 0
+		}
+		
+		for (var i = 0; i < data.length; i += 2) {
+			clear.push({ x: time[i], y : data[i].clear - data[i + 1].clear });
+			red.push({ x: time[i], y : data[i].red - data[i + 1].red });
+			green.push({ x: time[i], y : data[i].green - data[i + 1].green });
+			blue.push({ x: time[i], y : data[i].blue - data[i + 1].blue });
+		}
+		data.push(clear);
+		data.push(red);
+		data.push(green);
+		data.push(blue);
+		
+		var colors = [
+			'gray',
+			'red',
+			'green',
+			'blue'
+		]
+		 
+		 
+		//************************************************************
+		// Create Margins and Axis and hook our zoom function
+		//************************************************************
+		var margin = {top: 20, right: 30, bottom: 30, left: 50},
+		    width = $('#containerGraph').width() - margin.left - margin.right,
+		    height = $('#containerGraph').height() - margin.top - margin.bottom;
+			
+		var x = d3.scale.linear()
+		    .domain([0, 12])
+		    .range([0, width]);
+		 
+		var y = d3.scale.linear()
+		    .domain([-1, 16])
+		    .range([height, 0]);
+			
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+			.tickSize(-height)
+			.tickPadding(10)	
+			.tickSubdivide(true)	
+		    .orient("bottom");	
+			
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+			.tickPadding(10)
+			.tickSize(-width)
+			.tickSubdivide(true)	
+		    .orient("left");
+			
+		var zoom = d3.behavior.zoom()
+		    .x(x)
+		    .y(y)
+		    .scaleExtent([1, 10])
+		    .on("zoom", zoomed);	
+			
+			
+		 
+			
+			
+		//************************************************************
+		// Generate our SVG object
+		//************************************************************	
+		var svg = d3.select("#containerGraph").append("svg")
+			.call(zoom)
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+			.append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		 
+		svg.append("g")
+		    .attr("class", "x axis")
+		    .attr("transform", "translate(0," + height + ")")
+		    .call(xAxis);
+		 
+		svg.append("g")
+		    .attr("class", "y axis")
+		    .call(yAxis);
+		 
+		svg.append("g")
+			.attr("class", "y axis")
+			.append("text")
+			.attr("class", "axis-label")
+			.attr("transform", "rotate(-90)")
+			.attr("y", (-margin.left) + 10)
+			.attr("x", -height/2)
+			.text('Axis Label');	
+		 
+		svg.append("clipPath")
+			.attr("id", "clip")
+			.append("rect")
+			.attr("width", width)
+			.attr("height", height);
+			
+			
+			
+			
+			
+		//************************************************************
+		// Create D3 line object and draw data on our SVG object
+		//************************************************************
+		var line = d3.svg.line()
+		    .interpolate("linear")	
+		    .x(function(d, i) { return x(d.x); })
+		    .y(function(d) { return y(d.y); });		
+			
+		svg.selectAll('.line')
+			.data(data)
+			.enter()
+			.append("path")
+		    .attr("class", "line")
+			.attr("clip-path", "url(#clip)")
+			.attr('stroke', function(d,i){ 			
+				return colors[i%colors.length];
+			})
+		    .attr("d", line);		
+			
+			
+			
+			
+		//************************************************************
+		// Draw points on SVG object based on the data given
+		//************************************************************
+		var points = svg.selectAll('.dots')
+			.data(data)
+			.enter()
+			.append("g")
+		    .attr("class", "dots")
+			.attr("clip-path", "url(#clip)");	
+		 
+		points.selectAll('.dot')
+			.data(function(d, index){ 		
+				var a = [];
+				d.forEach(function(point,i){
+					a.push({'index': index, 'point': point});
+				});		
+				return a;
+			})
+			.enter()
+			.append('circle')
+			.attr('class','dot')
+			.attr("r", 2.5)
+			.attr('fill', function(d,i){ 	
+				return colors[d.index%colors.length];
+			})	
+			.attr("transform", function(d) { 
+				return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
+			);
+			
+		 
+			
+			
+			
+			
+		//************************************************************
+		// Zoom specific updates
+		//************************************************************
+		function zoomed() {
+			svg.select(".x.axis").call(xAxis);
+			svg.select(".y.axis").call(yAxis);   
+			svg.selectAll('path.line').attr('d', line);  
+		 
+			points.selectAll('circle').attr("transform", function(d) { 
+				return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
+			);  
+		}
+
+	}
+
+	function loadGraph(testID) {
+		sources.test.get_sensor_reading_array(
+			{
+				onSuccess: function(event) {
+					generateGraph(event.result);
+				},
+				onError: function(error) {
+					notification.error('SYSTEM ERROR: Unable to load graph data, ' + error.error[0].message);
+				}
+			},
+			{
+				testID: testID
+			}
+		);
+	}
+	
+// eventHandlers// @lock
 
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
 		$$('navigationView1').goToView(7);
+		loadGraph(sources.testFinished.ID);
 	};// @lock
 
 	row1.click = function row1_click (event)// @startlock
@@ -259,52 +412,37 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	{// @endlock
 		if (event.dataSource.ID) {
 			$$('progressBarTest').setValue(event.dataSource.percentComplete, 100, 'Test started at ' + event.dataSource.startedOn.toLocaleTimeString() + ': ' + event.dataSource.percentComplete + '% complete');
-			if (event.dataSource.status === 'In progress') {
-				if (!refreshInterval) {
-					refreshInterval = setInterval(loadRecentTests, 20000);
-				}
-			}
-			else {
-				if (refreshInterval) {
-					clearInterval(refreshInterval);
-					refreshInterval = null;
-				}
-			}
-		}
-		else {
-			if (refreshInterval) {
-				clearInterval(refreshInterval);
-				refreshInterval = null;
-			}
 		}
 		$$('icon4')[event.dataSource.status === 'In progress' ? 'enable' : 'disable']();
 	};// @lock
 
 	icon4.click = function icon4_click (event)// @startlock
 	{// @endlock
-		if (window.confirm('Are you sure you want to cancel this test? The cartridge cannot be reused.')) {
-			spinner.spin(this.domNode);
-			sources.test.cancel(
-				{
-					onSuccess: function(evt) {
-							spinner.stop();
+			var user = WAF.directory.currentUser();
+			
+			if (user) {
+				if (window.confirm('Are you sure you want to cancel this test? The cartridge cannot be reused.')) {
+					dispatch.runOnceAsync({
+						onSuccess: function(evt) {
 							if (evt.result.success) {
-								notification.log('Test cancelled');
+								notification.log('Test successfully started');
+								sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
+								$$('navigationView1').goToView(4);
 							}
 							else {
-								notification.error('ERROR: ' + evt.result.message + ' - test not started');
+								notification.error('ERROR: ' + evt.result.message + ' - test not cancelled');
 							}
 						},
-					onError: function(err) {
-							spinner.stop();
-							notification.error('SYSTEM ERROR: ' + err.error[0].message);
-						}
-				},
-				{
-					testID: sources.testToday.ID
+						onError: function(err) {
+							notification.error('SYSTEM ERROR: Test failed to cancel');
+						},
+						params: [ 'cancel_test', { username: user.userName, testID: sources.testToday.ID } ]
+					});
 				}
-			);
-		}
+			}
+			else {
+				notification.error('You must be signed in to cancel a test');	
+			}
 	};// @lock
 
 	buttonReadyToTest.click = function buttonReadyToTest_click (event)// @startlock
@@ -314,16 +452,32 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonTestResults.click = function buttonTestResults_click (event)// @startlock
 	{// @endlock
+		loadTestFinished();
 		$$('navigationView1').goToView(5);
 	};// @lock
 
 	button1.click = function button1_click (event)// @startlock
 	{// @endlock
-		if (sources.device.ID) {
-			callSpark(this, 'initialize_device', [sources.device.sparkCoreID], function(evt) {
-					notification.log('Device initialization started');
-				}
-			);
+		var user = WAF.directory.currentUser();
+		
+		if (user) {
+			if (sources.device.ID) {
+				dispatch.runOnceAsync({
+					onSuccess: function(evt) {
+						notification.log('Device initialization begun');
+					},
+					onError: function(err) {
+						notification.error('Device initialization failed');
+					},
+					params: [ 'initialize_device', { username: user.userName, deviceID: sources.device.ID } ]
+				});
+			}
+			else {
+				notification.error('No device selected to initialize');
+			}
+		}
+		else {
+			notification.error('You must be signed in to initialize a device');
 		}
 	};// @lock
 
@@ -342,36 +496,22 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			notification.log('Sending test instructions to device "' + sources.device.name + '" – please stand by...');
-			spinner.spin(this.domNode);
-			sources.test.start(
-				{
-					onSuccess: function(evt) {
-							spinner.stop();
-							if (evt.result.success) {
-								notification.log('Test started');
-								startTestMonitor(evt.result.testID, sources.cartridge.ID);
-								sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
-								if (!refreshInterval) {
-									refreshInterval = setInterval(loadRecentTests, 20000);
-								}
-								$$('navigationView1').goToView(4);
-							}
-							else {
-								notification.error('ERROR: ' + evt.result.message + ' - test not started');
-							}
-						},
-					onError: function(err) {
-							spinner.stop();
-                            notification.error('SYSTEM ERROR: ' + err.error[0].message);
-						}
+			dispatch.runOnceAsync({
+				onSuccess: function(evt) {
+					if (evt.result.success) {
+						notification.log('Test successfully started');
+						sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
+						$$('navigationView1').goToView(4);
+					}
+					else {
+						notification.error('ERROR: ' + evt.result.message + ' - test not started');
+					}
 				},
-				{
-					username: user.userName,
-					deviceID: sources.device.ID,
-					cartridgeID: sources.cartridge.ID
-				}
-			);
+				onError: function(err) {
+					notification.error('SYSTEM ERROR: Test failed to start');
+				},
+				params: [ 'run_test', { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridge.ID } ]
+			});
 		}
 		else {
 			notification.error('You must be signed in to run a test');	
@@ -391,7 +531,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
-	WAF.addListener("login1", "login", login1.login, "WAF");
 	WAF.addListener("row2", "click", row2.click, "WAF");
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("testToday", "onCurrentElementChange", testTodayEvent.onCurrentElementChange, "WAF");
