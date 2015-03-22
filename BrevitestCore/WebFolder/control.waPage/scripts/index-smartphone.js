@@ -16,9 +16,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonRun = {};	// @button
 // @endregion// @endlock
 
-	var sse = new EventSource('/EventSource');
+	sse = new EventSource('/status');
 	sse.onmessage = function eventsourcehandler(event) {
-		notification.log(event);
+		notification.log(JSON.parse(event.data).message);
 	};
 		
 	var spinnerOpts = {
@@ -61,39 +61,36 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function waitForScanResult(uuid) {
-		sources.cartridge.wait_for_scan_result(
+		scanQRcode.wait_for_codeAsync(
 			{
 				onSuccess: function(event) {
 						$$('frameScanner').hide();
-						if (event.result.success) {
-							loadCartridge(event.result.cartridgeID);
+						if (event.success) {
+							loadCartridge(event.cartridgeID);
 						}
 						else {
-							notification.error('ERROR: ' + event.result.message + ' - cartridge scan not successful');
+							notification.error('ERROR: ' + event.message + ' - cartridge scan not successful');
 						}
 					},
 				onError: function(error) {
 						notification.error('SYSTEM ERROR: ' + error.error[0].message);
 					}
-			},
-			{
-				uuid: uuid
-			}
+			}, uuid
 		);
 	}
 	
 	function scanCartridge() {
-		sources.cartridge.start_scan(
+		scanQRcode.start_scanAsync(
 			{
 				onSuccess: function(event) {
-						if (event.result.success) {
+						if (event.success) {
 							notification.log('Opening scanner');
-							$$('frameScanner').setValue(event.result.url);
+							$$('frameScanner').setValue(event.url);
 							$$('frameScanner').show();
-							waitForScanResult(event.result.uuid);
+							waitForScanResult(event.uuid);
 						}
 						else {
-							notification.error('ERROR: ' + event.result.message + ' - scan not started');
+							notification.error('ERROR: ' + event.message + ' - scan not started');
 						}
 					},
 				onError: function(error) {

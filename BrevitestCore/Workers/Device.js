@@ -12,11 +12,16 @@ onmessage = function(e) {
 		if (data.message === 'start') {
 			switch (data.func) {
 				case 'initialize_device':
-					postMessage({ message: 'Verifying serial number' });
+					postMessage({ message: 'Preparing device for testing' });
 					
 					result = initializeDevice(param);
-										
-					postMessage({ message: result });
+					
+					if (result.success) {		
+						postMessage({ message: 'Device ready for testing', data: result });
+					}
+					else {
+						postMessage({ message: 'A problem occurred. Device not ready for testing', data: result });
+					}
 					postMessage({ message: 'done' });
 					break;
 				case 'register_device':
@@ -24,6 +29,12 @@ onmessage = function(e) {
 		
 					result = registerDevice(param);
 					
+					if (result.success) {		
+						postMessage({ message: 'Device registered', data: result });
+					}
+					else {
+						postMessage({ message: 'A problem occurred. Device not registered', data: result });
+					}
 					postMessage({ message: result });
 					postMessage({ message: 'done' });
 					break;
@@ -80,7 +91,6 @@ function initializeDevice(param) {
 		return result;
 	}
 	
-	postMessage({ message: 'Getting device ready to run a test' });
 	result = spark.initialize_device(device.sparkCoreID);
 	if (result && (result.status === 200) && (result.response.return_value !== -1)) {
 		result.success = true;

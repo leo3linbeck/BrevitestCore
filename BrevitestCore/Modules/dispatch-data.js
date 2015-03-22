@@ -7,6 +7,12 @@ exports.params = {
 	},
 	check_calibration: {
 		module: 'Device'
+	},
+	run_test: {
+		module: 'Test'
+	},
+	cancel_test: {
+		module: 'Test'
 	}
 };
 

@@ -90,7 +90,7 @@ function runTest(param) {
 	}
 	
 	postMessage({ message: 'Checking whether device is ready' });
-	result = spark.ready_to_run_assay(device.sparkCoreID);
+	result = spark.ready_to_run_test(device.sparkCoreID);
 	if ((result.status !== 200) || (result.response.return_value === -1)) {
 		postMessage({ message: 'Device not ready' });
 		result.deviceID = device.ID;

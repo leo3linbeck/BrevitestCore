@@ -11,10 +11,10 @@ exports.postMessage = function (message) {
 	}
 	else if (message.name === 'applicationWillStop') {
 		/*	The service should be stopped and ended here */
-		deviceDaemon.port.postMessage({ message: 'stop' });
-		testDaemon.port.postMessage({ message: 'stop' });
-		deviceDaemon = null;
-		testDaemon = null;
+//		deviceDaemon.port.postMessage({ message: 'stop' });
+//		testDaemon.port.postMessage({ message: 'stop' });
+//		deviceDaemon = null;
+//		testDaemon = null;
 	}
 	else if (message.name === 'httpServerDidStart') {
 		/*	This message should be handled if the service depends on the HTTP Server status */

@@ -1,3 +1,7 @@
-var dispatchManager = new SharedWorker('Workers/DispatchManager.js', 'DispatchManager');
+var eventsource = require('wakanda-eventsource');
+eventsource.start();
 
-dispatchManager.port.postMessage({message: 'runOnce', func: 'test', params: {x: 1, y: 2} });
+for (var i = 0; i < 5; i += 1) {
+	eventsource.pushEvent('test', {i: i, message: 'try #' + i}, true);
+	wait(2000);
+}

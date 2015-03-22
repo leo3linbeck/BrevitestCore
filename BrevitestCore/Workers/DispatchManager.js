@@ -1,6 +1,7 @@
 var dispatchData = require('dispatch-data');
 var eventsource = require('wakanda-eventsource');
-eventsource.start();
+eventsource.start('/status');
+eventsource.pushEvent('start', {message: 'started'}, true);
 
 var dispatch = dispatchData.params;
 var path = dispatchData.workerPath;
@@ -82,9 +83,17 @@ function runWorker(func, param) {
 			var message = data;
 
 			console.log(data);
-			eventsource.pushEvent(func, data, true);
-			if (data.message === 'done' || data.message === 'error') {
+			if (data.message === 'done') {
 				exitWait();
+			}
+			else {
+				if (data.message === 'error') {
+					eventsource.push(data, true);
+					exitWait();
+				}
+				else {
+					eventsource.push(data, true);
+				}
 			}
 		}
 		wait();
