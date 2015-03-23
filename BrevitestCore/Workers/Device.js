@@ -12,39 +12,28 @@ onmessage = function(e) {
 		if (data.message === 'start') {
 			switch (data.func) {
 				case 'initialize_device':
-					postMessage({ message: 'Preparing device for testing' });
+					postMessage({ type: 'user_message', message: 'Preparing device for testing' });
 					
 					result = initializeDevice(param);
 					
-					if (result.success) {		
-						postMessage({ message: 'Device ready for testing', data: result });
-					}
-					else {
-						postMessage({ message: 'A problem occurred. Device not ready for testing', data: result });
-					}
-					postMessage({ message: 'done' });
+					postMessage({ type: 'user_message', message: 'Device ready for testing', data: result });
+					postMessage({ type: 'done' });
 					break;
 				case 'register_device':
 					postMessage({ message: 'Registering device' });
 		
 					result = registerDevice(param);
 					
-					if (result.success) {		
-						postMessage({ message: 'Device registered', data: result });
-					}
-					else {
-						postMessage({ message: 'A problem occurred. Device not registered', data: result });
-					}
-					postMessage({ message: result });
-					postMessage({ message: 'done' });
+					postMessage({ type: 'user_message', message: 'Device registered', data: result });
+					postMessage({ type: 'done' });
 					break;
 				case 'check_device_calibration':
-					postMessage({ message: 'Checking device calibration' });
+					postMessage({ type: 'user_message', message: 'Checking device calibration' });
 		
 					result = checkCalibration(param);
 					
-					postMessage({ message: result });
-					postMessage({ message: 'done' });
+					postMessage({ type: 'user_message', message: 'Device moved to calibration point', data: result });
+					postMessage({ type: 'done' });
 					break;
 			}
 		}
@@ -64,14 +53,14 @@ function initializeDevice(param) {
 		result.success = false;
 		result.message = 'Device entity not found';
 		result.deviceID = param.deviceID;
-		return result;
+		throw result;
 	}
 	
 	if (user === null) {
 		result.success = false;
 		result.message = 'User not found';
 		result.username = param.username;
-		return result;
+		throw result;
 	}
 	else {
 		practice = user.practice;
@@ -82,13 +71,14 @@ function initializeDevice(param) {
 		result.message = 'This device is not registered to this practice';
 		result.devicePracticeID = device.practice.ID;
 		result.userPracticeID = practice.ID;
-		return result;
+		throw result;
 	}
 	
 	result = model.Device.methods.check_serial_number({deviceID: device.ID});
 	if (!result.success) {
+		result.message = 'Serial number does not match';
 		result.deviceID = device.ID;
-		return result;
+		throw result;
 	}
 	
 	result = spark.initialize_device(device.sparkCoreID);
@@ -97,7 +87,8 @@ function initializeDevice(param) {
 	}
 	else {
 		result.success = false;
-		result.message = 'Device initialization not started';
+		result.message = 'A problem occurred. Device not ready for testing';
+		throw result;
 	}
 	
 	return result;
@@ -114,34 +105,36 @@ function registerDevice(param) {
 		result.success = false;
 		result.message = 'Device entity not found';
 		result.deviceID = param.deviceID;
-		return result;
+		throw result;
 	}
 	
 	if (user === null) {
 		result.success = false;
 		result.message = 'User not found';
 		result.username = param.username;
-		return result;
+		throw result;
 	}
 	else {
 		practice = user.practice;
 	}
 	
 	result = spark.write_serial_number(param.sparkCoreID, param.serialNumber);
-	if (result.success) {
-		device.practice = practice;
-		device.sparkCoreID = param.sparkCoreID;
-		device.sparkName = param.sparkCoreName;
-		device.sparkLastHeard = param.sparkCoreLastHeard;
-		device.serialNumber = param.serialNumber;
-		device.registeredBy = user;
-		device.registeredOn = new Date();
-		device.online = true;
-		device.save();	
-			
-		result.deviceID = device.ID;
-		return result;
+	if (!result.success) {
+		result.message = 'A problem occurred. Device not registered';
+		throw result;
 	}
+	
+	device.practice = practice;
+	device.sparkCoreID = param.sparkCoreID;
+	device.sparkName = param.sparkCoreName;
+	device.sparkLastHeard = param.sparkCoreLastHeard;
+	device.serialNumber = param.serialNumber;
+	device.registeredBy = user;
+	device.registeredOn = new Date();
+	device.online = true;
+	device.save();	
+		
+	result.deviceID = device.ID;
 
 	return result;
 }
@@ -157,25 +150,29 @@ function checkCalibration(param) {
 		result.success = false;
 		result.message = 'Device entity not found';
 		result.deviceID = param.deviceID;
-		return result;
+		throw result;
 	}
 	
 	if (user === null) {
 		result.success = false;
 		result.message = 'User not found';
 		result.username = param.username;
-		return result;
+		throw result;
 	}
 	
-	if (device.practice.ID === user.practice.ID) {
-		result = spark.set_and_move_to_calibration_point(device.sparkCoreID, device.calibrationSteps);
-	}
-	else {
+	if (device.practice.ID !== user.practice.ID) {
 		result.success = false;
 		result.message = 'This device is not registered to this practice';
 		result.devicePracticeID = device.practice.ID;
 		result.userPracticeID = user.practice.ID;
+		throw result;
 	}
 
+	result = spark.set_and_move_to_calibration_point(device.sparkCoreID, device.calibrationSteps);
+	if (!result.success) {
+		result.message = 'Problem occurred - device not moved to calibration point';
+		throw result;
+	}
+	
 	return result;
 }

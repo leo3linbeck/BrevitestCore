@@ -70,6 +70,16 @@
 			"type": "theme"
 		},
 		{
+			"id": "CSS/libnotify.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "CSS/d3.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
 			"id": "control.waPage/styles/index-smartphone.css",
 			"path": "WEBFOLDER",
 			"type": "style"
@@ -80,12 +90,12 @@
 			"type": "style"
 		},
 		{
-			"id": "control.waPage/styles/libnotify.css",
+			"id": "control.waPage/scripts/index-smartphone.js",
 			"path": "WEBFOLDER",
-			"type": "style"
+			"type": "script"
 		},
 		{
-			"id": "control.waPage/scripts/index-smartphone.js",
+			"id": "Javascript/spin.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		},
@@ -96,11 +106,6 @@
 		},
 		{
 			"id": "Javascript/humane.min.js",
-			"path": "WEBFOLDER",
-			"type": "script"
-		},
-		{
-			"id": "Javascript/spin.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		}

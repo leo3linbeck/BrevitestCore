@@ -13,20 +13,19 @@ onmessage = function(e) {
 		if (data.message === 'start') {
 			switch (data.func) {
 				case 'run_test':
-					postMessage({ message: 'Starting test' });
+					postMessage({ type: 'user_message', message: 'Starting test' });
 					
 					result = runTest(param);
 										
-					postMessage({ message: 'Test finished', data: result });
 					postMessage({ message: 'done' });
 					break;
 				case 'cancel_test':
-					postMessage({ message: 'Cancelling test' });
+					postMessage({ type: 'user_message', message: 'Cancelling test' });
 		
 					result = cancelTest(param);
 					
-					postMessage({ message: 'Test cancelled', data: result });
-					postMessage({ message: 'done' });
+					postMessage({ type: 'user_message', message: 'Test cancelled', data: result });
+					postMessage({ type: 'done' });
 					break;
 			}
 		}
@@ -41,6 +40,7 @@ onmessage = function(e) {
 
 function runTest(param) {
 	// param: username, deviceID, cartridgeID
+	postMessage({ type: 'user_message', message: 'Checking test parameters' });
 	var test;
 	var result = {};
 	var cartridge = ds.Cartridge(param.cartridgeID);
@@ -81,34 +81,34 @@ function runTest(param) {
 		throw result;
 	}
 	
-	postMessage({ message: 'Checking device serial number' });
+	postMessage({ type: 'user_message', message: 'Checking device serial number' });
 	result = model.Device.methods.check_serial_number({deviceID: device.ID});
 	if (!result.success) {
-		postMessage({ message: 'Device serial number does not match' });
+		result.message = 'Device serial number does not match';
 		result.deviceID = device.ID;
 		throw result;
 	}
 	
-	postMessage({ message: 'Checking whether device is ready' });
+	postMessage({ type: 'user_message', message: 'Checking whether device is ready' });
 	result = spark.ready_to_run_test(device.sparkCoreID);
 	if ((result.status !== 200) || (result.response.return_value === -1)) {
-		postMessage({ message: 'Device not ready' });
+		result.message = 'Device not ready';
 		result.deviceID = device.ID;
 		throw result;
 	}
 	
-	postMessage({ message: 'Loading instructions into device' });
+	postMessage({ type: 'user_message', message: 'Loading instructions into device' });
 	result = spark.send_BCODE_to_spark(device.sparkCoreID, cartridge.ID, cartridge.assay.BCODE);
 	if (!result.success) {
-		postMessage({ message: 'Error loading instructions into device' });
+		result.message = 'Error loading instructions into device';
 		result.BCODE = cartridge.assay.BCODE;
 		throw result;
 	}
 		
-	postMessage({ message: 'Starting test' });
+	postMessage({ type: 'user_message', message: 'Starting test' });
 	result = spark.run_test(device.sparkCoreID, cartridge.ID, cartridge.assay.BCODE);
 	if (result.success) {
-		postMessage('Test started');
+		postMessage({ type: 'user_message', message: 'Test started' });
 		test = ds.Test.createEntity();
 		test.assay = cartridge.assay;
 		test.device = device;
@@ -132,17 +132,22 @@ function runTest(param) {
 				else {
 					updateTestStatus(test);
 				}
-				if ((now - startTime) < 120000) {
+				if ((now - startTime) < 900000) {
 					doIt();
 				}
 				else {
-					console.log(func + ' timeout');
+					console.log('Update test status timeout');
 				}
 			}, 10000);
 		})();
+		if (test.percentComplete === 100) {
+			cartridge.get_data_from_device();
+			postMessage({ type: 'user_message', message: 'Test finished' });
+		}
 	}
 	else {
-		throw('Test failed to start');
+		result.message('Test failed to start');
+		throw(result);
 	}
 	
 	return result;
@@ -153,6 +158,10 @@ function updateTestStatus(test) {
 	if (result.success) {
 		test.percentComplete = result.value;
 		test.save();
+		postMessage({ type: 'percent_complete', data: { testID: test.ID, percent_complete: result.value } });
+		if (test.percentComplete === 100) {
+			shouldTerminate = true;
+		}
 	}
 }
 
@@ -185,6 +194,7 @@ function cancelTest(param) {
 		shouldTerminate = true;
 		cartridge.test.status = 'Cancelled';
 		cartridge.test.save();
+		result.message = 'Test cancelled';
 	}
 	else {
 		result.success = false;

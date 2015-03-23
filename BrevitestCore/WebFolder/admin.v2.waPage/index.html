@@ -11,9 +11,9 @@
 		
 		
 <meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="deviceStatus" data-lib="WAF" data-id="deviceStatus" data-dataType="string" data-autoLoad="true" content="deviceStatus"/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="assayNumber" data-lib="WAF" data-id="assayNumber" data-dataType="number" data-autoLoad="true" content="assayNumber"/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="archiveSize" data-lib="WAF" data-id="archiveSize" data-dataType="number" data-autoLoad="true" content="archiveSize"/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="sparkCores" data-lib="WAF" data-id="sparkCores" data-dataType="string" data-autoLoad="true" data-attributes="name:string,id:string:key,last_app:string,last_heard:string,connected:boolean" content="sparkCores"/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="sparkAttr" data-lib="WAF" data-id="sparkAttr" data-dataType="string" data-autoLoad="true" data-attributes="id:number,name:string,value:number" content="sparkAttr"/>
-		<meta name="WAF.config.loadCSS" content="styles/index.css"/>
-		<meta name="WAF.config.loadCSS" content="/application.css"/>
-		<meta name="WAF.config.loadCSS" content="styles/libnotify.css"/>
+		
+		
+		
 		
 		
 		
@@ -24,11 +24,11 @@
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="newParams" data-lib="WAF" data-id="newParams" data-dataType="string" data-autoLoad="true" content="newParams"/>
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="brevicode" data-lib="WAF" data-id="brevicode" data-dataType="string" data-autoLoad="true" data-attributes="command:string,params:string,code:string" content="brevicode"/>
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Assay" data-lib="WAF" data-id="assay" data-dataType="string" data-autoLoad="true" content="assay"/>
-		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="commands" data-lib="WAF" data-id="commands" data-dataType="string" data-autoLoad="true" data-attributes="num:string:key,name:string,description:string" content="commands"/>		<meta name="WAF.config.loadCSS" id="waf-interface-css" content="styles/index.css"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="commands" data-lib="WAF" data-id="commands" data-dataType="string" data-autoLoad="true" data-attributes="num:string:key,name:string,description:string" content="commands"/>		
 
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Device" data-lib="WAF" data-id="device" data-dataType="string" data-autoLoad="false" content="device"/>
 		
-		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="DeviceModel" data-lib="WAF" data-id="deviceModel" data-dataType="string" data-autoLoad="false" content="deviceModel"/>		<meta name="WAF.config.loadCSS" id="waf-project-css" content="/application.css"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="DeviceModel" data-lib="WAF" data-id="deviceModel" data-dataType="string" data-autoLoad="false" content="deviceModel"/>		
 
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Cartridge" data-lib="WAF" data-id="cartridgeRaw" data-dataType="string" data-autoLoad="false" content="cartridgeRaw"/>
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="numberOfCartridges" data-lib="WAF" data-id="numberOfCartridges" data-dataType="number" data-autoLoad="true" content="numberOfCartridges"/>
@@ -47,14 +47,41 @@
 		
 		
 		
-		<meta name="WAF.config.loadJS" id="waf-script" content="scripts/index.js"/>
-		<meta name="WAF.config.loadJS" content="/Javascript/humane.min.js"/>
-		<meta name="WAF.config.loadJS" content="/Javascript/spin.js"/>
+		
+		
+		
 
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="newCode" data-lib="WAF" data-id="newCode" data-dataType="string" data-autoLoad="true" content="newCode"/>
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="estimatedDuration" data-lib="WAF" data-id="estimatedDuration" data-dataType="number" data-autoLoad="true" content="estimatedDuration"/>
 		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="testCartridge" data-lib="WAF" data-id="testCartridge" data-dataType="string" data-autoLoad="true" content="testCartridge"/>
-		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="User" data-lib="WAF" data-id="user" data-dataType="string" data-autoLoad="false" content="user"/></head>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="User" data-lib="WAF" data-id="user" data-dataType="string" data-autoLoad="false" content="user"/>		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<meta name="WAF.config.loadCSS" content="styles/index.css" id="waf-interface-css"/>
+		<meta name="WAF.config.loadCSS" content="/application.css" id="waf-project-css"/>
+		<meta name="WAF.config.loadCSS" content="/CSS/d3.css"/>
+		<meta name="WAF.config.loadCSS" content="/CSS/libnotify.css"/>
+		<meta name="WAF.config.loadJS" content="scripts/index.js" id="waf-script"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/humane.min.js"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/spin.js"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/d3.min.js"/>
+</head>
     <body id="waf-body" data-workspace-width="0" data-workspace-orientation="portrait" data-workspace-height="0" data-workspace-device="desktop" data-viewport-width="device-width" data-viewport-minimum-scale="1.0" data-viewport-maximum-scale="1.0" data-viewport-initial-scale="1.0" data-type="document" data-title="Control Center - ©2015, Brevitest LLC" data-theme="brevitest" data-platform="desktop" data-lib="WAF" data-group="[['tabViewControl','containerAssay','containerTest','containerDevice','menuBarControl','containerCartridge','containerFlash','containerData','containerHome']]" data-entire-model="false" data-apple-meta-tags-status-bar="default" class="waf-theme brevitest" style="bottom:;right:;visibility:hidden;">
     	<div id="tabViewControl" data-type="tabView" data-resizable="false" data-padding="6" data-menu-position="top left" data-linked-tag="containerAssay,containerTest,containerDevice,menuBarControl,containerCartridge,containerFlash,containerData,containerHome" data-lib="WAF" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="true" class="waf-widget waf-tabView">
 	 	 	<ul id="menuBarControl" data-type="menuBar" data-tab-margin="5" data-subMenuShow="hover" data-linked-tag="tabViewControl" data-lib="WAF" data-level="0" data-display="horizontal" data-context="['protected']" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="true" class="waf-tabView-menuBar waf-tabView-menuBar-top-left waf-widget waf-menuBar">

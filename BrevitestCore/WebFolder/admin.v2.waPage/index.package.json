@@ -80,7 +80,12 @@
 			"type": "style"
 		},
 		{
-			"id": "admin.v2.waPage/styles/libnotify.css",
+			"id": "CSS/d3.css",
+			"path": "WEBFOLDER",
+			"type": "style"
+		},
+		{
+			"id": "CSS/libnotify.css",
 			"path": "WEBFOLDER",
 			"type": "style"
 		},
@@ -96,6 +101,11 @@
 		},
 		{
 			"id": "Javascript/spin.js",
+			"path": "WEBFOLDER",
+			"type": "script"
+		},
+		{
+			"id": "Javascript/d3.min.js",
 			"path": "WEBFOLDER",
 			"type": "script"
 		}

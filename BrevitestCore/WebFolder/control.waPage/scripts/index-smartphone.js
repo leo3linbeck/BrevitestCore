@@ -16,9 +16,26 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonRun = {};	// @button
 // @endregion// @endlock
 
-	sse = new EventSource('/status');
+	var sse_notification_on = false;
+	var sse = new EventSource('/status');
 	sse.onmessage = function eventsourcehandler(event) {
-		notification.log(JSON.parse(event.data).message);
+		var data = JSON.parse(event.data);
+		var percentComplete, testID; 
+		switch (data.type) {
+			case 'user_message':
+				notification.info(data.message);
+				break;
+			case 'error':
+				notification.error(data.message);
+				break;
+			case 'percent_complete':
+				testID = data.data.testID;
+				percentComplete = data.data.percent_complete;
+				if (sources.testToday.ID === testID) {
+					sources.testToday.serverRefresh({ onSuccess: function(e) {return;}, forceReload: true });
+				}
+				break;
+		}
 	};
 		
 	var spinnerOpts = {
@@ -28,6 +45,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-libnotify' });
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
+	notification.info = humane.spawn({ addnCls: 'humane-libnotify-info', clickToClose: true, timeout: 1000 });
 	
 	var firmwareVersion = 9;
 	
@@ -461,7 +479,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			if (sources.device.ID) {
 				dispatch.runOnceAsync({
 					onSuccess: function(evt) {
-						notification.log('Device initialization begun');
+						notification.info('Device initialization begun');
 					},
 					onError: function(err) {
 						notification.error('Device initialization failed');
@@ -495,13 +513,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		if (user) {
 			dispatch.runOnceAsync({
 				onSuccess: function(evt) {
-					if (evt.result.success) {
-						notification.log('Test successfully started');
+					if (evt.success) {
 						sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
-						$$('navigationView1').goToView(4);
+						$$('navigationView1').goToView(1);
 					}
 					else {
-						notification.error('ERROR: ' + evt.result.message + ' - test not started');
+						notification.error('ERROR: ' + evt.message + ' - test not started');
 					}
 				},
 				onError: function(err) {

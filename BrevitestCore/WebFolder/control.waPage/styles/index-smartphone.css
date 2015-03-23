@@ -4,39 +4,39 @@
 */
 
 #htmlTag17 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag16 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag15 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag14 {
+	position: absolute;
 	z-index: 0;
 	width: 0px;
 	height: 0px;
 	top: auto;
 	left: auto;
-	position: absolute;
 }
 
 #htmlTag12 {
@@ -546,7 +546,7 @@
 	height: 14px;
 	top: 214px;
 	left: 17px;
-	right: 284px;
+	right: 269px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -570,7 +570,7 @@
 	height: 14px;
 	top: 126px;
 	left: 16px;
-	right: 282px;
+	right: 267px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -594,7 +594,7 @@
 	height: 14px;
 	top: 96px;
 	left: 18px;
-	right: 282px;
+	right: 267px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -629,7 +629,7 @@
 	height: 14px;
 	top: 67px;
 	left: 34px;
-	right: 282px;
+	right: 267px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -653,7 +653,7 @@
 	height: 14px;
 	top: 39px;
 	left: 20px;
-	right: 282px;
+	right: 267px;
 	position: absolute;
 	font-size: 12px;
 }
@@ -677,7 +677,7 @@
 	height: 14px;
 	top: 185px;
 	left: 39px;
-	right: 283px;
+	right: 268px;
 	position: absolute;
 	font-size: 12px;
 }
