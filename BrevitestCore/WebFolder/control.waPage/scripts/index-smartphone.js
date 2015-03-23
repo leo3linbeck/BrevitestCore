@@ -211,38 +211,51 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);
 	}
+		
+	var bounds = {
+		xmax : 0,
+		xmin : 0,
+		ymax : 0,
+		ymin : 0
+	}
 	
-	function generateGraph(data) {
+	function updateBounds(x, y) {
+		bounds.xmin = bounds.xmin > x ? x : bounds.xmin;
+		bounds.ymin = bounds.ymin > y ? y : bounds.ymin;
+		bounds.xmax = bounds.xmax < x ? x : bounds.xmax;
+		bounds.ymax = bounds.ymax < y ? y : bounds.ymax;
+			
+		return {x: x, y: y};
+	}
+		
+	function generateGraph(rawData) {
 		var data = [];
 		var clear = [];
 		var red = [];
 		var green = [];
 		var blue = [];
+		var r_minus_b = [];
 		var margin = 20;
-		
-		var extent = {
-			xmax : 0,
-			xmin : 0,
-			xmax : 0,
-			ymin : 0
-		}
-		
-		for (var i = 0; i < data.length; i += 2) {
-			clear.push({ x: time[i], y : data[i].clear - data[i + 1].clear });
-			red.push({ x: time[i], y : data[i].red - data[i + 1].red });
-			green.push({ x: time[i], y : data[i].green - data[i + 1].green });
-			blue.push({ x: time[i], y : data[i].blue - data[i + 1].blue });
+		var startTime = Date.parse(rawData[0].time);
+		for (var i = 0; i < rawData.length; i += 2) {
+			clear.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].clear - rawData[i + 1].clear));
+			red.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].red - rawData[i + 1].red));
+			green.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].green - rawData[i + 1].green));
+			blue.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].blue - rawData[i + 1].blue));
+			r_minus_b.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].red - rawData[i + 1].red - rawData[i].blue + rawData[i + 1].blue));
 		}
 		data.push(clear);
 		data.push(red);
 		data.push(green);
 		data.push(blue);
+		data.push(r_minus_b);
 		
 		var colors = [
 			'gray',
 			'red',
 			'green',
-			'blue'
+			'blue',
+			'purple'
 		]
 		 
 		 
@@ -254,11 +267,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		    height = $('#containerGraph').height() - margin.top - margin.bottom;
 			
 		var x = d3.scale.linear()
-		    .domain([0, 12])
+		    .domain([bounds.xmin, bounds.xmax])
 		    .range([0, width]);
 		 
 		var y = d3.scale.linear()
-		    .domain([-1, 16])
+		    .domain([bounds.ymin, bounds.ymax])
 		    .range([height, 0]);
 			
 		var xAxis = d3.svg.axis()
@@ -395,7 +408,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function loadGraph(testID) {
-		sources.test.get_sensor_reading_array(
+		sources.testFinished.get_sensor_reading_array(
 			{
 				onSuccess: function(event) {
 					generateGraph(event.result);
