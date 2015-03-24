@@ -759,6 +759,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
 	{// @endlock
 		callSpark(this, 'initialize_device', [sources.device.sparkCoreID], function(evt) {
+				debugger;
 				notification.log('Device initialization started');
 			}
 		);

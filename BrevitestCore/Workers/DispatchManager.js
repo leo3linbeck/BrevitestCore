@@ -82,11 +82,13 @@ function runWorker(func, param) {
 
 			console.log(data);
 			if (data.type === 'done') {
+				eventsource.push({ type: 'process_stopped'}, true);
 				exitWait();
 			}
 			else {
 				if (data.type === 'error') {
 					eventsource.push(data.data, true);
+					eventsource.push({ type: 'process_stopped'}, true);
 					exitWait();
 				}
 				else {
