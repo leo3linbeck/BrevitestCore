@@ -34,7 +34,7 @@ onmessage = function(e) {
 		}
 	}
 	catch(e) {
-		postMessage({message:'error', data: e});
+		postMessage({message:'error', message: e});
 	}
 }
 
