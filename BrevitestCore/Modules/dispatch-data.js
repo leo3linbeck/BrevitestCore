@@ -1,4 +1,10 @@
 exports.params = {
+	refresh_devices: {
+		module: 'Spark'
+	},
+	reset_parameters: {
+		module: 'Device'
+	},
 	initialize_device: {
 		module: 'Device'
 	},

@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 2137,
-			"workspaceTop": 103,
+			"workspaceLeft": 48,
+			"workspaceTop": 984,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -979,24 +979,17 @@
 					"userDefined": true
 				},
 				{
+					"name": "mark_as_failed",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.entityMethods.mark_as_failed",
+					"userDefined": true
+				},
+				{
 					"name": "register",
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Cartridge.methods.register",
-					"userDefined": true
-				},
-				{
-					"name": "start_scan",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Cartridge.methods.start_scan",
-					"userDefined": true
-				},
-				{
-					"name": "wait_for_scan_result",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Cartridge.methods.wait_for_scan_result",
 					"userDefined": true
 				}
 			]
@@ -1209,7 +1202,8 @@
 					"kind": "storage",
 					"matchColumn": "webSocket",
 					"scope": "public",
-					"type": "string"
+					"type": "string",
+					"unique": false
 				},
 				{
 					"name": "online",
@@ -1350,31 +1344,10 @@
 			],
 			"methods": [
 				{
-					"name": "check_calibration",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Device.methods.check_calibration",
-					"userDefined": true
-				},
-				{
 					"name": "check_serial_number",
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Device.methods.check_serial_number",
-					"userDefined": true
-				},
-				{
-					"name": "initialize",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Device.methods.initialize",
-					"userDefined": true
-				},
-				{
-					"name": "register",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Device.methods.register",
 					"userDefined": true
 				},
 				{
@@ -2660,31 +2633,10 @@
 			],
 			"methods": [
 				{
-					"name": "cancel",
+					"name": "get_sensor_reading_array",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.cancel",
-					"userDefined": true
-				},
-				{
-					"name": "get_raw_sensor_readings",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.get_raw_sensor_readings",
-					"userDefined": true
-				},
-				{
-					"name": "monitor",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.monitor",
-					"userDefined": true
-				},
-				{
-					"name": "start",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.start",
+					"from": "$mainModel.Test.methods.get_sensor_reading_array",
 					"userDefined": true
 				}
 			]
@@ -2759,5 +2711,6 @@
 				}
 			]
 		}
-	]
+	],
+	"type": []
 }

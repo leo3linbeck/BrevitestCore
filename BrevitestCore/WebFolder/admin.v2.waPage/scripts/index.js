@@ -48,15 +48,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonSaveAssay = {};	// @button
 	var buttonCancelAssay = {};	// @button
 	var buttonCreateAssay = {};	// @button
-	var sparkCoresEvent = {};	// @dataSource
 	var menuItemDevice = {};	// @menuItem
 	var buttonChangeParameter = {};	// @button
 	var buttonLoadParams = {};	// @button
 	var buttonResetParams = {};	// @button
-	var buttonRefreshCores = {};	// @button
-	var checkboxMonitorStatus = {};	// @checkbox
-	var buttonGetStatus = {};	// @button
-	var buttonCancelProcess = {};	// @button
+	var buttonRefreshDevices = {};	// @button
 	var buttonSensorData = {};	// @button
 	var buttonRegisterDevice = {};	// @button
 // @endregion// @endlock
@@ -78,89 +74,60 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var clipboard = '';
 	
 	var websocketConnected = false;
-	var websocket = new WebSocket('ws://localhost:8081/websocket');
-	websocket.onmessage = function websocketonmessagehandler(message) {
-		var packet = JSON.parse(message.data);
-		switch (packet.type) {
-			case 'connected':
-				websocketConnected = true;
-				break;
-			case 'message':
-				notification.info(packet.message);
-				break;
-			case 'error':
-				notification.error(packet.message);
-				break;
-			case 'process_stopped':
-				notification.log('Process stopped');
-				break; 
-		}
-	}
-	function sendServerMessage(obj) {
-		websocket.send(JSON.stringify(obj));
-	}
+	var websocket;
 	
-	function callSpark(that, funcName, params, callback, errorCallback) {
-		spinner.spin(that.domNode);
-		spark[funcName + 'Async']({
-			'onSuccess': function(event) {
-				spinner.stop();
-				if (event.success) {
-					if (callback) {
-						callback(event);
+	function websocketConnect(param) {
+		websocket = new WebSocket('ws://localhost:8081/websocket');
+		websocket.onmessage = function websocketonmessagehandler(message) {
+			var d;
+			var packet = JSON.parse(message.data);
+			switch (packet.type) {
+				case 'connected':
+					websocketConnected = true;
+					this.send(JSON.stringify(param));
+					break;
+				case 'message':
+					notification.info(packet.message);
+					break;
+				case 'error':
+					notification.error(packet.message);
+					break;
+				case 'result':
+					spinner.stop();
+					d = packet.dataSources;
+					for (var i = 0; i < d.length; i += 1) {
+						if (typeof sources[d[i]].sync === 'undefined') { // server datasource
+							sources[d[i]].collectionRefresh({ onSuccess: function(e) {return;} });
+						}
+						else { // local datasource
+							sources[d[i]][d[i]] = packet.result;
+						}
 					}
-				}
-				else {
-					if (errorCallback) {
-						errorCallback();
-					}
-					else {
-						notification.error('Command failed to complete' + (event.message ? ' - ' + event.message : ''));
-					}
-				}
-			},
-			'onError': function(error) {
-				spinner.stop();
-				if (errorCallback) {
-					errorCallback(error);
-				}
-				else {
-					notification.error('System error in ' + funcName);
-				}
-			},
-			'params': params
-		});
-	}
-	
-	function startStatusMonitoring(that, sparkCoreID) {
-		if (statusMonitorID) {
-			clearInterval(statusMonitorID);
-		}
-			
-		callSpark(that, 'get_status', [sparkCoreID], function(event) {
-				deviceStatus = event.value;
-				sources.deviceStatus.sync();
-			},
-			function(error) {
-				return; // ignore error when continuously monitoriing
+					console.log('Websocket result', packet);
+					break;
+				case 'process_stopped':
+					notification.log('Process stopped');
+					break; 
 			}
-		);
-		
-		statusMonitorID = setInterval(function(this_one) {
-			callSpark(this_one, 'get_status', [sparkCoreID], function(event) {
-					deviceStatus = event.value;
-					sources.deviceStatus.sync();
-				},
-				function(error) {
-					return; // ignore error when continuously monitoriing
-				}
-			);
-		}, 5000, that);
+		};
+		websocket.onclose = function websocketonclosehandler() {
+			websocketConnected = false;
+		};
 	}
 	
-	function stopStatusMonitoring() {
-		clearInterval(statusMonitorID);
-		statusMonitorID = null;
+	function sendWebsocketMessage(that, param, callback) {
+		if (that) {
+			spinner.spin(that.domNode);
+		}
+		if (websocketConnected) {
+			websocket.send(JSON.stringify(param));
+		}
+		else {
+			websocketConnect(param);
+		}
+		if (callback) {
+			callback();
+		}
 	}
 	
 	function validateSerialNumber(serialNumber) {
@@ -193,52 +160,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	function clearSparkParameters() {
 		sparkAttr.length = 0;
 		sources.sparkAttr.sync();
-	}
-	
-	function changeSparkCore(dataSource) {
-//		if (dataSource.connected) {
-//			callSpark(this, 'get_firmware_version', [sources.sparkCores.id], function(evt) {
-//					if (firmwareVersion === evt.response.return_value) {
-//						$$('containerCommand').show();
-//						$$('containerAttributes').show();
-//					}
-//					else {
-//						$$('containerCommand').hide();
-//						$$('containerAttributes').hide();
-//					}
-//				}
-//			);
-//		}
-//		else {
-//			$$('containerCommand').hide();
-//			$$('containerAttributes').hide();
-//		}
-		sources.deviceSpark.query('sparkCoreID === :1',
-			{
-				onSuccess: function(event) {
-					if(event.dataSource.ID) {
-						$$('containerSparkDevice').show();
-						if (event.dataSource.online) {
-							$$('containerCommand').show();
-							$$('containerAttributes').show();
-						}
-						else {
-							$$('containerCommand').hide();
-							$$('containerAttributes').hide();
-						}
-					}
-					else {
-						$$('containerSparkDevice').hide();
-						$$('containerCommand').hide();
-						$$('containerAttributes').hide();
-					}
-				},
-				onError: function(error) {
-					$$('containerSparkDevice').hide();
-				},
-				params: [dataSource.id]
-			}
-		);
 	}
 	
 	function getCommandObject() {
@@ -329,18 +250,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 
-	function getSparkCoreList(that, notify) {
-		callSpark(that, 'get_core_list', [], function(evt) {
-				if (notify) {
-					notification.log('Core list refreshed');
-				}
-				sparkCores = evt.response;
-				sources.sparkCores.sync();
-				clearSparkParameters();
-			}
-		);
-	}
-
 	function loadCompletedTestsByAssay(assayID, dataSource) {
 		dataSource.query('finishedOn != null AND assay.ID === :1',
 				{
@@ -356,19 +265,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	function saveDevice(callback) {
-		var r = validateSerialNumber(sources.deviceSpark.serialNumber);
+		var r = validateSerialNumber(sources.device.serialNumber);
 		if (r.valid) {
-			sources.deviceSpark.deviceModel.set(sources.deviceModel);
-			sources.deviceSpark.online = sources.sparkCores.connected;
-			sources.deviceSpark.save(
+			sources.device.deviceModel.set(sources.deviceModel);
+			sources.device.save(
 				{
 					onSuccess: function(event) {
-							if (callback) {
-								callback(event);
-							}
-							else {
-								notification.log('Device saved');
-							}
+							notification.log('Device saved');
 						},
 					onError: function(error) {
 							notification.error('ERROR: ' + error.error[0].message);
@@ -381,53 +284,27 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function registerDevice() {
-		if (sources.sparkCores.connected) {
-			if (sources.deviceSpark.registeredOn) {
+	function registerDevice(that) {
+		if (sources.device.online) {
+			if (sources.device.registeredOn) {
 				notification.error('This device is already registered');
 			}
 			else {
 				var user = WAF.directory.currentUser();
+				
 				if (user) {
-					$$('buttonRegisterDevice').disable();
-					$$('buttonSaveDevice').disable();
-					sources.deviceSpark.register(
-						{
-							onSuccess: function(event) {
-									sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
-									if (event.result) {
-										notification.log('Device registered');
-										$$('containerCommand').show();
-										$$('containerAttributes').show();
-									}
-									else {
-										notification.error('ERROR: Device not registered');
-										$$('containerCommand').hide();
-										$$('containerAttributes').hide();
-									}
-									$$('buttonRegisterDevice').enable();
-									$$('buttonSaveDevice').enable();
-								},
-							onError: function(err) {
-									notification.error('SYSTEM ERROR: ' + err.error[0].message);
-									$$('buttonRegisterDevice').enable();
-									$$('buttonSaveDevice').enable();
-									$$('containerCommand').hide();
-									$$('containerAttributes').hide();
-								}
-						},
-						{
+					sendWebsocketMessage(that, { type: 'run',  func: 'register_device', param: {
 							username: user.userName,
-							deviceID: sources.deviceSpark.ID,
+							deviceID: sources.device.ID,
 							sparkCoreID: sources.sparkCores.id,
 							sparkCoreName: sources.sparkCores.name,
 							sparkCoreLastHeard: sources.sparkCores.last_heard,
-							serialNumber: sources.deviceSpark.serialNumber
-						}
-					);
+							serialNumber: sources.device.serialNumber
+						 } 
+					});
 				}
 				else {
-					notification.error('You must be signed in to register a device');
+						notification.error('You must be signed in to register a device');
 				}
 			}
 		}
@@ -436,34 +313,23 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function checkDeviceCalibration() {
-		if (sources.sparkCores.connected) {
+	function checkDeviceCalibration(that) {
+		if (sources.device.online) {
 			var user = WAF.directory.currentUser();
+			
 			if (user) {
-				sources.deviceSpark.check_calibration(
-					{
-						onSuccess: function(event) {
-								sources.deviceSpark.serverRefresh({ onSuccess: function() {return;}, forceReload: true });
-								if (event.result) {
-									notification.log('Device has moved to calibration point');
-								}
-								else {
-									notification.error('ERROR: Device not calibrated');
-								}
-							},
-						onError: function(err) {
-								notification.error('SYSTEM ERROR: ' + err.error[0].message);
-							}
-					},
-					{
+				sendWebsocketMessage(that, { type: 'run',  func: 'check_device_calibration', param: {
 						username: user.userName,
-						deviceID: sources.deviceSpark.ID
-					}
-				);
+						deviceID: sources.device.ID
+					 } 
+				});
 			}
 			else {
 				notification.error('You must be signed in to calibrate a device');
 			}
+		}
+		else {
+			notification.error('Device must be online to calibrate');
 		}
 	}
 	
@@ -635,7 +501,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonCheckCalibration.click = function buttonCheckCalibration_click (event)// @startlock
 	{// @endlock
-		saveDevice(checkDeviceCalibration);
+		checkDeviceCalibration(this);
 	};// @lock
 
 	assayDataEvent.onCurrentElementChange = function assayDataEvent_onCurrentElementChange (event)// @startlock
@@ -746,7 +612,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			sendServerMessage({ type: 'runOnce', func: 'run_test', param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
+			sendWebsocketMessage(this, { type: 'run', func: 'run_test', param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
 		}
 		else {
 			notification.error('You must be signed in to run a test');	
@@ -758,10 +624,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			sendServerMessage({ type: 'runOnce',  func: 'initialize_device', param: { username: user.userName, deviceID: sources.device.ID } });
+			sendWebsocketMessage(this, { type: 'run',  func: 'initialize_device', deviceID: sources.device.ID, dataSources: [], param: { username: user.userName, deviceID: sources.device.ID } });
 		}
 		else {
-			notification.error('You must be signed in to run a test');	
+			notification.error('You must be signed in to initialize a device');	
 		}
 	};// @lock
 
@@ -787,6 +653,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			$$('textFieldDeviceOnline').setBackgroundColor('red');
 			$$('containerTestActions').hide();
 		}
+		
+		sources.deviceModel.selectByKey(event.dataSource.deviceModel.getKey(), { onSuccess: function(e) {return;} });
 	};// @lock
 
 	menuItemTest.click = function menuItemTest_click (event)// @startlock
@@ -863,14 +731,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	deviceModelEvent.onCurrentElementChange = function deviceModelEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		sources.deviceSpark.deviceModel.set(event.dataSource);
-		sources.deviceSpark.serverRefresh({ onSuccess: function() {return;} });
+		sources.device.deviceModel.set(event.dataSource);
+		sources.device.serverRefresh({ onSuccess: function() {return;} });
 	};// @lock
 
 	buttonCreateNewDevice.click = function buttonCreateNewDevice_click (event)// @startlock
 	{// @endlock
-		sources.deviceSpark.addNewElement();
-		sources.deviceSpark.sparkCoreID = sources.sparkCores.id;
+		sources.device.addNewElement();
+		sources.device.sparkCoreID = sources.sparkCores.id;
 		sources.deviceModel.all({
 			onSuccess: function(evt) {
 					$$('containerSparkDevice').show();
@@ -938,6 +806,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
+		sources.deviceModel.all({ onSuccess: function() {return;} });
+		
 		if (commands.length === 0) {
 			spark.get_BCODE_commandsAsync({
 				'onSuccess': function(evt) {
@@ -1096,20 +966,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.assay.addNewElement();
 	};// @lock
 
-	sparkCoresEvent.onCurrentElementChange = function sparkCoresEvent_onCurrentElementChange (event)// @startlock
-	{// @endlock
-		changeSparkCore(event.dataSource);
-	};// @lock
-
 	menuItemDevice.click = function menuItemDevice_click (event)// @startlock
 	{// @endlock
-		if (sources.sparkCores.length === 0) {
-			getSparkCoreList(this, false);
+		if (sources.device.length === 0) {
+			sources.device.all({
+				onSuccess: function(evt) {
+					sources.deviceModel.selectByKey(evt.dataSource.deviceModel.getKey(), { onSuccess: function(e) {return;} });
+				} 
+			});
 		}
 		
-		if (sources.deviceModel.length === 0) {
-			sources.deviceModel.all({ onSuccess: function() {return;} });
-		}
+
 	};// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
@@ -1139,60 +1006,22 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'reset_parameters', [sources.sparkCores.id], function(evt) {
-				notification.log('Parameters reset to default values');
-				sparkAttr = evt.data;
-				sources.sparkAttr.sync();
-			}
-		);
+		sendWebsocketMessage(this, { type: 'run', func: 'reset_parameters', deviceID: sources.device.ID, dataSources: ['sparkAttr'] });
 	};// @lock
 
-	buttonRefreshCores.click = function buttonRefreshCores_click (event)// @startlock
+	buttonRefreshDevices.click = function buttonRefreshDevices_click (event)// @startlock
 	{// @endlock
-		getSparkCoreList(this, true);
-	};// @lock
-
-	checkboxMonitorStatus.change = function checkboxMonitorStatus_change (event)// @startlock
-	{// @endlock
-		if(monitorStatus) { // turn on continuous status monitoring
-			startStatusMonitoring($$('buttonGetStatus'), sources.sparkCores.id);
-		}
-		else { // turn off continuous status monitoring
-			stopStatusMonitoring();
-		}
-	};// @lock
-
-	buttonGetStatus.click = function buttonGetStatus_click (event)// @startlock
-	{// @endlock
-		callSpark(this, 'get_status', [sources.sparkCores.id], function(evt) {
-				deviceStatus = evt.value;
-				sources.deviceStatus.sync();
-			},
-			function(err) {
-				return;	
-			}
-		);
-	};// @lock
-
-	buttonCancelProcess.click = function buttonCancelProcess_click (event)// @startlock
-	{// @endlock
-		callSpark(this, 'cancel_process', [sources.sparkCores.id], function(evt) {
-				notification.log('Cancelling process');
-			}
-		);
+		sendWebsocketMessage(this, { type: 'run',  func: 'refresh_devices', deviceID: 0, dataSources: ['device'] });
 	};// @lock
 
 	buttonSensorData.click = function buttonSensorData_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'collect_sensor_data', [sources.sparkCores.id], function(evt) {
-				notification.log('Sensor data collection started');
-			}
-		);
+		sendWebsocketMessage(this, { type: 'run',  func: 'get_sensor_data', deviceID: sources.device.ID, dataSources: ['sensorData'] });
 	};// @lock
 
 	buttonRegisterDevice.click = function buttonRegisterDevice_click (event)// @startlock
 	{// @endlock
-		saveDevice(registerDevice);
+		registerDevice(this);
 	};// @lock
 
 // @region eventManager// @startlock
@@ -1242,15 +1071,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonSaveAssay", "click", buttonSaveAssay.click, "WAF");
 	WAF.addListener("buttonCancelAssay", "click", buttonCancelAssay.click, "WAF");
 	WAF.addListener("buttonCreateAssay", "click", buttonCreateAssay.click, "WAF");
-	WAF.addListener("sparkCores", "onCurrentElementChange", sparkCoresEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemDevice", "click", menuItemDevice.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
 	WAF.addListener("buttonLoadParams", "click", buttonLoadParams.click, "WAF");
 	WAF.addListener("buttonResetParams", "click", buttonResetParams.click, "WAF");
-	WAF.addListener("buttonRefreshCores", "click", buttonRefreshCores.click, "WAF");
-	WAF.addListener("checkboxMonitorStatus", "change", checkboxMonitorStatus.change, "WAF");
-	WAF.addListener("buttonGetStatus", "click", buttonGetStatus.click, "WAF");
-	WAF.addListener("buttonCancelProcess", "click", buttonCancelProcess.click, "WAF");
+	WAF.addListener("buttonRefreshDevices", "click", buttonRefreshDevices.click, "WAF");
 	WAF.addListener("buttonSensorData", "click", buttonSensorData.click, "WAF");
 	WAF.addListener("buttonRegisterDevice", "click", buttonRegisterDevice.click, "WAF");
 // @endregion
