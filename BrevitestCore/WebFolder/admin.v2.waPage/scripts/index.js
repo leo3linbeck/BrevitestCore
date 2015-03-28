@@ -2,22 +2,17 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var testEvent = {};	// @dataSource
 	var loginHome = {};	// @login
 	var cartridgeRawEvent = {};	// @dataSource
 	var buttonRegisterCartridge = {};	// @button
-	var buttonResetData = {};	// @button
 	var iconUpdate = {};	// @icon
 	var brevicodeEvent = {};	// @dataSource
 	var monitorStatusEvent = {};	// @dataSource
-	var buttonEraseAllFlashData = {};	// @button
 	var buttonCheckCalibration = {};	// @button
 	var assayDataEvent = {};	// @dataSource
 	var menuItemData = {};	// @menuItem
-	var menuItemFlash = {};	// @menuItem
-	var deviceFlashEvent = {};	// @dataSource
 	var assayTestEvent = {};	// @dataSource
-	var checkboxTestStatus = {};	// @checkbox
-	var buttonTestStatus = {};	// @button
 	var buttonCancelTest = {};	// @button
 	var buttonRunTest = {};	// @button
 	var buttonInitDevice = {};	// @button
@@ -30,7 +25,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonCreateNewDevice = {};	// @button
 	var buttonSaveDevice = {};	// @button
 	var buttonCancelDevice = {};	// @button
-	var buttonGetStoredData = {};	// @button
 	var buttonPasteBCODE = {};	// @button
 	var buttonCopyBCODE = {};	// @button
 	var assayEvent = {};	// @dataSource
@@ -76,38 +70,72 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var websocketConnected = false;
 	var websocket;
 	
+	function websocketUpdateData(name, data, dataSources) {
+		switch (name) {
+			case 'device_parameters':
+				sparkAttr = data;
+				sources.sparkAttr.sync();
+				break;
+		}
+	
+		for (var i = 0; i < dataSources.length; i += 1) {
+			if (typeof sources[dataSources[i]].sync === 'undefined') { // server datasource
+				sources[dataSources[i]].collectionRefresh({ onSuccess: function(e) {return;} });
+			}
+		}
+	}
+	
+	function updateDatasources(datastore) {
+		var d, i, k;
+		
+		k = Object.keys(sources);
+		for (i = 0; i < k.length; i += 1) {
+			d = sources[k[i]];
+			if (typeof d.sync() === 'undefined' && d.getClassTitle() === datastore) {
+				d.collectionRefresh({ onSuccess: function(e) {return;} });
+			}
+		}
+	}
+	
 	function websocketConnect(param) {
 		websocket = new WebSocket('ws://localhost:8081/websocket');
 		websocket.onmessage = function websocketonmessagehandler(message) {
-			var d;
 			var packet = JSON.parse(message.data);
 			switch (packet.type) {
 				case 'connected':
 					websocketConnected = true;
 					this.send(JSON.stringify(param));
+					console.log('Websocket connected', packet);
 					break;
 				case 'message':
 					notification.info(packet.message);
+					console.log('Websocket message', packet);
 					break;
 				case 'error':
 					notification.error(packet.message);
+					console.log('Websocket error', packet);
 					break;
-				case 'result':
+				case 'done':
 					spinner.stop();
-					d = packet.dataSources;
-					for (var i = 0; i < d.length; i += 1) {
-						if (typeof sources[d[i]].sync === 'undefined') { // server datasource
-							sources[d[i]].collectionRefresh({ onSuccess: function(e) {return;} });
-						}
-						else { // local datasource
-							sources[d[i]][d[i]] = packet.result;
-						}
-					}
-					console.log('Websocket result', packet);
+					notification.log(packet.message);
+					console.log('Websocket done', packet);
 					break;
-				case 'process_stopped':
-					notification.log('Process stopped');
-					break; 
+				case 'data':
+					websocketUpdateData(packet.name, packet.data, packet.dataSources);
+					console.log('Websocket data', packet);
+					break;
+				case 'refresh':
+					updateDatasources(packet.datastore);
+					console.log('Update datasources');
+					break;
+				case 'percent_complete':
+					$$('progressBarTest').setValue(packet.data.percent_complete, 100, 'Test started at ' + (new Date(packet.data.startedOn)).toLocaleTimeString() + ': ' + packet.data.percent_complete + '% complete');
+					break;
+				case 'reload_cartridges':
+					testCartridge = sources.cartridgeRegistered.ID;
+					sources.testCartridge.sync();
+					loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
+					break;
 			}
 		};
 		websocket.onclose = function websocketonclosehandler() {
@@ -293,7 +321,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				var user = WAF.directory.currentUser();
 				
 				if (user) {
-					sendWebsocketMessage(that, { type: 'run',  func: 'register_device', param: {
+					sendWebsocketMessage(that, { type: 'run',  func: 'register_device', deviceID: sources.device.ID, dataSources: [], param: {
 							username: user.userName,
 							deviceID: sources.device.ID,
 							sparkCoreID: sources.sparkCores.id,
@@ -318,7 +346,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			var user = WAF.directory.currentUser();
 			
 			if (user) {
-				sendWebsocketMessage(that, { type: 'run',  func: 'check_device_calibration', param: {
+				sendWebsocketMessage(that, { type: 'run',  func: 'check_device_calibration', deviceID: sources.device.ID, dataSources: [], param: {
 						username: user.userName,
 						deviceID: sources.device.ID
 					 } 
@@ -367,12 +395,243 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		});
 	}
 
+	var bounds = {
+		xmax : 0,
+		xmin : 0,
+		ymax : 0,
+		ymin : 0
+	}
+	
+	var svg;
+	
+	function updateBounds(x, y) {
+		bounds.xmin = bounds.xmin > x ? x : bounds.xmin;
+		bounds.ymin = bounds.ymin > y ? y : bounds.ymin;
+		bounds.xmax = bounds.xmax < x ? x : bounds.xmax;
+		bounds.ymax = bounds.ymax < y ? y : bounds.ymax;
+			
+		return {x: x, y: y};
+	}
+	
+	var firstGraph = true;
+	
+	function generateGraph(rawData) {
+		var data = [];
+		var clear = [];
+		var red = [];
+		var green = [];
+		var blue = [];
+		var r_minus_b = [];
+
+		var startTime = Date.parse(rawData[0].time);
+		for (var i = 0; i < rawData.length; i += 2) {
+			clear.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].clear - rawData[i + 1].clear));
+			red.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].red - rawData[i + 1].red));
+			green.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].green - rawData[i + 1].green));
+			blue.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].blue - rawData[i + 1].blue));
+			r_minus_b.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].red - rawData[i + 1].red - rawData[i].blue + rawData[i + 1].blue));
+		}
+		data.push(clear);
+		data.push(red);
+		data.push(green);
+		data.push(blue);
+		data.push(r_minus_b);
 		
+		var colors = [
+			'gray',
+			'red',
+			'green',
+			'blue',
+			'purple'
+		]
+		 
+		 
+		//************************************************************
+		// Create Margins and Axis and hook our zoom function
+		//************************************************************
+		var margin = {top: 20, right: 30, bottom: 50, left: 60},
+		    width = $('#containerGraph').width() - margin.left - margin.right,
+		    height = $('#containerGraph').height() - margin.top - margin.bottom;
+			
+		var x = d3.scale.linear()
+		    .domain([bounds.xmin, bounds.xmax])
+		    .range([0, width]);
+		 
+		var y = d3.scale.linear()
+		    .domain([bounds.ymin, bounds.ymax])
+		    .range([height, 0]);
+			
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+			.tickSize(-height)
+			.tickPadding(10)	
+			.tickSubdivide(true)	
+		    .orient("bottom");	
+			
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+			.tickPadding(10)
+			.tickSize(-width)
+			.tickSubdivide(true)	
+		    .orient("left");
+			
+		var zoom = d3.behavior.zoom()
+		    .x(x)
+		    .y(y)
+		    .scaleExtent([1, 10])
+		    .on("zoom", zoomed);	
+			
+			
+		 
+			
+			
+		//************************************************************
+		// Generate our SVG object
+		//************************************************************	
+		var svg = d3.select("#containerGraph").append("svg")
+			.call(zoom)
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+			.append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		 
+		svg.append("g")
+		    .attr("class", "x axis")
+		    .attr("transform", "translate(0," + height + ")")
+		    .call(xAxis);
+		 
+		svg.append("g")
+		    .attr("class", "y axis")
+		    .call(yAxis);
+		 
+		svg.append("g")
+			.attr("class", "y axis")
+			.append("text")
+			.attr("class", "axis-label")
+			.attr("transform", "rotate(-90)")
+			.attr("y", (-margin.left) + 15)
+			.attr("x", -height/2 - 50)
+			.text('Assay minus Control');	
+		 
+		svg.append("g")
+			.attr("class", "x axis")
+			.append("text")
+			.attr("class", "axis-label")
+			.attr("y", height + 40)
+			.attr("x", width/2 - 30)
+			.text('Time (secs)');	
+		 
+		svg.append("clipPath")
+			.attr("id", "clip")
+			.append("rect")
+			.attr("width", width)
+			.attr("height", height);
+			
+			
+			
+			
+			
+		//************************************************************
+		// Create D3 line object and draw data on our SVG object
+		//************************************************************
+		var line = d3.svg.line()
+		    .interpolate("linear")	
+		    .x(function(d, i) { return x(d.x); })
+		    .y(function(d) { return y(d.y); });		
+			
+		svg.selectAll('.line')
+			.data(data)
+			.enter()
+			.append("path")
+		    .attr("class", "line")
+			.attr("clip-path", "url(#clip)")
+			.attr('stroke', function(d,i){ 			
+				return colors[i%colors.length];
+			})
+			.attr('stroke-width', function(d,i) {
+				return i === colors.length-1 ? 5 : 1.5;
+			})
+		    .attr("d", line);		
+			
+			
+			
+			
+		//************************************************************
+		// Draw points on SVG object based on the data given
+		//************************************************************
+		var points = svg.selectAll('.dots')
+			.data(data)
+			.enter()
+			.append("g")
+		    .attr("class", "dots")
+			.attr("clip-path", "url(#clip)");	
+		 
+		points.selectAll('.dot')
+			.data(function(d, index){ 		
+				var a = [];
+				d.forEach(function(point,i){
+					a.push({'index': index, 'point': point});
+				});		
+				return a;
+			})
+			.enter()
+			.append('circle')
+			.attr('class','dot')
+			.attr("r", 2.5)
+			.attr('fill', function(d,i){ 	
+				return colors[d.index%colors.length];
+			})	
+			.attr("transform", function(d) { 
+				return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
+			);
+			
+		 
+			
+			
+			
+			
+		//************************************************************
+		// Zoom specific updates
+		//************************************************************
+		function zoomed() {
+			svg.select(".x.axis").call(xAxis);
+			svg.select(".y.axis").call(yAxis);   
+			svg.selectAll('path.line').attr('d', line);  
+		 
+			points.selectAll('circle').attr("transform", function(d) { 
+				return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
+			);  
+		}
+
+	}
+
+	function loadGraph(testID) {
+		sources.test.get_sensor_reading_array(
+			{
+				onSuccess: function(event) {
+					generateGraph(event.result);
+				},
+				onError: function(error) {
+					notification.error('SYSTEM ERROR: Unable to load graph data, ' + error.error[0].message);
+				}
+			},
+			{
+				testID: testID
+			}
+		);
+	}
+			
 //
 //
 //
 //
 // eventHandlers// @lock
+
+	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
+	{// @endlock
+		$('#containgerGraph, svg').remove();
+		loadGraph(sources.test.ID);
+	};// @lock
 
 	loginHome.login = function loginHome_login (event)// @startlock
 	{// @endlock
@@ -423,29 +682,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	};// @lock
 
-	buttonResetData.click = function buttonResetData_click (event)// @startlock
-	{// @endlock
-		var user = WAF.directory.currentUser();
-		
-		if (user) {
-			if (window.confirm('Are you sure you want to erase all data in the database and add back some faux data? This action cannot be undone.')) {
-				callSpark(this, 'initialize_database', [], function(evt) {
-						notification.log('Database erased and initialized');
-						sources.device.query('ID === null', {onSuccess:function(){return;}});
-						sources.deviceFlash.query('ID === null', {onSuccess:function(){return;}});
-						sources.assayTest.query('ID === null', {onSuccess:function(){return;}});
-						sources.assayCartridge.query('ID === null', {onSuccess:function(){return;}});
-						sources.deviceModel.query('ID === null', {onSuccess:function(){return;}});
-					}
-				);
-				
-			}
-		}
-		else {
-			notification.error('You must be signed in to reset the database');
-		}
-	};// @lock
-
 	iconUpdate.click = function iconUpdate_click (event)// @startlock
 	{// @endlock
 		brevicode[sources.brevicode.getPosition()] = getCommandObject();
@@ -477,28 +713,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	};// @lock
 
-	buttonEraseAllFlashData.click = function buttonEraseAllFlashData_click (event)// @startlock
-	{// @endlock
-		var user = WAF.directory.currentUser();
-		
-		if (user) {
-			if (window.confirm('Are you sure you want to erase all assay data in the flash memory of this device? This action cannot be undone.')) {
-				callSpark(this, 'erase_archived_data', [sources.deviceFlash.sparkCoreID], function(evt) {
-						notification.log('Archived data erased');
-						assayNumber = 0;
-						sources.assayNumber.sync();
-						archiveSize = 0;
-						sources.archiveSize.sync();
-						$$('textFieldTestFlash').setValue('');
-					}
-				);
-			}
-		}
-		else {
-			notification.error('You must be signed in to erase the flash memory on a device');
-		}
-	};// @lock
-
 	buttonCheckCalibration.click = function buttonCheckCalibration_click (event)// @startlock
 	{// @endlock
 		checkDeviceCalibration(this);
@@ -514,70 +728,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		sources.assayData.all({ onSuccess: function(evt) {return;} });
 	};// @lock
 
-	menuItemFlash.click = function menuItemFlash_click (event)// @startlock
-	{// @endlock
-		if (sources.deviceFlash.length === 0) {
-			sources.deviceFlash.all({ onSuccess: function(evt) {return;} });
-		}
-	};// @lock
-
-	deviceFlashEvent.onCurrentElementChange = function deviceFlashEvent_onCurrentElementChange (event)// @startlock
-	{// @endlock
-		if (event.dataSource.sparkCoreID) {
-			if (event.dataSource.online) {
-				deviceOnline = 'YES - ONLINE' ;
-				sources.deviceOnline.sync();
-				$$('textFieldFlashDeviceOnline').setBackgroundColor('green');
-				$$('containerDeviceFlash').show();
-				callSpark(this, 'get_archive_size', [event.dataSource.sparkCoreID], function(ev) {
-						archiveSize = ev.response.return_value;
-						sources.archiveSize.sync();
-						if (archiveSize > 0) {
-							assayNumber = archiveSize;
-							sources.assayNumber.sync();
-						}
-					}
-				);
-			}
-			else {
-				deviceOnline = 'NO - OFFLINE' ;
-				sources.deviceOnline.sync();
-				$$('textFieldFlashDeviceOnline').setBackgroundColor('red');
-				$$('containerDeviceFlash').hide();
-			}
-		}
-		else {
-			deviceOnline = 'UNREGISTERED DEVICE';
-			sources.deviceOnline.sync();
-			$$('textFieldFlashDeviceOnline').setBackgroundColor('red');
-			$$('containerDeviceFlash').hide();
-		}
-		if (event.dataSource.sparkCoreID) {
-		}
-	};// @lock
-
 	assayTestEvent.onCurrentElementChange = function assayTestEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		loadCartridgesByAssay(event.dataSource.ID, null, sources.cartridgeRegistered);
-	};// @lock
-
-	checkboxTestStatus.change = function checkboxTestStatus_change (event)// @startlock
-	{// @endlock
-		if(monitorStatus) { // turn on continuous status monitoring
-			startStatusMonitoring($$('buttonTestStatus'), sources.device.sparkCoreID);
-		}
-		else { // turn off continuous status monitoring
-			stopStatusMonitoring();
-		}
-	};// @lock
-
-	buttonTestStatus.click = function buttonTestStatus_click (event)// @startlock
-	{// @endlock
-		callSpark(this, 'get_status', [sources.device.sparkCoreID], function(evt) {
-				deviceStatus = evt.value;
-				sources.deviceStatus.sync();
-			}
-		);
 	};// @lock
 
 	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock
@@ -612,7 +765,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			sendWebsocketMessage(this, { type: 'run', func: 'run_test', param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
+			if (sources.cartridgeRegistered.ID) {
+				sendWebsocketMessage(this, { type: 'run', func: 'run_test', deviceID: sources.device.ID, dataSources: [], param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
+			}
+			else {
+				notification.error('You must select a registered, unused cartridge');	
+			}
 		}
 		else {
 			notification.error('You must be signed in to run a test');	
@@ -704,7 +862,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					{
 						onSuccess: function(evt) {
 								if (evt.result) {
-									notification.log(evt.result + ' cartridges registered');
+									notification.log(evt.result + ' cartridges made - you must register those you wish to test');
 									loadCartridgesByAssay(sources.assayCartridge.ID, sources.cartridgeRaw);
 									sources.assayTest.dispatch('onCurrentElementChange');
 								}
@@ -768,20 +926,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				forceReload: true
 			}
 		);
-	};// @lock
-
-	buttonGetStoredData.click = function buttonGetStoredData_click (event)// @startlock
-	{// @endlock
-		if (assayNumber > 0 && assayNumber <= archiveSize) {
-			callSpark(this, 'request_test_data', [sources.deviceFlash.sparkCoreID, assayNumber - 1], function(evt) {
-					notification.log('Test results retrieved from device flash');
-					$$('textFieldTestFlash').setValue(evt.value);
-				}
-			);
-		}
-		else {
-			notification.error('Test number out of range');
-		}
 	};// @lock
 
 	buttonPasteBCODE.click = function buttonPasteBCODE_click (event)// @startlock
@@ -981,37 +1125,37 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'change_parameter', [sources.sparkCores.id, sources.sparkAttr.name, sources.sparkAttr.value], function(evt) {
-				if (sources.sparkAttr.value === evt.response.return_value) {
-					notification.log('Parameter successfully changed');
-				}
-				else {
-					notification.error('Parameter change failed. Reset to previous value.');
-					sources.sparkAttr.value = evt.response.return_value;
-					sources.sparkAttr.sync();
-				}
-			}
-		);
+		if (sources.device.online) {
+			sendWebsocketMessage(this, { type: 'run', func: 'change_parameter', deviceID: sources.device.ID, dataSources: [], param: {name: sources.sparkAttr.name, value: sources.sparkAttr.value} });
+		}
+		else {
+			notification.error('Device "' + sources.device.name + '" is not online');
+		}
 	};// @lock
 
 	buttonLoadParams.click = function buttonLoadParams_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'request_all_parameters', [sources.sparkCores.id], function(evt) {
-				notification.log('Parameters loaded');
-				sparkAttr = evt.data;
-				sources.sparkAttr.sync();
-			}
-		);
+		if (sources.device.online) {
+			sendWebsocketMessage(this, { type: 'run', func: 'load_parameters', deviceID: sources.device.ID, dataSources: [] });
+		}
+		else {
+			notification.error('Device "' + sources.device.name + '" is not online');
+		}
 	};// @lock
 
 	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
 	{// @endlock
-		sendWebsocketMessage(this, { type: 'run', func: 'reset_parameters', deviceID: sources.device.ID, dataSources: ['sparkAttr'] });
+		if (sources.device.online) {
+			sendWebsocketMessage(this, { type: 'run', func: 'reset_parameters', deviceID: sources.device.ID, dataSources: [] });
+		}
+		else {
+			notification.error('Device "' + sources.device.name + '" is not online');
+		}
 	};// @lock
 
 	buttonRefreshDevices.click = function buttonRefreshDevices_click (event)// @startlock
 	{// @endlock
-		sendWebsocketMessage(this, { type: 'run',  func: 'refresh_devices', deviceID: 0, dataSources: ['device'] });
+		sendWebsocketMessage(this, { type: 'update_devices' });
 	};// @lock
 
 	buttonSensorData.click = function buttonSensorData_click (event)// @startlock
@@ -1025,22 +1169,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("test", "onCurrentElementChange", testEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("loginHome", "login", loginHome.login, "WAF");
 	WAF.addListener("cartridgeRaw", "onCurrentElementChange", cartridgeRawEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonRegisterCartridge", "click", buttonRegisterCartridge.click, "WAF");
-	WAF.addListener("buttonResetData", "click", buttonResetData.click, "WAF");
 	WAF.addListener("iconUpdate", "click", iconUpdate.click, "WAF");
 	WAF.addListener("brevicode", "onCurrentElementChange", brevicodeEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("monitorStatus", "onAttributeChange", monitorStatusEvent.onAttributeChange, "WAF");
-	WAF.addListener("buttonEraseAllFlashData", "click", buttonEraseAllFlashData.click, "WAF");
 	WAF.addListener("buttonCheckCalibration", "click", buttonCheckCalibration.click, "WAF");
 	WAF.addListener("assayData", "onCurrentElementChange", assayDataEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("menuItemData", "click", menuItemData.click, "WAF");
-	WAF.addListener("menuItemFlash", "click", menuItemFlash.click, "WAF");
-	WAF.addListener("deviceFlash", "onCurrentElementChange", deviceFlashEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("assayTest", "onCurrentElementChange", assayTestEvent.onCurrentElementChange, "WAF");
-	WAF.addListener("checkboxTestStatus", "change", checkboxTestStatus.change, "WAF");
-	WAF.addListener("buttonTestStatus", "click", buttonTestStatus.click, "WAF");
 	WAF.addListener("buttonCancelTest", "click", buttonCancelTest.click, "WAF");
 	WAF.addListener("buttonRunTest", "click", buttonRunTest.click, "WAF");
 	WAF.addListener("buttonInitDevice", "click", buttonInitDevice.click, "WAF");
@@ -1053,7 +1192,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonCreateNewDevice", "click", buttonCreateNewDevice.click, "WAF");
 	WAF.addListener("buttonSaveDevice", "click", buttonSaveDevice.click, "WAF");
 	WAF.addListener("buttonCancelDevice", "click", buttonCancelDevice.click, "WAF");
-	WAF.addListener("buttonGetStoredData", "click", buttonGetStoredData.click, "WAF");
 	WAF.addListener("buttonPasteBCODE", "click", buttonPasteBCODE.click, "WAF");
 	WAF.addListener("buttonCopyBCODE", "click", buttonCopyBCODE.click, "WAF");
 	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");

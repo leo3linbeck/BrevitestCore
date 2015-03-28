@@ -4,6 +4,7 @@ var shouldTerminate;
 onmessage = function(e) {
 	var result = {};
 	var data = e.data;
+	var func = data.func;
 	var message = data.message;
 	var param = data.param;
 	var dataSources = data.dataSources;
@@ -13,45 +14,47 @@ onmessage = function(e) {
 	shouldTerminate = e.data.shouldTerminate ? true : false;
 	try {
 		if (data.message === 'start') {
-			switch (data.func) {
+			switch (func) {
+				case 'load_parameters':
+					postMessage({ type: 'user_message', message: 'Loading parameters' });
+					result = spark.request_all_parameters(device.sparkCoreID);
+					postMessage({ type: 'user_data', name: 'device_parameters', data: result.data });					
+					postMessage({ type: 'done', func: func });
+					break;
+				case 'change_parameter':
+					postMessage({ type: 'user_message', message: 'Changing parameter value' });
+					result = spark.change_parameter(device.sparkCoreID, param.name, param.value);
+					postMessage({ type: 'user_data', name: 'new_parameter', data: result.response.return_value });					
+					postMessage({ type: 'done', func: func });
+					break;
 				case 'reset_parameters':
 					postMessage({ type: 'user_message', message: 'Resetting parameters to default' });
-					
 					result = spark.reset_parameters(device.sparkCoreID);
-					
-					postMessage({ type: 'user_message', message: 'Parameters reset' });
-					postMessage({ type: 'done', deviceID: deviceID, dataSources: dataSources, data: result.data });
+					postMessage({ type: 'user_data', name: 'device_parameters', data: result.data });					
+					postMessage({ type: 'done', func: func });
 					break;
 				case 'initialize_device':
 					postMessage({ type: 'user_message', message: 'Preparing device for testing' });
-					
 					result = initializeDevice(param);
-					
-					postMessage({ type: 'user_message', message: 'Device ready for testing' });
-					postMessage({ type: 'done', data: result });
+					postMessage({ type: 'done', func: func, data: result });
 					break;
 				case 'register_device':
 					postMessage({ message: 'Registering device' });
-		
 					result = registerDevice(param);
-					
-					postMessage({ type: 'user_message', message: 'Device registered', data: result });
-					postMessage({ type: 'done', data: result });
+					postMessage({ type: 'done', func: func, data: result });
 					break;
 				case 'check_device_calibration':
 					postMessage({ type: 'user_message', message: 'Checking device calibration' });
-		
 					result = checkCalibration(param);
-					
 					postMessage({ type: 'user_message', message: 'Device moved to calibration point', data: result });
-					postMessage({ type: 'done', data: result });
+					postMessage({ type: 'done', func: func, data: result });
 					break;
 				case 'run_test':
-					postMessage({ type: 'user_message', message: 'Starting test' });
-					
 					result = runTest(param);
-										
-					postMessage({ message: 'done', data: result });
+					postMessage({ type: 'done', func: func, data: result });
+					break;
+				case 'reload_cartridges':
+					postMessage({ type: 'reload_cartridges' });
 					break;
 			}
 		}
@@ -153,7 +156,7 @@ function runTest(param) {
 		return result;
 	}
 		
-	postMessage({ type: 'user_message', message: 'Starting test' });
+	postMessage({ type: 'user_message', message: 'Test will begin in a few seconds' });
 	if (shouldTerminate) {
 		return result;
 	}
@@ -173,7 +176,8 @@ function runTest(param) {
 		cartridge.save();
 		
 		startTime = new Date();
-		updateTestStatus(test);
+		postMessage({ type: 'reload_cartridges' });
+		updateTestStatus(test, cartridge);
 		(function doIt() {
 			var now = new Date();
 			setTimeout(function() {
@@ -181,7 +185,7 @@ function runTest(param) {
 					return;
 				}
 				else {
-					updateTestStatus(test);
+					updateTestStatus(test, cartridge);
 				}
 				if ((now - startTime) < 900000) {
 					doIt();
@@ -191,11 +195,6 @@ function runTest(param) {
 				}
 			}, 10000);
 		})();
-		if (test.percentComplete === 100) {
-			cartridge.get_data_from_device();
-			postMessage({ type: 'user_message', message: 'Test finished' });
-			postMessage({ type: 'user_command', command: 'refresh', data: {cartridgeID: cartridge.ID, testID: test.ID} });
-		}
 	}
 	else {
 		result.message('Test failed to start');
@@ -206,7 +205,7 @@ function runTest(param) {
 	return result;
 }
 
-function updateTestStatus(test) {
+function updateTestStatus(test, cartridge) {
 	if (shouldTerminate) {
 		return;
 	}
@@ -214,8 +213,12 @@ function updateTestStatus(test) {
 	if (result.success) {
 		test.percentComplete = result.value;
 		test.save();
-		postMessage({ type: 'percent_complete', data: { testID: test.ID, percent_complete: result.value } });
+		postMessage({ type: 'percent_complete', data: { startedOn: cartridge.startedOn, percent_complete: result.value } });
 		if (test.percentComplete === 100) {
+			cartridge.get_data_from_device();
+			postMessage({ type: 'user_message', message: 'Test finished' });
+			postMessage({ type: 'refresh', datastore: 'Test' });
+			postMessage({ type: 'refresh', datastore: 'Cartridge' });
 			shouldTerminate = true;
 		}
 	}

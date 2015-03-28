@@ -36,10 +36,6 @@
 			"type": "widget"
 		},
 		{
-			"id": "Widget/checkbox",
-			"type": "widget"
-		},
-		{
 			"id": "Widget/textField",
 			"type": "widget"
 		},
@@ -62,6 +58,10 @@
 		},
 		{
 			"id": "Widget/icon",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/progressBar",
 			"type": "widget"
 		},
 		{

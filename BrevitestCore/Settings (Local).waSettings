@@ -14,7 +14,7 @@
 	<service name="remoteFileExplorer" enabled="true"/>
 	<service name="Print service" enabled="false" modulePath="services/print"/>
 	<service name="dispatch-service" modulePath="dispatch-service" enabled="false"/>
-	<service name="daemon-service" modulePath="daemon-service" enabled="true"/>
+	<service name="daemon-service" modulePath="daemon-service" enabled="false"/>
 	<virtualFolder location="/WIDGETS_CUSTOM/" name="widgets-custom"/>
 	<virtualFolder location="/THEMES_CUSTOM/" name="themes-custom"/>
 	<resources location="/walib/" lifeTime="31536000"/>

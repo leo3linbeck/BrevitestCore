@@ -9,16 +9,16 @@ function updateDeviceData() {
 		device.forEach(function(d) {
 			d.update_status(result.response);
 		});
+		postMessage({ type: 'push_update' });
 	}
 }
 
-function onconnect(msg) {
-	var fromPort = msg.ports[0];
-	console.log('Device daemon connected');
-	fromPort.onmessage = function (event) {
-		var message = event.data;
-		var startTime;
-		
+onmessage = function(msg) {
+	var data = msg.data;
+	var startTime;
+	console.log('Device daemon message');
+	
+	try {
 		switch (message.type) {
 			case 'start':
 				if (!daemonStarted) {
@@ -40,9 +40,15 @@ function onconnect(msg) {
 					})();
 				}
 				break;
+			case 'run':
+				updateDeviceData();
+				break;
 			case 'stop':
 				close();
+				break;
 		}
 	}
-	fromPort.postMessage({ type: 'connected' });
+	catch(e) {
+		postMessage({ type: 'error', data: e });
+	}
 }

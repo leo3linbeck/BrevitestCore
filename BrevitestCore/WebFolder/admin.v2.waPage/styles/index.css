@@ -3,18 +3,28 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label26 {
+	z-index: 11;
+	height: 18px;
+	bottom: 102px;
+	left: 225px;
+	right: 0px;
+	position: absolute;
+	font-size: 16px;
+}
+
 #label23 {
 	height: 18px;
 	top: 98px;
 	left: 115px;
-	right: 701px;
+	right: 0px;
 	position: absolute;
 	font-size: 16px;
 	z-index: 21;
 }
 
 #label22 {
-	z-index: 11;
+	z-index: 10;
 	width: 157px;
 	height: 18px;
 	top: 25px;
@@ -47,7 +57,7 @@
 	height: 18px;
 	top: 28px;
 	left: 80px;
-	right: 701px;
+	right: 0px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -89,7 +99,7 @@
 	height: 18px;
 	top: 133px;
 	left: 54px;
-	right: 701px;
+	right: 0px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -114,10 +124,10 @@
 }
 
 #label18 {
-	z-index: 11;
+	z-index: 10;
 	width: 50px;
 	height: 18px;
-	top: 93px;
+	top: 43px;
 	left: 925px;
 	position: absolute;
 	font-size: 16px;
@@ -127,9 +137,9 @@
 
 #label16 {
 	z-index: 2;
-	top: 342px;
-	bottom: 300px;
-	left: 310px;
+	height: 18px;
+	top: 231px;
+	left: 1134px;
 	right: 226px;
 	position: absolute;
 	font-size: 16px;
@@ -158,52 +168,6 @@
 	top: 0px;
 	left: 0px;
 	position: absolute;
-}
-
-#label15 {
-	z-index: 4;
-	width: 110px;
-	height: 18px;
-	bottom: 29px;
-	left: 69px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#label10 {
-	z-index: 7;
-	width: 94px;
-	height: 18px;
-	top: 189px;
-	left: 210px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#richText7 {
-	z-index: 9;
-	height: 21px;
-	top: 70px;
-	left: 190px;
-	right: 10px;
-	position: absolute;
-	font-size: 16px;
-	text-align: center;
-}
-
-#textField4 {
-	z-index: 8;
-	height: 81px;
-	top: 91px;
-	left: 190px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 12px;
 }
 
 #buttonInitDevice {
@@ -244,7 +208,7 @@
 	z-index: 11;
 	width: 220px;
 	top: 280px;
-	bottom: 538px;
+	bottom: 249px;
 	left: 88px;
 	position: absolute;
 	font-size: 16px;
@@ -256,7 +220,7 @@
 	height: 18px;
 	top: 197px;
 	left: 135px;
-	right: 701px;
+	right: -104px;
 	position: absolute;
 	font-size: 16px;
 	text-align: left;
@@ -267,28 +231,9 @@
 	height: 18px;
 	top: 63px;
 	left: 74px;
-	right: 701px;
+	right: 0px;
 	position: absolute;
 	font-size: 16px;
-}
-
-#label6 {
-	z-index: 5;
-	width: 10px;
-	height: 14px;
-	top: 26px;
-	left: 267px;
-	position: absolute;
-	font-size: 12px;
-}
-
-#richText5 {
-	z-index: 1;
-	width: 66px;
-	height: 0px;
-	top: 0px;
-	left: 0px;
-	position: absolute;
 }
 
 #menuItemCartridge.waf-state-selected {
@@ -1207,28 +1152,9 @@
 	font-size: 16px;
 }
 
-#buttonTestStatus {
-	z-index: 6;
-	width: 160px;
-	height: 44px;
-	top: 174px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#checkboxTestStatus {
-	z-index: 7;
-	width: 14px;
-	height: 16px;
-	top: 190px;
-	left: 191px;
-	position: absolute;
-}
-
 #containerTestActions {
 	z-index: 7;
-	height: 234px;
+	height: 190px;
 	bottom: 24px;
 	left: 24px;
 	right: 24px;
@@ -1261,138 +1187,6 @@
 	font-size: 16px;
 	line-height: 32px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
-}
-
-#buttonGetStoredData {
-	z-index: 2;
-	width: 178px;
-	height: 44px;
-	top: 12px;
-	left: 17px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#menuItemFlash {
-	z-index: 5;
-	width: 66px;
-	height: 0px;
-	top: 0px;
-	left: auto;
-	position: absolute;
-	line-height: 22px;
-}
-
-#containerFlash {
-	z-index: 8;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	position: absolute;
-}
-
-#containerDeviceFlash {
-	z-index: 1;
-	top: 24px;
-	bottom: 24px;
-	left: 474px;
-	right: 24px;
-	position: absolute;
-	border-top-left-radius: 10px;
-	-moz-border-radius-topleft: 10px;
-	border-top-right-radius: 10px;
-	-moz-border-radius-topright: 10px;
-	border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
-	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
-}
-
-#dataGridDeviceFlash .waf-dataGrid-footer {
-	font-size: 16px;
-	line-height: 32px;
-	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
-}
-
-#dataGridDeviceFlash .waf-dataGrid-header {
-	text-align: center;
-}
-
-#dataGridDeviceFlash {
-	z-index: 2;
-	width: 432px;
-	top: 24px;
-	bottom: 75px;
-	left: 24px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#textFieldFlashDeviceOnline {
-	z-index: 4;
-	width: 227px;
-	height: 34px;
-	bottom: 21px;
-	left: 184px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-size: 14px;
-	color: rgb(255, 255, 255);
-	background-color: rgb(255, 0, 0);
-	font-weight: bold;
-	text-align: center;
-}
-
-#textFieldFlashArchiveNumber {
-	z-index: 3;
-	width: 50px;
-	height: 36px;
-	top: 16px;
-	left: 212px;
-	position: absolute;
-	font-size: 16px;
-	border-top-width: 3px;
-	border-left-width: 3px;
-	border-right-width: 3px;
-	border-bottom-width: 3px;
-	border-top-color: rgb(255, 0, 0);
-	border-left-color: rgb(255, 0, 0);
-	border-right-color: rgb(255, 0, 0);
-	border-bottom-color: rgb(255, 0, 0);
-}
-
-#textFieldFlashArchiveSize {
-	z-index: 5;
-	width: 60px;
-	height: 37px;
-	top: 15px;
-	left: 282px;
-	position: absolute;
-	font-size: 16px;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	text-align: left;
-}
-
-#richTextFlashAssayTitle {
-	z-index: 6;
-	height: 25px;
-	top: 70px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	font-size: 16px;
-	text-align: center;
 }
 
 #containerData {
@@ -1429,7 +1223,7 @@
 	z-index: 1;
 	width: 300px;
 	top: 15px;
-	bottom: 56px;
+	bottom: 28px;
 	left: 28px;
 	position: absolute;
 	font-size: 16px;
@@ -1447,7 +1241,7 @@
 
 #dataGridTestData {
 	width: 480px;
-	height: 288px;
+	height: 332px;
 	top: 39px;
 	left: 345px;
 	position: absolute;
@@ -1456,10 +1250,10 @@
 
 #textFieldDataTestRawData {
 	z-index: 3;
-	top: 365px;
-	bottom: 24px;
-	left: 346px;
-	right: 9px;
+	height: 119px;
+	top: 254px;
+	left: 843px;
+	right: 33px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1471,10 +1265,10 @@
 
 #textFieldDataTestRawData {
 	z-index: 3;
-	top: 365px;
-	bottom: 24px;
-	left: 346px;
-	right: 9px;
+	height: 119px;
+	top: 254px;
+	left: 843px;
+	right: 33px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1488,7 +1282,7 @@
 	z-index: 5;
 	width: 111px;
 	height: 18px;
-	top: 134px;
+	top: 84px;
 	left: 864px;
 	position: absolute;
 	font-size: 16px;
@@ -1500,7 +1294,7 @@
 	z-index: 6;
 	width: 351px;
 	height: 24px;
-	top: 131px;
+	top: 81px;
 	left: 980px;
 	position: absolute;
 	border-top-style: dotted;
@@ -1515,7 +1309,7 @@
 	z-index: 7;
 	width: 93px;
 	height: 18px;
-	top: 174px;
+	top: 124px;
 	left: 882px;
 	position: absolute;
 	font-size: 16px;
@@ -1527,7 +1321,7 @@
 	z-index: 8;
 	width: 351px;
 	height: 24px;
-	top: 171px;
+	top: 121px;
 	left: 980px;
 	position: absolute;
 	border-top-style: dotted;
@@ -1542,7 +1336,7 @@
 	z-index: 8;
 	width: 91px;
 	height: 37px;
-	top: 215px;
+	top: 165px;
 	left: 884px;
 	position: absolute;
 	text-align: center;
@@ -1554,7 +1348,7 @@
 	z-index: 9;
 	width: 351px;
 	height: 45px;
-	top: 211px;
+	top: 161px;
 	left: 980px;
 	position: absolute;
 	border-top-style: dotted;
@@ -1566,10 +1360,10 @@
 }
 
 #textFieldTestDeviceInfo {
-	z-index: 11;
+	z-index: 10;
 	width: 351px;
 	height: 24px;
-	top: 90px;
+	top: 40px;
 	left: 980px;
 	position: absolute;
 	border-top-style: dotted;
@@ -1669,31 +1463,6 @@
 	font-size: 16px;
 }
 
-#buttonEraseAllFlashData {
-	z-index: 7;
-	width: 246px;
-	height: 44px;
-	top: 12px;
-	left: 397px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#textFieldTestFlash {
-	z-index: 4;
-	top: 95px;
-	bottom: 10px;
-	left: 10px;
-	right: 10px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 10px;
-}
-
 #iconUpdate {
 	z-index: 8;
 	width: 32px;
@@ -1777,16 +1546,6 @@
 	border-bottom-style: dotted;
 	font-size: 14px;
 	text-align: left;
-}
-
-#buttonResetData {
-	z-index: 2;
-	width: 150px;
-	height: 44px;
-	bottom: 13px;
-	left: 13px;
-	position: absolute;
-	font-size: 16px;
 }
 
 #dataGridRegisteredCartridges {
@@ -1883,7 +1642,7 @@
 }
 
 #textFieldTestCartridge {
-	z-index: 11;
+	z-index: 10;
 	width: 500px;
 	height: 30px;
 	top: 19px;
@@ -1934,5 +1693,34 @@
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
+}
+
+#progressBarTest {
+	z-index: 11;
+	height: 66px;
+	bottom: 31px;
+	left: 225px;
+	right: 36px;
+	position: absolute;
+}
+
+#containerGraph {
+	z-index: 11;
+	top: 390px;
+	bottom: 27px;
+	left: 346px;
+	right: 31px;
+	position: absolute;
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 }
 
