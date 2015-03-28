@@ -58,13 +58,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	notification.info = humane.spawn({ addnCls: 'humane-libnotify-info', clickToClose: true, timeout: 3000 });
 	
 	function notifyStacked(message) {
-		debugger;
-		if (notification.info.queue.length) {
-			
-		}
-		else {
-			notification.info(message);
-		}
+		notification.info(message);
 	}
 	
 	var firmwareVersion = 9;
