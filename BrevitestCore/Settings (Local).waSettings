@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?><settings>
+<?xml version="1.0" encoding="UTF-8"?><settings>
 	<project publicName="" listen="0" hostName="localhost" responseFormat="json">
 		<database>
 			<journal enabled="false" journalFolder="./"/>
@@ -13,7 +13,7 @@
 	<service name="Builder handler" modulePath="services/builder-service" enabled="true" max-age="0" hardCache="false"/>
 	<service name="remoteFileExplorer" enabled="true"/>
 	<service name="Print service" enabled="false" modulePath="services/print"/>
-	<service name="dispatch-service" modulePath="dispatch-service" enabled="true"/>
+	<service name="dispatch-service" modulePath="dispatch-service" enabled="false"/>
 	<service name="daemon-service" modulePath="daemon-service" enabled="true"/>
 	<virtualFolder location="/WIDGETS_CUSTOM/" name="widgets-custom"/>
 	<virtualFolder location="/THEMES_CUSTOM/" name="themes-custom"/>

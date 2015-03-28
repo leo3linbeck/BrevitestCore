@@ -16,14 +16,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonRun = {};	// @button
 // @endregion// @endlock
 
-	var sse_notification_on = false;
-	var sse = new EventSource('/status');
-	sse.onmessage = function eventsourcehandler(event) {
+	var sse = {};
+	
+	function eventsourcehandler(event) {
 		var data = JSON.parse(event.data);
 		var percentComplete, testID; 
 		switch (data.type) {
 			case 'user_message':
-				notification.info(data.message);
+				notifyStacked(data.message);
 				break;
 			case 'error':
 				notification.error(data.message);
@@ -35,8 +35,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					sources.testToday.serverRefresh({ onSuccess: function(e) {return;}, forceReload: true });
 				}
 				break;
+			case 'process_stopped':
+				this.close();
 		}
-	};
+	}
+	
+	function startListeningToSSE(id) {
+		var path = (id ? id : '');
+		if (!sse.id) {
+			sse.id = new EventSource('/status' + path);
+			sse.id.onmessage = eventsourcehandler;
+		}
+	}
 		
 	var spinnerOpts = {
 		color: '#CCC'
@@ -45,7 +55,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-libnotify' });
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
-	notification.info = humane.spawn({ addnCls: 'humane-libnotify-info', clickToClose: true, timeout: 1000 });
+	notification.info = humane.spawn({ addnCls: 'humane-libnotify-info', clickToClose: true, timeout: 3000 });
+	
+	function notifyStacked(message) {
+		debugger;
+		if (notification.info.queue.length) {
+			
+		}
+		else {
+			notification.info(message);
+		}
+	}
 	
 	var firmwareVersion = 9;
 	
@@ -235,7 +255,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var green = [];
 		var blue = [];
 		var r_minus_b = [];
-		var margin = 20;
+
 		var startTime = Date.parse(rawData[0].time);
 		for (var i = 0; i < rawData.length; i += 2) {
 			clear.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].clear - rawData[i + 1].clear));
@@ -262,7 +282,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		//************************************************************
 		// Create Margins and Axis and hook our zoom function
 		//************************************************************
-		var margin = {top: 20, right: 30, bottom: 30, left: 50},
+		var margin = {top: 20, right: 30, bottom: 50, left: 60},
 		    width = $('#containerGraph').width() - margin.left - margin.right,
 		    height = $('#containerGraph').height() - margin.top - margin.bottom;
 			
@@ -322,9 +342,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			.append("text")
 			.attr("class", "axis-label")
 			.attr("transform", "rotate(-90)")
-			.attr("y", (-margin.left) + 10)
-			.attr("x", -height/2)
-			.text('Axis Label');	
+			.attr("y", (-margin.left) + 15)
+			.attr("x", -height/2 - 50)
+			.text('Assay minus Control');	
+		 
+		svg.append("g")
+			.attr("class", "x axis")
+			.append("text")
+			.attr("class", "axis-label")
+			.attr("y", height + 40)
+			.attr("x", width/2 - 30)
+			.text('Time (secs)');	
 		 
 		svg.append("clipPath")
 			.attr("id", "clip")
@@ -352,6 +380,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			.attr("clip-path", "url(#clip)")
 			.attr('stroke', function(d,i){ 			
 				return colors[i%colors.length];
+			})
+			.attr('stroke-width', function(d,i) {
+				return i === colors.length-1 ? 5 : 1.5;
 			})
 		    .attr("d", line);		
 			
@@ -492,7 +523,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			if (sources.device.ID) {
 				dispatch.runOnceAsync({
 					onSuccess: function(evt) {
-						notification.info('Device initialization begun');
+						notifyStacked('Device initialization begun');
 					},
 					onError: function(err) {
 						notification.error('Device initialization failed');
@@ -524,6 +555,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
+			startListeningToSSE(sources.cartridge.ID);
 			dispatch.runOnceAsync({
 				onSuccess: function(evt) {
 					if (evt.success) {

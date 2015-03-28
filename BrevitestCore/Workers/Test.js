@@ -34,7 +34,7 @@ onmessage = function(e) {
 		}
 	}
 	catch(e) {
-		postMessage({message:'error', data: e});
+		postMessage({message:'error', message: e});
 	}
 }
 
@@ -52,21 +52,24 @@ function runTest(param) {
 		result.success = false;
 		result.message = 'Cartridge entity not found';
 		result.cartridgeID = param.cartridgeID;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	if (device === null) {
 		result.success = false;
 		result.message = 'Device entity not found';
 		result.deviceID = param.deviceID;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	if (user === null) {
 		result.success = false;
 		result.message = 'User not found';
 		result.username = param.username;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	else {
 		practice = user.practice;
@@ -78,7 +81,8 @@ function runTest(param) {
 		result.cartridgePracticeID = cartridge.practice.ID;
 		result.devicePracticeID = device.practice.ID;
 		result.userPracticeID = practice.ID;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	postMessage({ type: 'user_message', message: 'Checking device serial number' });
@@ -86,7 +90,8 @@ function runTest(param) {
 	if (!result.success) {
 		result.message = 'Device serial number does not match';
 		result.deviceID = device.ID;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	postMessage({ type: 'user_message', message: 'Checking whether device is ready' });
@@ -94,7 +99,8 @@ function runTest(param) {
 	if ((result.status !== 200) || (result.response.return_value === -1)) {
 		result.message = 'Device not ready';
 		result.deviceID = device.ID;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	postMessage({ type: 'user_message', message: 'Loading instructions into device' });
@@ -102,7 +108,8 @@ function runTest(param) {
 	if (!result.success) {
 		result.message = 'Error loading instructions into device';
 		result.BCODE = cartridge.assay.BCODE;
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 		
 	postMessage({ type: 'user_message', message: 'Starting test' });
@@ -143,11 +150,13 @@ function runTest(param) {
 		if (test.percentComplete === 100) {
 			cartridge.get_data_from_device();
 			postMessage({ type: 'user_message', message: 'Test finished' });
+			postMessage({ type: 'user_command', command: 'refresh', data: {cartridgeID: cartridge.ID, testID: test.ID} });
 		}
 	}
 	else {
 		result.message('Test failed to start');
-		throw(result);
+		result.type = 'error';
+		return result;
 	}
 	
 	return result;
@@ -179,14 +188,16 @@ function cancelTest(param) {
 		else {
 			result.success = false;
 			result.message = 'Test not cancelled  - parameter not found';
-			throw result;
+			result.type = 'error';
+			return result;
 		}
 	}
 	
 	if (!cartridge) {
 		result.success = false;
 		result.message = 'Test not cancelled - cartridge not found';
-		throw result;
+		result.type = 'error';
+		return result;
 	}
 	
 	result = spark.cancel_process(cartridge.test.device.sparkCoreID);
@@ -199,7 +210,7 @@ function cancelTest(param) {
 	else {
 		result.success = false;
 		result.message = 'Test not cancelled - unable to stop device at this time';
-		throw result;
+		result.type = 'error';
 	}
 	
 	return result;

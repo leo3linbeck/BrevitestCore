@@ -69,12 +69,36 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var notification = humane.create({ timeout: 2000, baseCls: 'humane-libnotify' });
 	notification.error = humane.spawn({ addnCls: 'humane-libnotify-error', clickToClose: true, timeout: 0 });
+	notification.info = humane.spawn({ addnCls: 'humane-libnotify-info', timeout: 1000 });
 	
 	var statusMonitorID = null;
 	var firmwareVersion = 8;
 	var sparkCoreList = [];
 	
 	var clipboard = '';
+	
+	var websocketConnected = false;
+	var websocket = new WebSocket('ws://localhost:8081/websocket');
+	websocket.onmessage = function websocketonmessagehandler(message) {
+		var packet = JSON.parse(message.data);
+		switch (packet.type) {
+			case 'connected':
+				websocketConnected = true;
+				break;
+			case 'message':
+				notification.info(packet.message);
+				break;
+			case 'error':
+				notification.error(packet.message);
+				break;
+			case 'process_stopped':
+				notification.log('Process stopped');
+				break; 
+		}
+	}
+	function sendServerMessage(obj) {
+		websocket.send(JSON.stringify(obj));
+	}
 	
 	function callSpark(that, funcName, params, callback, errorCallback) {
 		spinner.spin(that.domNode);
@@ -719,37 +743,10 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonRunTest.click = function buttonRunTest_click (event)// @startlock
 	{// @endlock
-		var cartridgeID = sources.cartridgeRegistered.ID;
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			spinner.spin(this.domNode);
-			sources.test.start(
-				{
-					onSuccess: function(evt) {
-							spinner.stop();
-							if (evt.result.success) {
-								notification.log('Test started');
-								loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
-								startTestMonitor(cartridgeID);
-								testCartridge = cartridgeID;
-								sources.testCartridge.sync();
-							}
-							else {
-								notification.error('ERROR: ' + evt.result.message + ' - test not started');
-							}
-						},
-					onError: function(err) {
-							spinner.stop();
-							notification.error('SYSTEM ERROR: ' + err.error[0].message);
-						}
-				},
-				{
-					username: user.userName,
-					deviceID: sources.device.ID,
-					cartridgeID: cartridgeID
-				}
-			);
+			sendServerMessage({ type: 'runOnce', func: 'run_test', param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
 		}
 		else {
 			notification.error('You must be signed in to run a test');	
@@ -758,10 +755,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonInitDevice.click = function buttonInitDevice_click (event)// @startlock
 	{// @endlock
-		callSpark(this, 'initialize_device', [sources.device.sparkCoreID], function(evt) {
-				notification.log('Device initialization started');
-			}
-		);
+		var user = WAF.directory.currentUser();
+		
+		if (user) {
+			sendServerMessage({ type: 'runOnce',  func: 'initialize_device', param: { username: user.userName, deviceID: sources.device.ID } });
+		}
+		else {
+			notification.error('You must be signed in to run a test');	
+		}
 	};// @lock
 
 	deviceEvent.onCurrentElementChange = function deviceEvent_onCurrentElementChange (event)// @startlock

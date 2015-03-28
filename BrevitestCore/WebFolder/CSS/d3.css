@@ -29,7 +29,7 @@
 
 .line {
 	fill: none;
-	stroke-width: 1.5px;
+	stroke-linejoin: round;
 }
 
 .dot {

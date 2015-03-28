@@ -1,53 +1,19 @@
 /*	Handler function for service messages (required)
 */
 
-var dispatchManager, dispatchPort;
-var dispatchAvailable = false;
-
-function initializeDispatchManager() {
-	if (!dispatchAvailable) {
-		dispatchManager = new SharedWorker('Workers/DispatchManager.js', 'DispatchManager');
-		dispatchPort = dispatchManager.port;
-		dispatchPort.onmessage = function(event) {
-			var message = event.data;
-			switch (message.type) {
-				case 'initialized':
-					dispatchAvailable = true;
-					console.log('Dispatch manager initialized');
-					exitWait();
-					break;
-				case 'stopped': 
-					console.log('Dispatch manager stopped');
-					dispatchAvailable = false;
-					exitWait();
-					break;
-				case 'error':
-					console.log('Error in dispatch manager');
-					dispatchAvailable = false;
-					exitWait();
-					break;
-			}
-		}
-		wait();
-	}
-}
-
 exports.postMessage = function (message) {
 	switch (message.name) {
 		case 'applicationWillStart':
 		/* 	This is the first message sent to the service.
 			It's a good location to initialize and start the service */
-			console.log('Initializing dispatch manager');
-			initializeDispatchManager();
 			break;
 		case 'applicationWillStop':
 		/*	The service should be stopped and ended here */
-			if (dispatchPort) {
-				dispatchPort.postMessage('stop');
-			}
 			break;
 		case 'httpServerDidStart':
 		/*	This message should be handled if the service depends on the HTTP Server status */
+			console.log('Initializing dispatch websocket');
+			httpServer.addWebSocketHandler('/websocket', 'Workers/DispatchManager.js', 'DispatchManager', true);
 			break;
 		case'httpServerWillStop':
 		/*	This message should be handled if the service depends on the HTTP Server status */
@@ -78,7 +44,7 @@ function talkToWorker(inMessage) {
 	var outMessage;
 
 	workerPort.postMessage({
-		'message': inMessage.message, 
+		'type': inMessage.type, 
 		'id': messageId, 
 		func: inMessage.func,
 		param: inMessage.param, 
@@ -103,31 +69,31 @@ function talkToWorker(inMessage) {
 }
 
 function cancel(func, param) {
-	return talkToWorker({ message:'cancel', func: func, param: param });
+	return talkToWorker({ type:'cancel', func: func, param: param });
 }
 
 function start(func, param) {
-	return talkToWorker({ message:'start', func: func, param: param });
+	return talkToWorker({ type:'start', func: func, param: param });
 }
 
 function stop(func, param) {
-	return talkToWorker({ message:'stop', func: func, param: param });
+	return talkToWorker({ type:'stop', func: func, param: param });
 }
 
 function runOnce(func, param) {
-	return talkToWorker({ message:'runOnce', func: func, param: param });
+	return talkToWorker({ type:'runOnce', func: func, param: param });
 }
 
 function multistep_begin(func, param) {
-	return talkToWorker({ message:'multistep_begin', func: func, param: param });
+	return talkToWorker({ type:'multistep_begin', func: func, param: param });
 }
 
 function multistep_step(func, param, uuid) {
-	return talkToWorker({ message:'multistep_step', func: func, param: param, uuid: uuid });
+	return talkToWorker({ type:'multistep_step', func: func, param: param, uuid: uuid });
 }
 
 function multistep_end(func, param, uuid) {
-	return talkToWorker({ message:'multistep_end', func: func, param: param, uuid: uuid });
+	return talkToWorker({ type:'multistep_end', func: func, param: param, uuid: uuid });
 }
 
 exports.runOnce = runOnce;

@@ -1,32 +1,41 @@
 var dispatchData = require('dispatch-data');
-var eventsource = require('wakanda-eventsource');
-eventsource.start('/status');
 
 var dispatch = dispatchData.params;
 var path = dispatchData.workerPath;
 var worker;
 var workerRunning = false;
-var uuid;
 
-onconnect = function(msg) {
-	var thePort = msg.ports[0];
-	thePort.onmessage = function(event) {
-		var message = event.data.message;
-		var id = event.data.id;
-		var func = event.data.func;
-		var param = event.data.param;
-		var interval = event.data.interval ? event.data.interval : 60000;
-		var timeout = event.data.timeout ? event.data.timeout : 3600000;
-		switch (message) {
-			case 'start':
+function sendObjectToClient(port, obj) {
+	port.postMessage(JSON.stringify(obj));
+}
+
+onconnect = function(event) {
+	var thePort = event.ports[0];
+	thePort.binaryType = 'string';
+	thePort.onclose = function() {
+		
+	};
+	thePort.onmessage = function(message) {
+		var func, interval, param, timeout;
+		
+		var data = JSON.parse(message.data);
+		var type = data.type;
+		var id = data.id;
+		
+		switch (type) {
+			case 'repeatStart':
+				interval = data.interval ? data.interval : 60000;
+				timeout = data.timeout ? data.timeout : 3600000;
+				func = data.func;
+				param = data.param;
 				if (!workerRunning) {
 					workerRunning = true;
 					startTime = new Date();
-					runWorker(func, param);
+					runWorker(func, param, thePort, id);
 					(function doIt() {
 						var now = new Date();
 						setTimeout(function() {
-							runWorker(func, param);
+							runWorker(func, param, thePort, id);
 							if (workerRunning) {
 								if ((now - startTime) < timeout) {
 									doIt();
@@ -41,57 +50,63 @@ onconnect = function(msg) {
 						}, interval);  //re-run every minute
 					})();
 				}
-				thePort.postMessage({ message:'started', id: id });
 				break;
-			case 'stop':
+			case 'repeatStop':
 				if (workerRunning) {
 					workerRunning = false;
 				}
-				thePort.postMessage({ message:'stopped', id: id });
 				break;
-			case 'runOnce':
-				thePort.postMessage({ message:'running', id: id });
-				runWorker(func, param);
+			case 'run':
+				func = data.func;
+				param = data.param;
+				runWorker(func, param, thePort, id);
 				break;
 			case 'cancel':
 				if (workerRunning) {
 					worker.postMessage({ 'shouldTerminate': true });
 				}
-				thePort.postMessage({ message:'cancelled', id: id });
+				sendObjectToClient(thePort, { type: 'message', message:'cancelled', id: id });
 				break;
 			case 'multistep_begin':
-				thePort.postMessage({ message:'beginning', id: id });
-				runWorker(func, param);
+				sendObjectToClient(thePort, { type: 'message', message:'beginning', id: id });
+				runWorker(func, param, thePort, id);
 				break;
 			case 'multistep_end':
-				thePort.postMessage({ message:'ending', id: id });
-				runWorker(func, param);
+				sendObjectToClient(thePort, { type: 'message', message:'ending', id: id });
+				runWorker(func, param, thePort, id);
 				break;
 		}
-	}
-	thePort.postMessage({ type: 'initialized' });
+	};
+	sendObjectToClient(thePort, { type: 'connected' });
 }
 
-function runWorker(func, param) {
+function runWorker(func, param, port, id) {
 	if (!workerRunning) {
 		workerRunning = true;
 		worker = new Worker(path + dispatch[func].module + '.js');
 		worker.postMessage({ message:'start', func: func, param : param });
-		worker.onmessage = function(e) {
-			var data = e.data;
+		worker.onmessage = function(event) {
+			var data = event.data;
 
 			console.log(data);
-			if (data.type === 'done') {
-				exitWait();
-			}
-			else {
-				if (data.type === 'error') {
-					eventsource.push(data.data, true);
+			switch (data.type) {
+				case 'done':
+					sendObjectToClient(port, { type: 'result', result: data.data, id: id });
 					exitWait();
-				}
-				else {
-					eventsource.push(data, true);
-				}
+					break;
+				case 'error':
+					sendObjectToClient(port, { type: 'error', message: data.message, id: id });
+					exitWait();
+					break;
+				case 'user_message':
+					sendObjectToClient(port, { type: 'message', message: data.message, id: id });
+					break;
+				case 'user_data':
+					sendObjectToClient(port, { type: 'data', data: data.data, id: id });
+					break;
+				case 'user_command':
+					sendObjectToClient(port, { type: 'command', command: data.command, id: id });
+					break;
 			}
 		}
 		wait();
