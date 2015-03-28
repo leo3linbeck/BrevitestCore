@@ -9,7 +9,7 @@ function start_scan() {
 
 		switch (message.type) {
 			case 'connected':
-				url = 'zxing://scan/?ret=http://' + httpServer.hostName + ':' + httpServer.port + '/return_cartridgeID/' + message.uuid + escape('?val={CODE}');
+				url = 'zxing://scan/?ret=' + httpServer.hostName + ':' + httpServer.port + '/return_cartridgeID/' + message.uuid + escape('?val={CODE}');
 				result = { success: true, uuid: message.uuid, url: url };
 				exitWait();
 				break;
