@@ -23,7 +23,7 @@ onconnect = function(event) {
 		var id = data.id;
 		
 		switch (type) {
-			case 'start':
+			case 'repeatStart':
 				interval = data.interval ? data.interval : 60000;
 				timeout = data.timeout ? data.timeout : 3600000;
 				func = data.func;
@@ -51,12 +51,12 @@ onconnect = function(event) {
 					})();
 				}
 				break;
-			case 'stop':
+			case 'repeatStop':
 				if (workerRunning) {
 					workerRunning = false;
 				}
 				break;
-			case 'runOnce':
+			case 'run':
 				func = data.func;
 				param = data.param;
 				runWorker(func, param, thePort, id);
