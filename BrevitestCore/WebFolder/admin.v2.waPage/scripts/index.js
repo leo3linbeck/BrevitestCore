@@ -361,29 +361,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function startTestMonitor(cartridgeID) {
-		sources.test.monitor(
-			{
-				onSuccess: function(evt) {
-						if (evt.result.success) {
-							notification.log('Test completed');
-						}
-						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
-						}
-						testCartridge = '';
-						sources.testCartridge.sync();
-					},
-				onError: function(err) {
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				cartridgeID: cartridgeID
-			}
-		);
-	}
-	
 	function updateBCODEDuration(BCODE) {
 		var str = BCODE ? BCODE : convertCommandsToAttribute();
 		spark.get_BCODE_durationAsync({
