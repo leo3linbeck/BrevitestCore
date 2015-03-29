@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 1192,
-			"workspaceTop": 240,
+			"workspaceLeft": 743,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -710,8 +710,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "number",
@@ -747,6 +746,11 @@
 					"type": "Contract",
 					"path": "Contract"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -762,8 +766,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "number",
@@ -797,6 +800,11 @@
 					"scope": "public",
 					"type": "Billing",
 					"path": "Billing"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -956,10 +964,10 @@
 				},
 				{
 					"name": "startedBy",
+					"kind": "relatedEntity",
 					"scope": "public",
-					"path": "User",
 					"type": "User",
-					"kind": "relatedEntity"
+					"path": "User"
 				}
 			],
 			"methods": [
@@ -1042,8 +1050,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "practice",
@@ -1089,6 +1096,11 @@
 					"reversePath": true,
 					"path": "contract"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -1104,8 +1116,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "code",
@@ -1133,6 +1144,11 @@
 					"type": "Assays",
 					"reversePath": true,
 					"path": "cpt"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -1338,6 +1354,13 @@
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Device.methods.check_serial_number",
+					"userDefined": true
+				},
+				{
+					"name": "test_in_progress",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Device.methods.test_in_progress",
 					"userDefined": true
 				},
 				{
@@ -1602,8 +1625,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "orderedOn",
@@ -1694,6 +1716,11 @@
 					"scope": "public",
 					"type": "long",
 					"scriptKind": "javascript"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -1843,8 +1870,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "name",
@@ -1886,6 +1912,11 @@
 					"reversePath": true,
 					"path": "payer"
 				}
+			],
+			"key": [
+				{
+					"name": "ID"
+				}
 			]
 		},
 		{
@@ -1901,8 +1932,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "amount",
@@ -1929,6 +1959,11 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "string"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -2242,8 +2277,7 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree",
-					"primKey": true
+					"indexKind": "btree"
 				},
 				{
 					"name": "rate",
@@ -2286,6 +2320,11 @@
 					"scope": "public",
 					"type": "Contract",
 					"path": "Contract"
+				}
+			],
+			"key": [
+				{
+					"name": "ID"
 				}
 			]
 		},
@@ -2603,6 +2642,32 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "cartridgeID",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.cartridgeID.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "outcome",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.outcome.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			],
 			"methods": [
@@ -2676,11 +2741,11 @@
 				},
 				{
 					"name": "cartridges_1",
+					"kind": "relatedEntities",
 					"scope": "public",
-					"reversePath": true,
-					"path": "startedBy",
 					"type": "Cartridges",
-					"kind": "relatedEntities"
+					"reversePath": true,
+					"path": "startedBy"
 				}
 			],
 			"methods": [

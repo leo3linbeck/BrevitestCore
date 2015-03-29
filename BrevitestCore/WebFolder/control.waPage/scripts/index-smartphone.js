@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var richText4 = {};	// @richText
 	var select1 = {};	// @select
 	var select2 = {};	// @select
 	var select3 = {};	// @select
@@ -96,11 +97,11 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						console.log('Websocket done', packet);
 						break;
 					case 'data':
-						websocketUpdateData(packet.name, packet.data, packet.dataSources);
+						websocketUpdateData(packet.name, packet.data, packet.data.datastores);
 						console.log('Websocket data', packet);
 						break;
 					case 'refresh':
-						updateDatasources(packet.datastores);
+						updateDatasources(packet.data.datastores);
 						console.log('Update datasources');
 						break;
 					case 'percent_complete':
@@ -254,7 +255,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				onError: function(error) {
 					
 				},
-				params: []
+				params: [],
+				orderBy: 'startedOn desc'
 			}
 		);
 	}
@@ -488,6 +490,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 // eventHandlers// @lock
 
+	richText4.click = function richText4_click (event)// @startlock
+	{// @endlock
+		$$('navigationView1').goToView(4);
+		loadRecentTests(false);
+	};// @lock
+
 	select1.change = function select1_change (event)// @startlock
 	{// @endlock
 		loadTestFinished('date');
@@ -505,6 +513,19 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
+		var v = sources.testFinished.outcome;
+		if (v[0] === 'P') {
+			$$('textFieldTestOutcome').setBackgroundColor('#FF0000');
+		}
+		else {
+			if (v[0] === 'B') {
+				$$('textFieldTestOutcome').setBackgroundColor('yellow');
+			}
+			else {
+				$$('textFieldTestOutcome').setBackgroundColor('#00FF00');
+			}
+		}
+
 		$('#containgerGraph, svg').remove();
 		$$('navigationView1').goToView(7);
 		loadGraph(sources.testFinished.ID);
@@ -628,6 +649,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("richText4", "click", richText4.click, "WAF");
 	WAF.addListener("select1", "change", select1.change, "WAF");
 	WAF.addListener("select2", "change", select2.change, "WAF");
 	WAF.addListener("select3", "change", select3.change, "WAF");

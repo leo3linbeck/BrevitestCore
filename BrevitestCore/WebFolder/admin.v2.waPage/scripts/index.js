@@ -91,13 +91,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function updateDatasources(datastore) {
+	function updateDatasources(datastores) {
 		var d, i, k;
 		
 		k = Object.keys(sources);
 		for (i = 0; i < k.length; i += 1) {
 			d = sources[k[i]];
-			if (typeof d.sync() === 'undefined' && d.getClassTitle() === datastore) {
+			if (typeof d.sync() === 'undefined' && datastores.indexOf(d.getClassTitle()) !== -1) {
 				d.collectionRefresh({ onSuccess: function(e) {return;} });
 			}
 		}
@@ -133,7 +133,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						console.log('Websocket data', packet);
 						break;
 					case 'refresh':
-						updateDatasources(packet.datastore);
+						updateDatasources(packet.datastores);
 						console.log('Update datasources');
 						break;
 					case 'percent_complete':
@@ -337,9 +337,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					sendWebsocketMessage(that, { type: 'run',  func: 'register_device', deviceID: sources.device.ID, dataSources: [], param: {
 							username: user.userName,
 							deviceID: sources.device.ID,
-							sparkCoreID: sources.sparkCores.id,
-							sparkCoreName: sources.sparkCores.name,
-							sparkCoreLastHeard: sources.sparkCores.last_heard,
+							sparkCoreID: sources.device.sparkCoreID,
 							serialNumber: sources.device.serialNumber
 						 } 
 					});
@@ -620,6 +618,19 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
+		var v = sources.test.outcome;
+		if (v[0] === 'P') {
+			$$('textFieldTestOutcome').setBackgroundColor('#FF0000');
+		}
+		else {
+			if (v[0] === 'B') {
+				$$('textFieldTestOutcome').setBackgroundColor('yellow');
+			}
+			else {
+				$$('textFieldTestOutcome').setBackgroundColor('#00FF00');
+			}
+		}
+
 		$('#containgerGraph, svg').remove();
 		loadGraph(sources.test.ID);
 	};// @lock
@@ -823,29 +834,31 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	deviceEvent.onCurrentElementChange = function deviceEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		if (event.dataSource.sparkCoreID) {
-			if (event.dataSource.online) {
-				deviceOnline = 'YES - ONLINE' ;
-				sources.deviceOnline.sync();
-				$$('textFieldDeviceOnline').setBackgroundColor('green');
-				$$('containerTestActions').show();
-				connectToTestInProgress();
+		if (event.dataSource.ID) {
+			if (event.dataSource.sparkCoreID) {
+				if (event.dataSource.online) {
+					deviceOnline = 'YES - ONLINE' ;
+					sources.deviceOnline.sync();
+					$$('textFieldDeviceOnline').setBackgroundColor('green');
+					$$('containerTestActions').show();
+					connectToTestInProgress();
+				}
+				else {
+					deviceOnline = 'NO - OFFLINE' ;
+					sources.deviceOnline.sync();
+					$$('textFieldDeviceOnline').setBackgroundColor('red');
+					$$('containerTestActions').hide();
+				}
 			}
 			else {
-				deviceOnline = 'NO - OFFLINE' ;
+				deviceOnline = 'UNREGISTERED DEVICE';
 				sources.deviceOnline.sync();
 				$$('textFieldDeviceOnline').setBackgroundColor('red');
 				$$('containerTestActions').hide();
 			}
+			
+			sources.deviceModel.selectByKey(event.dataSource.deviceModel.getKey(), { onSuccess: function(e) {return;} });
 		}
-		else {
-			deviceOnline = 'UNREGISTERED DEVICE';
-			sources.deviceOnline.sync();
-			$$('textFieldDeviceOnline').setBackgroundColor('red');
-			$$('containerTestActions').hide();
-		}
-		
-		sources.deviceModel.selectByKey(event.dataSource.deviceModel.getKey(), { onSuccess: function(e) {return;} });
 	};// @lock
 
 	menuItemTest.click = function menuItemTest_click (event)// @startlock
@@ -929,16 +942,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonCreateNewDevice.click = function buttonCreateNewDevice_click (event)// @startlock
 	{// @endlock
 		sources.device.addNewElement();
-		sources.device.sparkCoreID = sources.sparkCores.id;
-		sources.deviceModel.all({
-			onSuccess: function(evt) {
-					$$('containerSparkDevice').show();
-				},
-			onError: function(err) {
-					notification.error('SYSTEM ERROR: ' + err.error[0].message);
-				}
-		});
-
 	};// @lock
 
 	buttonSaveDevice.click = function buttonSaveDevice_click (event)// @startlock

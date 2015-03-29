@@ -3,6 +3,46 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#label27 {
+	width: 60px;
+	height: 18px;
+	top: 183px;
+	left: 665px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 19;
+}
+
+#label15 {
+	width: 74px;
+	height: 18px;
+	top: 143px;
+	left: 651px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 16;
+}
+
+#label10 {
+	width: 78px;
+	height: 18px;
+	top: 103px;
+	left: 647px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 15;
+}
+
+#label1 {
+	width: 64px;
+	height: 18px;
+	top: 63px;
+	left: 661px;
+	position: absolute;
+	font-size: 16px;
+	z-index: 14;
+}
+
 #progressBarTest .waf-progressBar-range {
 	color: rgb(255, 127, 0);
 }
@@ -12,20 +52,20 @@
 	height: 21px;
 	bottom: 82px;
 	left: 219px;
-	right: 1110px;
+	right: 0px;
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
 }
 
 #label23 {
+	z-index: 21;
 	height: 18px;
 	top: 98px;
 	left: 115px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 21;
 }
 
 #label22 {
@@ -135,8 +175,8 @@
 	z-index: 2;
 	height: 18px;
 	top: 231px;
-	left: 1134px;
-	right: 226px;
+	left: 1133.5px;
+	right: 324px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -285,20 +325,20 @@
 
 #label4 {
 	z-index: 3;
+	width: 81px;
 	height: 18px;
 	top: 151px;
 	left: 94px;
-	right: 999px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #label3 {
 	z-index: 1;
+	width: 43px;
 	height: 18px;
 	top: 63px;
 	left: 132px;
-	right: 999px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -624,10 +664,10 @@
 
 #textFieldAssayName {
 	z-index: 1;
+	width: 450px;
 	height: 32px;
 	top: 56px;
 	left: 180px;
-	right: 24px;
 	position: absolute;
 	border-top-width: 3px;
 	border-left-width: 3px;
@@ -659,10 +699,10 @@
 
 #textFieldAssayDescription {
 	z-index: 3;
+	width: 450px;
 	height: 119px;
 	top: 101px;
 	left: 180px;
-	right: 24px;
 	position: absolute;
 	border-top-width: 3px;
 	border-left-width: 3px;
@@ -697,10 +737,10 @@
 
 #buttonSaveAssay {
 	z-index: 6;
-	width: 160px;
+	width: 158px;
 	height: 44px;
 	top: 237px;
-	right: 204px;
+	left: 227px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -756,7 +796,7 @@
 }
 
 #containerNewCommand {
-	z-index: 12;
+	z-index: 11;
 	width: 290px;
 	height: 368px;
 	top: 310px;
@@ -837,7 +877,7 @@
 }
 
 #containerMoveCommand {
-	z-index: 13;
+	z-index: 12;
 	width: 191px;
 	height: 337px;
 	top: 310px;
@@ -1069,11 +1109,11 @@
 }
 
 #richTextAssayTitle {
-	z-index: 14;
+	z-index: 13;
 	height: 35px;
 	top: 16px;
 	left: 50px;
-	right: 50px;
+	right: 291px;
 	position: absolute;
 	font-size: 20px;
 	font-weight: bold;
@@ -1256,29 +1296,14 @@
 
 #label19 {
 	z-index: 5;
-	width: 111px;
+	width: 86px;
 	height: 18px;
 	top: 84px;
-	left: 864px;
+	left: 889px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
 	font-weight: normal;
-}
-
-#textFieldTestPatientNumber {
-	z-index: 6;
-	width: 351px;
-	height: 24px;
-	top: 81px;
-	left: 980px;
-	position: absolute;
-	border-top-style: dotted;
-	border-left-style: dotted;
-	border-right-style: dotted;
-	border-bottom-style: dotted;
-	font-size: 14px;
-	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 #label20 {
@@ -1322,7 +1347,7 @@
 
 #textFieldTestResult {
 	z-index: 9;
-	width: 351px;
+	width: 153px;
 	height: 45px;
 	top: 161px;
 	left: 980px;
@@ -1633,6 +1658,7 @@
 }
 
 #textFieldSparkCoreID {
+	z-index: 21;
 	height: 32px;
 	top: 91px;
 	left: 182px;
@@ -1647,7 +1673,6 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 21;
 }
 
 #buttonRefreshDevices {
@@ -1698,6 +1723,7 @@
 	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+	box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 }
 
 #buttonDeviceRevertChanges {
@@ -1712,11 +1738,114 @@
 
 #buttonAssayRevertChanges {
 	z-index: 6;
-	width: 160px;
+	width: 158px;
 	height: 44px;
 	top: 237px;
-	right: 24px;
+	left: 407px;
 	position: absolute;
 	font-size: 16px;
+}
+
+#textFieldTestCartridgeID {
+	z-index: 6;
+	width: 351px;
+	height: 24px;
+	top: 81px;
+	left: 980px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+#textFieldAssayRedMax {
+	width: 120px;
+	height: 32px;
+	top: 56px;
+	left: 730px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	z-index: 14;
+}
+
+#textFieldAssayGreenMax {
+	width: 120px;
+	height: 32px;
+	top: 96px;
+	left: 730px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	z-index: 15;
+}
+
+#textFieldGreenMin {
+	width: 120px;
+	height: 32px;
+	top: 136px;
+	left: 730px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	z-index: 17;
+}
+
+#textFieldAssayGreenMin {
+	width: 120px;
+	height: 32px;
+	top: 176px;
+	left: 730px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+	z-index: 19;
+}
+
+#textFieldTestOutcome {
+	width: 342px;
+	height: 45px;
+	top: 161px;
+	left: 1140px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	font-size: 32px;
+	text-align: center;
+	z-index: 13;
 }
 

@@ -152,7 +152,7 @@ function runTest(param) {
 	if (shouldTerminate) {
 		return result;
 	}
-	result = model.Device.methods.check_serial_number({deviceID: device.ID});
+	result = model.Device.methods.check_serial_number({deviceID: param.deviceID});
 	if (!result.success) {
 		result.message = 'Device serial number does not match';
 		result.deviceID = device.ID;
@@ -331,7 +331,7 @@ function initializeDevice(param) {
 	if (shouldTerminate) {
 		return;
 	}
-	result = model.Device.methods.check_serial_number({deviceID: device.ID});
+	result = model.Device.methods.check_serial_number({deviceID: param.deviceID});
 	if (!result.success) {
 		result.message = 'Serial number does not match';
 		result.deviceID = device.ID;
@@ -383,7 +383,8 @@ function deviceInitialized(coreID) {
 }
 
 function registerDevice(param) {
-	// param: username, deviceID, sparkCoreID, sparkCoreName, sparkCoreLastHeard, serialNumber
+	// param: username, deviceID, sparkCoreID, serialNumber
+	sendToParent(param.deviceID, 'user_message', { message: 'Registering device' });
 	var result = {};
 	var practice;
 	var device = ds.Device(param.deviceID);
@@ -411,14 +412,20 @@ function registerDevice(param) {
 	}
 	result = spark.write_serial_number(param.sparkCoreID, param.serialNumber);
 	if (!result.success) {
-		result.message = 'A problem occurred. Device not registered';
+		result.message = 'A problem occurred writing serial number. Device not registered';
+		throw result;
+	}
+	
+	result = spark.get_core_status(param.sparkCoreID);
+	if (!result.success) {
+		result.message = 'A problem occurred obtaining spark info. Device not registered';
 		throw result;
 	}
 	
 	device.practice = practice;
 	device.sparkCoreID = param.sparkCoreID;
-	device.sparkName = param.sparkCoreName;
-	device.sparkLastHeard = param.sparkCoreLastHeard;
+	device.sparkName = result.response.name;
+	device.sparkLastHeard = result.response.last_heard;
 	device.serialNumber = param.serialNumber;
 	device.registeredBy = user;
 	device.registeredOn = new Date();
