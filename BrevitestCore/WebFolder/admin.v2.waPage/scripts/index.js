@@ -119,8 +119,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 						console.log('Websocket message', packet);
 						break;
 					case 'error':
-						notification.error(packet.message);
-						console.log('Websocket error', packet);
+						spinner.stop();
+						notification.error(packet.message.message);
+						console.log('Websocket error', packet.message);
 						break;
 					case 'done':
 						spinner.stop();

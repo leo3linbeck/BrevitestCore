@@ -240,12 +240,11 @@ function updateTestStatus(deviceID, test, cartridge) {
 	if (result.success) {
 		test.percentComplete = result.value;
 		test.save();
-		sendToParent(deviceID, 'percent_complete', { data: { startedOn: cartridge.startedOn, percent_complete: result.value } });
+		sendToParent(deviceID, 'percent_complete', { data: { testID: test.ID, cartridgeID: cartridge.ID, startedOn: cartridge.startedOn, percent_complete: result.value } });
 		if (test.percentComplete === 100) {
 			cartridge.get_data_from_device();
 			sendToParent(deviceID, 'user_message', { message: 'Test finished' });
-			sendToParent(deviceID, 'refresh', { datastore: 'Test' });
-			sendToParent(deviceID, 'refresh', { datastore: 'Cartridge' });
+			sendToParent(deviceID, 'refresh', { datastores: ['Test', 'Cartridge'] });
 			shouldTerminate = true;
 		}
 	}

@@ -1,7 +1,9 @@
-var eventsource = require('wakanda-eventsource');
-eventsource.start();
+var cartridges = ds.Cartridge.query('test.percentComplete === 100 AND finishedOn === null');
+cartridges.forEach(function(c) {
+	c.get_data_from_device();
+});
 
-for (var i = 0; i < 5; i += 1) {
-	eventsource.pushEvent('test', {i: i, message: 'try #' + i}, true);
-	wait(2000);
-}
+cartridges = ds.Cartridge.query('test.percentComplete < 100 AND test.percentComplete !== null AND startedOn < :1', new Date(new Date() - 1200000));
+cartridges.forEach(function(c) {
+	c.mark_as_failed();
+});

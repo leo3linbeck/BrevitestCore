@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><settings>
-	<project publicName="" listen="0" hostName="localhost" responseFormat="json">
+	<project publicName="" listen="0" hostName="172.16.121.20" responseFormat="json">
 		<database>
 			<journal enabled="false" journalFolder="./"/>
 		</database>
