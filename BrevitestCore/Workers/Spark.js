@@ -2,28 +2,16 @@
 var spark = require('sparkCore');
 var shouldTerminate;
 
+function sendToParent(deviceID, type, obj) {
+	obj.deviceID = deviceID;
+	obj.type = type;
+	postMessage(obj);
+}
+
 function refreshDevices() {
 	var device, result;
 	
 	console.log('Retrieving spark core list');
-	result = spark.get_core_list();
-	if (result.success) {
-		device = ds.Device.query('sparkCoreID !== null');
-		device.forEach(function(d) {
-			d.update_status(result.response);
-		});		
-	}
-	else {
-		throw result;
-	}
-	
-	return result;
-}
-
-function getSensorData() {
-	var device, result;
-	
-	console.log('Getting sensor data');
 	result = spark.get_core_list();
 	if (result.success) {
 		device = ds.Device.query('sparkCoreID !== null');
@@ -51,18 +39,12 @@ onmessage = function(e) {
 			switch (data.func) {
 				case 'refresh_devices':
 					result = refreshDevices();
-					postMessage({ type: 'done', dataSources: dataSources, data: result });
-					break;
-				case 'get_sensor_data':
-					if (device) {
-						result = getSensorData(device.sparkCoreID);
-					}
-					postMessage({ type: 'done', dataSources: dataSources, data: result });
+					sendToParent(data.deviceID, 'done', { dataSources: dataSources, data: result });
 					break;
 			}
 		}
 	}
 	catch(e) {
-		postMessage({message:'error', data: e });
+		sendToParent(data.deviceID, 'error', { data: e });
 	}
 }

@@ -1,7 +1,11 @@
 exports.params = {
 	refresh_devices: {
-		doneMessage: 'Device data refreshed',
+		doneMessage: 'Refreshing device data',
 		module: 'Spark'
+	},
+	get_sensor_data: {
+		doneMessage: 'Obtaining sensor data',
+		module: 'Device'
 	},
 	load_parameters: {
 		doneMessage: 'Parameters loaded',
@@ -12,7 +16,7 @@ exports.params = {
 		module: 'Device'
 	},
 	reset_parameters: {
-		doneMessage: 'Parameters reset',
+		doneMessage: 'Parameters reset to defaults',
 		module: 'Device'
 	},
 	initialize_device: {
@@ -24,11 +28,11 @@ exports.params = {
 		module: 'Device'
 	},
 	check_device_calibration: {
-		doneMessage: 'Device moved to calibration point',
+		doneMessage: 'Device at calibration point',
 		module: 'Device'
 	},
 	run_test: {
-		doneMessage: 'Test complete',
+		doneMessage: 'Test underway',
 		module: 'Device'
 	},
 	cancel_test: {

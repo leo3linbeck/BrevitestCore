@@ -3,14 +3,19 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#progressBarTest .waf-progressBar-range {
+	color: rgb(255, 127, 0);
+}
+
 #label26 {
 	z-index: 11;
-	height: 18px;
-	bottom: 102px;
-	left: 225px;
-	right: 0px;
+	height: 21px;
+	bottom: 82px;
+	left: 219px;
+	right: 1110px;
 	position: absolute;
-	font-size: 16px;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 #label23 {
@@ -31,15 +36,6 @@
 	left: 199px;
 	position: absolute;
 	font-size: 16px;
-}
-
-#htmlTag2 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
 }
 
 #label12 {
@@ -206,10 +202,10 @@
 
 #label13 {
 	z-index: 11;
-	width: 220px;
+	width: 151px;
 	top: 280px;
 	bottom: 249px;
-	left: 88px;
+	left: 123px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -218,7 +214,7 @@
 #label8 {
 	z-index: 3;
 	height: 18px;
-	top: 197px;
+	top: 218px;
 	left: 135px;
 	right: -104px;
 	position: absolute;
@@ -258,7 +254,7 @@
 	z-index: 5;
 	height: 18px;
 	top: 15px;
-	left: -64px;
+	left: 62.5px;
 	right: 200px;
 	position: absolute;
 	text-align: center;
@@ -689,16 +685,6 @@
 	font-size: 16px;
 }
 
-#buttonCancelAssay {
-	z-index: 6;
-	width: 160px;
-	height: 44px;
-	top: 237px;
-	right: 24px;
-	position: absolute;
-	font-size: 16px;
-}
-
 #buttonDeleteAssay {
 	z-index: 8;
 	width: 206px;
@@ -977,16 +963,6 @@
 	z-index: 5;
 	height: 44px;
 	bottom: 64px;
-	left: 448px;
-	right: 52px;
-	position: absolute;
-	font-size: 16px;
-}
-
-#buttonCancelDevice {
-	z-index: 4;
-	height: 44px;
-	bottom: 11px;
 	left: 448px;
 	right: 52px;
 	position: absolute;
@@ -1407,7 +1383,7 @@
 
 #richTextInstructions {
 	z-index: 1;
-	height: 525px;
+	height: 849px;
 	top: 83px;
 	left: 10px;
 	right: 10px;
@@ -1697,10 +1673,10 @@
 
 #progressBarTest {
 	z-index: 11;
-	height: 66px;
-	bottom: 31px;
-	left: 225px;
-	right: 36px;
+	height: 30px;
+	bottom: 47px;
+	left: 219px;
+	right: 42px;
 	position: absolute;
 }
 
@@ -1722,5 +1698,25 @@
 	-webkit-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 -moz-box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
 	 box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 0px;
+}
+
+#buttonDeviceRevertChanges {
+	z-index: 4;
+	height: 44px;
+	bottom: 11px;
+	left: 448px;
+	right: 52px;
+	position: absolute;
+	font-size: 16px;
+}
+
+#buttonAssayRevertChanges {
+	z-index: 6;
+	width: 160px;
+	height: 44px;
+	top: 237px;
+	right: 24px;
+	position: absolute;
+	font-size: 16px;
 }
 

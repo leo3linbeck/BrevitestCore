@@ -254,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 48,
-			"workspaceTop": 984,
+			"workspaceLeft": 1192,
+			"workspaceTop": 240,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -710,7 +710,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "number",
@@ -746,11 +747,6 @@
 					"type": "Contract",
 					"path": "Contract"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -766,7 +762,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "number",
@@ -800,11 +797,6 @@
 					"scope": "public",
 					"type": "Billing",
 					"path": "Billing"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -961,6 +953,13 @@
 					"scope": "public",
 					"type": "Shipment",
 					"path": "Shipment"
+				},
+				{
+					"name": "startedBy",
+					"scope": "public",
+					"path": "User",
+					"type": "User",
+					"kind": "relatedEntity"
 				}
 			],
 			"methods": [
@@ -1043,7 +1042,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "practice",
@@ -1089,11 +1089,6 @@
 					"reversePath": true,
 					"path": "contract"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -1109,7 +1104,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "code",
@@ -1137,11 +1133,6 @@
 					"type": "Assays",
 					"reversePath": true,
 					"path": "cpt"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -1202,8 +1193,7 @@
 					"kind": "storage",
 					"matchColumn": "webSocket",
 					"scope": "public",
-					"type": "string",
-					"unique": false
+					"type": "string"
 				},
 				{
 					"name": "online",
@@ -1612,7 +1602,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "orderedOn",
@@ -1703,11 +1694,6 @@
 					"scope": "public",
 					"type": "long",
 					"scriptKind": "javascript"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -1857,7 +1843,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "name",
@@ -1899,11 +1886,6 @@
 					"reversePath": true,
 					"path": "payer"
 				}
-			],
-			"key": [
-				{
-					"name": "ID"
-				}
 			]
 		},
 		{
@@ -1919,7 +1901,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "amount",
@@ -1946,11 +1929,6 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "string"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -2264,7 +2242,8 @@
 					"unique": true,
 					"autogenerate": true,
 					"type": "uuid",
-					"indexKind": "btree"
+					"indexKind": "btree",
+					"primKey": true
 				},
 				{
 					"name": "rate",
@@ -2307,11 +2286,6 @@
 					"scope": "public",
 					"type": "Contract",
 					"path": "Contract"
-				}
-			],
-			"key": [
-				{
-					"name": "ID"
 				}
 			]
 		},
@@ -2699,6 +2673,14 @@
 					"type": "Tests",
 					"reversePath": true,
 					"path": "runBy"
+				},
+				{
+					"name": "cartridges_1",
+					"scope": "public",
+					"reversePath": true,
+					"path": "startedBy",
+					"type": "Cartridges",
+					"kind": "relatedEntities"
 				}
 			],
 			"methods": [
@@ -2711,6 +2693,5 @@
 				}
 			]
 		}
-	],
-	"type": []
+	]
 }
