@@ -4,12 +4,17 @@ var dispatch = dispatchData.params;
 var path = dispatchData.workerPath;
 
 var workers = {}; // one worker per online device
-var workerRunning = false;
+var ports = {}; // one port per online device
 
-var deviceDaemon = null;
-
-function sendObjectToClient(port, obj) {
-	port.postMessage(JSON.stringify(obj));
+function sendToClient(deviceID, obj) {
+	console.log('Sending message to client');
+	try {
+		ports[deviceID].postMessage(JSON.stringify(obj));
+		console.log('Message sent', obj);
+	}
+	catch(e) {
+		console.log('Unable to send message', e);
+	}
 }
 
 onconnect = function(event) {
@@ -19,113 +24,79 @@ onconnect = function(event) {
 		
 	};
 	thePort.onmessage = function(message) {
-		var data, dataSources, device, deviceID, func, interval, packet, param, timeout, type;
+		var data = JSON.parse(message.data); // data must include deviceID and type, and func if first time
+		var type = data.type;
+		var deviceID = data.deviceID;
 		
-		packet = JSON.parse(message.data);
-		type = packet.type;
-		deviceID = packet.deviceID;
-		dataSources = packet.dataSources;
-		func = packet.func;
-		param = packet.param;
-		
-		if (!workers[deviceID]) {
+		if (!workers[deviceID] && data.func) {
 			console.log('Starting worker');
-			startWorker(func, param, thePort, deviceID, dataSources);
+			workers[deviceID] = startWorker(path + dispatch[data.func].module + '.js');
 		}
+		ports[deviceID] = thePort;
 		
+		console.log('Processing message, type=' + type, data);
 		switch (type) {
 			case 'run':
-				workers[deviceID].postMessage({ message:'start', func: func, param : param, deviceID: deviceID, dataSources: dataSources });
+				workers[deviceID].postMessage({ command:'start', data: data });
 				break;
 			case 'cancel':
-				workers[deviceID].postMessage({ message:'cancel', deviceID: deviceID, dataSources: dataSources, shouldTerminate: true });
+				workers[deviceID].postMessage({ command:'cancel', data: data, shouldTerminate: true });
 				break;
-			case 'update_devices':
-//				if (deviceDaemon) {
-//					console.log('Updating device data');
-//					deviceDaemon.postMessage({ type: 'run' });
-//				}
-//			case 'repeatStart':
-//				interval = data.interval ? data.interval : 60000;
-//				timeout = data.timeout ? data.timeout : 3600000;
-//				func = data.func;
-//				console.log('repeatStart', deviceID, func, interval, timeout);
-//				param = data.param;
-//				if (!workerRunning) {
-//					workerRunning = true;
-//					startTime = new Date();
-//					runWorker(func, param, thePort, deviceID, dataSources);
-//					(function doIt() {
-//						var now = new Date();
-//						setTimeout(function() {
-//							runWorker(func, param, thePort, deviceID, dataSources);
-//							if (workerRunning) {
-//								if ((now - startTime) < timeout) {
-//									doIt();
-//								}
-//								else {
-//									console.log(func + ' timeout');
-//								}
-//							}
-//							else {
-//								console.log(func + ' stopped');
-//							}
-//						}, interval);
-//					})();
-//				}
-//				break;
-//			case 'repeatStop':
-//				if (workerRunning) {
-//					workerRunning = false;
-//				}
-//				console.log('repeatStop', deviceID);
+			case 'reconnect':
+				console.log('Client websocket reconnected');
+				break;
 		}
 	};
-	sendObjectToClient(thePort, { type: 'connected' });
 	
-//	if (deviceDaemon === null) {
-//		deviceDaemon = new Worker('Workers/DeviceDaemon.js');
-//		deviceDaemon.onmessage = function(evt) {
-//			if (evt.data === 'push_update') {
-//				sendObjectToClient(port, { type: 'refresh', datastore:'Device' });
-//			}
-//		};
-//		deviceDaemon.postMessage({ type: 'start' });
-//	}
+	thePort.postMessage(JSON.stringify({ type: 'connected' }) );
+	
+	wait();
 }
 
-function startWorker(func, param, port, deviceID, dataSources) {
-	workers[deviceID] = new Worker(path + dispatch[func].module + '.js');
-	workers[deviceID].onmessage = function(event) {
+function startWorker(moduleName) {
+	worker = new Worker(moduleName);
+	worker.onmessage = function(event) {
 		var data = event.data;
+		
+		var type = data.type ? data.type : '';
+		var shouldTerminate = data.shouldTerminate ? true : false;
+		var message = data.message ? data.message : '';
+		var userData = data.data ? data.data : {};
+		var dataName = data.name ? data.name : '';
+		var command = data.command ? data.command : '';	
+		var deviceID = data.deviceID ? data.deviceID : '';
+		var dataSources = data.dataSources ? data.dataSources : [];
+		var func = data.func ? data.func : '';
+		var param = data.param ? data.param : {};
 
 		console.log('worker onmessage', data);
-		switch (data.type) {
-			case 'cancel':
-				shouldTerminate = true;
-				sendObjectToClient(port, { type: 'message', message:'cancelled', deviceID: deviceID, dataSources: dataSources });
+		
+		switch (type) {
+			case 'cancelling':
+				sendToClient(deviceID, { type: 'cancelling', message:'Cancelling process', deviceID: deviceID, dataSources: dataSources });
 				break;
 			case 'done':
-				sendObjectToClient(port, { type: 'done', message: dispatch[data.func].doneMessage, deviceID: deviceID });
+				sendToClient(deviceID, { type: 'done', message: dispatch[func].doneMessage, deviceID: deviceID });
 				break;
 			case 'error':
-				sendObjectToClient(port, { type: 'error', message: data.message, deviceID: deviceID, dataSources: dataSources });
+				sendToClient(deviceID, { type: 'error', message: message, deviceID: deviceID, dataSources: dataSources });
 				break;
 			case 'user_message':
-				sendObjectToClient(port, { type: 'message', message: data.message, deviceID: deviceID, dataSources: dataSources });
+				sendToClient(deviceID, { type: 'message', message: message, deviceID: deviceID, dataSources: dataSources });
 				break;
 			case 'user_data':
-				sendObjectToClient(port, { type: 'data', name: data.name, data: data.data, deviceID: deviceID, dataSources: dataSources });
+				sendToClient(deviceID, { type: 'data', name: dataName, data: userData, deviceID: deviceID, dataSources: dataSources });
 				break;
 			case 'user_command':
-				sendObjectToClient(port, { type: 'command', command: data.command, deviceID: deviceID, dataSources: dataSources });
+				sendToClient(deviceID, { type: 'command', command: command, deviceID: deviceID, dataSources: dataSources });
 				break;
 			case 'percent_complete':
-				sendObjectToClient(port, { type: 'percent_complete', data: data.data });
+				sendToClient(deviceID, { type: 'percent_complete', data: userData });
 				break;
 			case 'reload_cartridges':
-				sendObjectToClient(port, { type: 'reload_cartridges' });
+				sendToClient(deviceID, { type: 'reload_cartridges' });
 				break;
 		}
 	};
+	return worker;
 }

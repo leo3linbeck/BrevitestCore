@@ -1,9 +1,15 @@
 var spark = require('sparkCore');
 var shouldTerminate;
 
+function sendToParent(deviceID, type, obj) {
+	obj.deviceID = deviceID;
+	obj.type = type;
+	postMessage(obj);
+}
+
 onmessage = function(e) {
 	var result = {};
-	var data = e.data;
+	var data = e.data.data;
 	var func = data.func;
 	var message = data.message;
 	var param = data.param;
@@ -12,70 +18,93 @@ onmessage = function(e) {
 	var device = ds.Device(deviceID);
 	
 	shouldTerminate = e.data.shouldTerminate ? true : false;
+	
+	console.log('Device worker, processing message', e.data.command, data);
 	try {
-		if (data.message === 'start') {
+		if (e.data.command === 'start') {
 			switch (func) {
 				case 'load_parameters':
-					postMessage({ type: 'user_message', message: 'Loading parameters' });
+					sendToParent(deviceID, 'user_message', { message: 'Loading parameters' });
 					result = spark.request_all_parameters(device.sparkCoreID);
-					postMessage({ type: 'user_data', name: 'device_parameters', data: result.data });					
-					postMessage({ type: 'done', func: func });
+					sendToParent(deviceID, 'user_data', { name: 'device_parameters', data: result.data });					
+					sendToParent(deviceID, 'done', { func: func });
 					break;
 				case 'change_parameter':
-					postMessage({ type: 'user_message', message: 'Changing parameter value' });
+					sendToParent(deviceID, 'user_message', { message: 'Changing parameter value' });
 					result = spark.change_parameter(device.sparkCoreID, param.name, param.value);
-					postMessage({ type: 'user_data', name: 'new_parameter', data: result.response.return_value });					
-					postMessage({ type: 'done', func: func });
+					sendToParent(deviceID, 'user_data', { name: 'new_parameter', data: result.response.return_value });					
+					sendToParent(deviceID, 'done', { func: func });
 					break;
 				case 'reset_parameters':
-					postMessage({ type: 'user_message', message: 'Resetting parameters to default' });
+					sendToParent(deviceID, 'user_message', { message: 'Resetting parameters to default' });
 					result = spark.reset_parameters(device.sparkCoreID);
-					postMessage({ type: 'user_data', name: 'device_parameters', data: result.data });					
-					postMessage({ type: 'done', func: func });
+					sendToParent(deviceID, 'user_data', { name: 'device_parameters', data: result.data });					
+					sendToParent(deviceID, 'done', { func: func });
 					break;
 				case 'initialize_device':
-					postMessage({ type: 'user_message', message: 'Preparing device for testing' });
+					sendToParent(deviceID, 'user_message', { message: 'Initializing device' });
 					result = initializeDevice(param);
-					postMessage({ type: 'done', func: func, data: result });
+					sendToParent(deviceID, 'done', { func: func, data: result });
 					break;
 				case 'register_device':
-					postMessage({ message: 'Registering device' });
+					sendToParent(deviceID, 'Registering device', {} );
 					result = registerDevice(param);
-					postMessage({ type: 'done', func: func, data: result });
+					sendToParent(deviceID, 'done', { func: func, data: result });
 					break;
 				case 'check_device_calibration':
-					postMessage({ type: 'user_message', message: 'Checking device calibration' });
+					sendToParent(deviceID, 'user_message', { message: 'Checking device calibration' });
 					result = checkCalibration(param);
-					postMessage({ type: 'user_message', message: 'Device moved to calibration point', data: result });
-					postMessage({ type: 'done', func: func, data: result });
+					sendToParent(deviceID, 'done', { func: func, data: result });
 					break;
 				case 'run_test':
 					result = runTest(param);
-					postMessage({ type: 'done', func: func, data: result });
+					sendToParent(deviceID, 'done', { func: func, data: result });
 					break;
 				case 'reload_cartridges':
-					postMessage({ type: 'reload_cartridges' });
+					sendToParent(deviceID, 'reload_cartridges', {} );
+					break;
+				case 'get_sensor_data':
+					sendToParent(deviceID, 'user_message', { message: 'Reading sensor data' });
+					result = getSensorData(param);
+					sendToParent(deviceID, 'done', { func: func, dataSources: dataSources, data: result });
 					break;
 			}
 		}
-		else if (data.message === 'cancel') {
-			shouldTerminate = true;
-			postMessage({ type: 'user_message', message: 'Cancelling' });
+		else if (e.data.command === 'cancel') {
+			sendToParent(deviceID, 'cancelling', { message: 'Cancelling test' });
 
 			result = cancelProcess(param);
 			
-			postMessage({ type: 'user_message', message: 'Cancelled', data: result });
-			postMessage({ type: 'done' });
+			sendToParent(deviceID, 'user_message', { message: 'Cancelled', data: result });
+			sendToParent(deviceID, 'done', { func: func } );
 		}
 	}
 	catch(e) {
-		postMessage({message:'error'});
+		sendToParent(deviceID, 'error', { message: e } );
 	}
+}
+
+function getSensorData(param) {
+	var device, result;
+	
+	console.log('Getting sensor data');
+	result = spark.get_core_list();
+	if (result.success) {
+		device = ds.Device.query('sparkCoreID !== null');
+		device.forEach(function(d) {
+			d.update_status(result.response);
+		});		
+	}
+	else {
+		throw result;
+	}
+	
+	return result;
 }
 
 function runTest(param) {
 	// param: username, deviceID, cartridgeID
-	postMessage({ type: 'user_message', message: 'Checking test parameters' });
+	sendToParent(param.deviceID, 'user_message', { message: 'Checking test parameters' });
 	var test;
 	var result = {};
 	var cartridge = ds.Cartridge(param.cartridgeID);
@@ -120,7 +149,6 @@ function runTest(param) {
 		return result;
 	}
 	
-	postMessage({ type: 'user_message', message: 'Checking device serial number' });
 	if (shouldTerminate) {
 		return result;
 	}
@@ -132,7 +160,7 @@ function runTest(param) {
 		return result;
 	}
 	
-	postMessage({ type: 'user_message', message: 'Checking whether device is ready' });
+	sendToParent(param.deviceID, 'user_message', { message: 'Checking whether device is ready' });
 	if (shouldTerminate) {
 		return result;
 	}
@@ -144,7 +172,7 @@ function runTest(param) {
 		return result;
 	}
 	
-	postMessage({ type: 'user_message', message: 'Loading instructions into device' });
+	sendToParent(param.deviceID, 'user_message', { message: 'Loading instructions into device - this will take about 15 seconds' });
 	if (shouldTerminate) {
 		return result;
 	}
@@ -156,13 +184,11 @@ function runTest(param) {
 		return result;
 	}
 		
-	postMessage({ type: 'user_message', message: 'Test will begin in a few seconds' });
 	if (shouldTerminate) {
 		return result;
 	}
 	result = spark.run_test(device.sparkCoreID, cartridge.ID, cartridge.assay.BCODE);
 	if (result.success) {
-		postMessage({ type: 'user_message', message: 'Test started' });
 		test = ds.Test.createEntity();
 		test.assay = cartridge.assay;
 		test.device = device;
@@ -173,11 +199,12 @@ function runTest(param) {
 		
 		cartridge.test = test;
 		cartridge.startedOn = test.startedOn;
+		cartridge.startedBy = user;
 		cartridge.save();
 		
 		startTime = new Date();
-		postMessage({ type: 'reload_cartridges' });
-		updateTestStatus(test, cartridge);
+		sendToParent(param.deviceID, 'reload_cartridges', {} );
+		updateTestStatus(param.deviceID, test, cartridge);
 		(function doIt() {
 			var now = new Date();
 			setTimeout(function() {
@@ -185,7 +212,7 @@ function runTest(param) {
 					return;
 				}
 				else {
-					updateTestStatus(test, cartridge);
+					updateTestStatus(param.deviceID, test, cartridge);
 				}
 				if ((now - startTime) < 900000) {
 					doIt();
@@ -205,7 +232,7 @@ function runTest(param) {
 	return result;
 }
 
-function updateTestStatus(test, cartridge) {
+function updateTestStatus(deviceID, test, cartridge) {
 	if (shouldTerminate) {
 		return;
 	}
@@ -213,12 +240,11 @@ function updateTestStatus(test, cartridge) {
 	if (result.success) {
 		test.percentComplete = result.value;
 		test.save();
-		postMessage({ type: 'percent_complete', data: { startedOn: cartridge.startedOn, percent_complete: result.value } });
+		sendToParent(deviceID, 'percent_complete', { data: { testID: test.ID, cartridgeID: cartridge.ID, startedOn: cartridge.startedOn, percent_complete: result.value } });
 		if (test.percentComplete === 100) {
 			cartridge.get_data_from_device();
-			postMessage({ type: 'user_message', message: 'Test finished' });
-			postMessage({ type: 'refresh', datastore: 'Test' });
-			postMessage({ type: 'refresh', datastore: 'Cartridge' });
+			sendToParent(deviceID, 'user_message', { message: 'Test finished' });
+			sendToParent(deviceID, 'refresh', { datastores: ['Test', 'Cartridge'] });
 			shouldTerminate = true;
 		}
 	}
@@ -228,7 +254,7 @@ function cancelProcess(param) {
 	// param: cartridgeID or testID
 	var cartridge, ref, result = {}, updateManager, thePort;
 	
-	if (!param.cartridgeID) {
+	if (param.cartridgeID) {
 		cartridge = ds.Cartridge(param.cartridgeID);
 	}
 	else {
@@ -271,6 +297,7 @@ function initializeDevice(param) {
 	if (shouldTerminate) {
 		return;
 	}
+	var startTime;
 	var result = {};
 	var practice, prescription, status;
 	var device = ds.Device(param.deviceID);
@@ -314,7 +341,30 @@ function initializeDevice(param) {
 	if (shouldTerminate) {
 		return;
 	}
+	startTime = new Date();
 	result = spark.initialize_device(device.sparkCoreID);
+	(function doIt() {
+		var now = new Date();
+		setTimeout(function() {
+			if (shouldTerminate) {
+				return;
+			}
+			else {
+				if (deviceInitialized(device.sparkCoreID)) {
+					exitWait();
+					return;
+				}
+			}
+			if ((now - startTime) < 20000) {
+				doIt();
+			}
+			else {
+				console.log('Initialization timeout');
+			}
+		}, 1000);
+	})();
+	wait();
+	
 	if (result && (result.status === 200) && (result.response.return_value !== -1)) {
 		result.success = true;
 	}
@@ -325,6 +375,11 @@ function initializeDevice(param) {
 	}
 	
 	return result;
+}
+
+function deviceInitialized(coreID) {
+	var result = spark.get_status(coreID);
+	return (result && result.success && result.value === 'Device initialized and ready to run test');
 }
 
 function registerDevice(param) {
@@ -377,6 +432,8 @@ function registerDevice(param) {
 
 function checkCalibration(param) {
 	// param: username, deviceID
+	sendToParent(param.deviceID, 'user_message', { message: 'Moving to calibration point' });
+	var startTime;
 	var result = {};
 	var practice;
 	var device = ds.Device(param.deviceID);
@@ -407,7 +464,31 @@ function checkCalibration(param) {
 	if (shouldTerminate) {
 		return;
 	}
+
+	startTime = new Date();
 	result = spark.set_and_move_to_calibration_point(device.sparkCoreID, device.calibrationSteps);
+	(function doIt() {
+		var now = new Date();
+		setTimeout(function() {
+			if (shouldTerminate) {
+				return;
+			}
+			else {
+				if (deviceCalibrated(device.sparkCoreID)) {
+					exitWait();
+					return;
+				}
+			}
+			if ((now - startTime) < 20000) {
+				doIt();
+			}
+			else {
+				console.log('Initialization timeout');
+			}
+		}, 1000);
+	})();
+	wait();
+
 	if (!result.success) {
 		result.message = 'Problem occurred - device not moved to calibration point';
 		throw result;
@@ -415,3 +496,9 @@ function checkCalibration(param) {
 	
 	return result;
 }
+
+function deviceCalibrated(coreID) {
+	var result = spark.get_status(coreID);
+	return (result && result.success && result.value === 'Device at calibration point');
+}
+

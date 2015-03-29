@@ -2,51 +2,22 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var select1 = {};	// @select
+	var select2 = {};	// @select
+	var select3 = {};	// @select
 	var row2 = {};	// @container
 	var row1 = {};	// @container
 	var testTodayEvent = {};	// @dataSource
 	var icon4 = {};	// @icon
 	var buttonReadyToTest = {};	// @button
 	var buttonTestResults = {};	// @button
-	var button1 = {};	// @button
+	var buttonPrepareDevice = {};	// @button
 	var buttonScanCartridge = {};	// @button
 	var icon1 = {};	// @icon
 	var buttonStartTest = {};	// @button
 	var buttonMonitorTest = {};	// @button
 	var buttonRun = {};	// @button
 // @endregion// @endlock
-
-	var sse = {};
-	
-	function eventsourcehandler(event) {
-		var data = JSON.parse(event.data);
-		var percentComplete, testID; 
-		switch (data.type) {
-			case 'user_message':
-				notifyStacked(data.message);
-				break;
-			case 'error':
-				notification.error(data.message);
-				break;
-			case 'percent_complete':
-				testID = data.data.testID;
-				percentComplete = data.data.percent_complete;
-				if (sources.testToday.ID === testID) {
-					sources.testToday.serverRefresh({ onSuccess: function(e) {return;}, forceReload: true });
-				}
-				break;
-			case 'process_stopped':
-				this.close();
-		}
-	}
-	
-	function startListeningToSSE(id) {
-		var path = (id ? id : '');
-		if (!sse.id) {
-			sse.id = new EventSource('/status' + path);
-			sse.id.onmessage = eventsourcehandler;
-		}
-	}
 		
 	var spinnerOpts = {
 		color: '#CCC'
@@ -62,6 +33,106 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 	
 	var firmwareVersion = 9;
+	
+	var websocketConnections = {};
+	var websocket;
+	
+	function getWebsocketAddress() {
+		var baseURL = WAF.config.baseURL;
+		var ws = baseURL.replace('http', 'ws');
+		return ws.replace('waLib/WAF', 'websocket');
+	}
+	
+	function websocketUpdateData(name, data, dataSources) {
+		switch (name) {
+			case 'device_parameters':
+				sparkAttr = data;
+				sources.sparkAttr.sync();
+				break;
+		}
+	
+		for (var i = 0; i < dataSources.length; i += 1) {
+			if (typeof sources[dataSources[i]].sync === 'undefined') { // server datasource
+				sources[dataSources[i]].collectionRefresh({ onSuccess: function(e) {return;} });
+			}
+		}
+	}
+	
+	function updateDatasources(datastores) {
+		var d, i, k;
+		
+		k = Object.keys(sources);
+		for (i = 0; i < k.length; i += 1) {
+			d = sources[k[i]];
+			if (typeof d.sync() === 'undefined' && datastores.indexOf(d.getClassTitle()) !== -1) {
+				d.collectionRefresh({ onSuccess: function(e) {return;} });
+			}
+		}
+	}
+	
+	function connectToWebsocket(param) {
+		if (!websocketConnections[param.deviceID]) {
+			websocket = new WebSocket(getWebsocketAddress());
+			websocket.onmessage = function websocketonmessagehandler(message) {
+				var packet = JSON.parse(message.data);
+				switch (packet.type) {
+					case 'connected':
+						websocketConnections[param.deviceID] = true;
+						websocket.send(JSON.stringify(param));
+						console.log('Websocket connected', param.deviceID);
+						break;
+					case 'message':
+						notification.info(packet.message);
+						console.log('Websocket message', packet);
+						break;
+					case 'error':
+						spinner.stop();
+						notification.error(packet.message.message);
+						console.log('Websocket error', packet);
+						break;
+					case 'done':
+						spinner.stop();
+						notification.log(packet.message);
+						console.log('Websocket done', packet);
+						break;
+					case 'data':
+						websocketUpdateData(packet.name, packet.data, packet.dataSources);
+						console.log('Websocket data', packet);
+						break;
+					case 'refresh':
+						updateDatasources(packet.datastores);
+						console.log('Update datasources');
+						break;
+					case 'percent_complete':
+						$$('progressBarTest').setValue(packet.data.percent_complete, 100, 'Test started at ' + (new Date(packet.data.startedOn)).toLocaleTimeString() + ': ' + packet.data.percent_complete + '% complete');
+						break;
+					case 'reload_cartridges':
+						break;
+				}
+			};
+			websocket.onclose = function websocketonclosehandler() {
+				console.log('Websocket disconnecting');
+				delete websocketConnections[param.deviceID];
+			};
+		}
+	}
+	
+	function sendWebsocketMessage(that, param, callback) {
+		if (that) {
+			spinner.spin(that.domNode);
+		}
+		
+		if (param && param.deviceID && websocketConnections[param.deviceID]) {
+			websocket.send(JSON.stringify(param));
+		}
+		else {
+			connectToWebsocket(param);
+		}
+		
+		if (callback) {
+			callback();
+		}
+	}
 	
 	function loadCartridge(cartridgeID) {
 		sources.cartridge.query('ID === :1',
@@ -171,47 +242,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);	
 	}
-
-	function loadTestFinished() {
-		var queryString = '';
-		
-		switch (testResultFilter) {
-			case 'all':
-				break;
-			case 'positive':
-				break;
-			case 'negative':
-				break;
-			case 'borderline':
-				break;
-		}
-
-		switch (testStatusFilter) {
-			case 'finished':
-				break;
-			case 'cancelled':
-				break;
-			case 'all':
-				break;
-			case 'failed':
-				break;
-		}
-
-		today = new Date();
-		switch (testDateFilter) {
-			case 'this_week':
-				break;
-			case 'today':
-				break;
-			case 'last_week':
-				break;
-			case 'this_month':
-				break;
-			case 'this_year':
-				break;
-			case 'enter_date':
-				break;
-		}
+	
+	function loadTestFinished(changed) {
+		var testsByResult, testsByStatus, testsByDate;
 		
 		sources.testFinished.query('startedOn !== null',
 			{
@@ -226,12 +259,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	}
 		
-	var bounds = {
-		xmax : 0,
-		xmin : 0,
-		ymax : 0,
-		ymin : 0
-	}
+	var bounds, svg;
 	
 	function updateBounds(x, y) {
 		bounds.xmin = bounds.xmin > x ? x : bounds.xmin;
@@ -241,7 +269,9 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			
 		return {x: x, y: y};
 	}
-		
+	
+	var firstGraph = true;
+	
 	function generateGraph(rawData) {
 		var data = [];
 		var clear = [];
@@ -250,6 +280,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var blue = [];
 		var r_minus_b = [];
 
+		bounds = {
+			xmax : 0,
+			xmin : 0,
+			ymax : 0,
+			ymin : 0
+		}
+	
 		var startTime = Date.parse(rawData[0].time);
 		for (var i = 0; i < rawData.length; i += 2) {
 			clear.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].clear - rawData[i + 1].clear));
@@ -285,7 +322,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		    .range([0, width]);
 		 
 		var y = d3.scale.linear()
-		    .domain([bounds.ymin, bounds.ymax])
+		    .domain([bounds.ymin * (bounds.ymin > 0 ? 0.9 : 1.1), bounds.ymax * (bounds.ymax > 0 ? 1.1 : 0.9)])
 		    .range([height, 0]);
 			
 		var xAxis = d3.svg.axis()
@@ -433,7 +470,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	}
 
 	function loadGraph(testID) {
-		sources.testFinished.get_sensor_reading_array(
+		sources.test.get_sensor_reading_array(
 			{
 				onSuccess: function(event) {
 					generateGraph(event.result);
@@ -447,11 +484,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);
 	}
+
 	
 // eventHandlers// @lock
 
+	select1.change = function select1_change (event)// @startlock
+	{// @endlock
+		loadTestFinished('date');
+	};// @lock
+
+	select2.change = function select2_change (event)// @startlock
+	{// @endlock
+		loadTestFinished('status');
+	};// @lock
+
+	select3.change = function select3_change (event)// @startlock
+	{// @endlock
+		loadTestFinished('result');
+	};// @lock
+
 	row2.click = function row2_click (event)// @startlock
 	{// @endlock
+		$('#containgerGraph, svg').remove();
 		$$('navigationView1').goToView(7);
 		loadGraph(sources.testFinished.ID);
 	};// @lock
@@ -463,39 +517,32 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	testTodayEvent.onCurrentElementChange = function testTodayEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
-		if (event.dataSource.ID) {
-			$$('progressBarTest').setValue(event.dataSource.percentComplete, 100, 'Test started at ' + event.dataSource.startedOn.toLocaleTimeString() + ': ' + event.dataSource.percentComplete + '% complete');
-		}
+		$$('progressBarTest').setValue(event.dataSource.percentComplete, 100, 'Test started at ' + (new Date(event.dataSource.startedOn)).toLocaleTimeString() + ': ' + event.dataSource.percentComplete + '% complete');
 		$$('icon4')[event.dataSource.status === 'In progress' ? 'enable' : 'disable']();
 	};// @lock
 
 	icon4.click = function icon4_click (event)// @startlock
 	{// @endlock
+		if (confirm('Are you sure you want to cancel this test? This cannot be undone, and the cartridge will be unusable afterwards')) {
 			var user = WAF.directory.currentUser();
 			
 			if (user) {
-				if (window.confirm('Are you sure you want to cancel this test? The cartridge cannot be reused.')) {
-					dispatch.runOnceAsync({
-						onSuccess: function(evt) {
-							if (evt.result.success) {
-								notification.log('Test successfully started');
-								sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
-								$$('navigationView1').goToView(4);
-							}
-							else {
-								notification.error('ERROR: ' + evt.result.message + ' - test not cancelled');
-							}
-						},
-						onError: function(err) {
-							notification.error('SYSTEM ERROR: Test failed to cancel');
-						},
-						params: [ 'cancel_test', { username: user.userName, testID: sources.testToday.ID } ]
-					});
+				sendWebsocketMessage(this, { 
+					type: 'cancel',
+					func: 'cancel_test',
+					deviceID: sources.device.ID, 
+					dataSources: [], 
+					param: { 
+						username: user.userName, 
+						deviceID: sources.device.ID, 
+						cartridgeID: sources.cartridge.ID 
+					} 
+				});
 				}
-			}
 			else {
 				notification.error('You must be signed in to cancel a test');	
 			}
+		}
 	};// @lock
 
 	buttonReadyToTest.click = function buttonReadyToTest_click (event)// @startlock
@@ -509,28 +556,25 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		$$('navigationView1').goToView(5);
 	};// @lock
 
-	button1.click = function button1_click (event)// @startlock
+	buttonPrepareDevice.click = function buttonPrepareDevice_click (event)// @startlock
 	{// @endlock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			if (sources.device.ID) {
-				dispatch.runOnceAsync({
-					onSuccess: function(evt) {
-						notifyStacked('Device initialization begun');
-					},
-					onError: function(err) {
-						notification.error('Device initialization failed');
-					},
-					params: [ 'initialize_device', { username: user.userName, deviceID: sources.device.ID } ]
-				});
-			}
-			else {
-				notification.error('No device selected to initialize');
-			}
+			$$('progressBarTest').setValue(0, 100, 'No test underway');
+			sendWebsocketMessage(this, { 
+				type: 'run',  
+				func: 'initialize_device', 
+				deviceID: sources.device.ID, 
+				dataSources: [], 
+				param: { 
+					username: user.userName, 
+					deviceID: sources.device.ID 
+				} 
+			});
 		}
 		else {
-			notification.error('You must be signed in to initialize a device');
+			notification.error('You must be signed in to initialize a device');	
 		}
 	};// @lock
 
@@ -549,22 +593,22 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			startListeningToSSE(sources.cartridge.ID);
-			dispatch.runOnceAsync({
-				onSuccess: function(evt) {
-					if (evt.success) {
-						sources.cartridge.query('ID === null', {onSuccess:function(){return;}});
-						$$('navigationView1').goToView(1);
-					}
-					else {
-						notification.error('ERROR: ' + evt.message + ' - test not started');
-					}
-				},
-				onError: function(err) {
-					notification.error('SYSTEM ERROR: Test failed to start');
-				},
-				params: [ 'run_test', { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridge.ID } ]
-			});
+			if (sources.cartridge.ID) {
+				sendWebsocketMessage(this, { 
+					type: 'run', 
+					func: 'run_test', 
+					deviceID: sources.device.ID, 
+					dataSources: ['testToday', 'testFinished'], 
+					param: { 
+						username: user.userName, 
+						deviceID: sources.device.ID, 
+						cartridgeID: sources.cartridge.ID 
+					} 
+				});
+			}
+			else {
+				notification.error('You must select a registered, unused cartridge');	
+			}
 		}
 		else {
 			notification.error('You must be signed in to run a test');	
@@ -584,13 +628,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("select1", "change", select1.change, "WAF");
+	WAF.addListener("select2", "change", select2.change, "WAF");
+	WAF.addListener("select3", "change", select3.change, "WAF");
 	WAF.addListener("row2", "click", row2.click, "WAF");
 	WAF.addListener("row1", "click", row1.click, "WAF");
 	WAF.addListener("testToday", "onCurrentElementChange", testTodayEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("icon4", "click", icon4.click, "WAF");
 	WAF.addListener("buttonReadyToTest", "click", buttonReadyToTest.click, "WAF");
 	WAF.addListener("buttonTestResults", "click", buttonTestResults.click, "WAF");
-	WAF.addListener("button1", "click", button1.click, "WAF");
+	WAF.addListener("buttonPrepareDevice", "click", buttonPrepareDevice.click, "WAF");
 	WAF.addListener("buttonScanCartridge", "click", buttonScanCartridge.click, "WAF");
 	WAF.addListener("icon1", "click", icon1.click, "WAF");
 	WAF.addListener("buttonStartTest", "click", buttonStartTest.click, "WAF");

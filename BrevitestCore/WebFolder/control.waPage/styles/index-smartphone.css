@@ -3,42 +3,6 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#htmlTag17 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
-}
-
-#htmlTag16 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
-}
-
-#htmlTag15 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
-}
-
-#htmlTag14 {
-	position: absolute;
-	z-index: 0;
-	width: 0px;
-	height: 0px;
-	top: auto;
-	left: auto;
-}
-
 #htmlTag12 {
 	position: absolute;
 	z-index: 0;
@@ -680,16 +644,6 @@
 	right: 283px;
 	position: absolute;
 	font-size: 12px;
-}
-
-#button1 {
-	z-index: 2;
-	height: 60px;
-	bottom: 82px;
-	left: 60px;
-	right: 60px;
-	position: absolute;
-	font-size: 20px;
 }
 
 #container1 .waf-widget.waf-clone-nextButton1 {
@@ -1400,5 +1354,15 @@
 	left: 0px;
 	right: 0px;
 	position: absolute;
+}
+
+#buttonPrepareDevice {
+	z-index: 2;
+	height: 60px;
+	bottom: 82px;
+	left: 60px;
+	right: 60px;
+	position: absolute;
+	font-size: 20px;
 }
 

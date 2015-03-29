@@ -5,9 +5,6 @@ exports.postMessage = function (message) {
 	if (message.name === 'applicationWillStart') {
 		/* 	This is the first message sent to the service.
 			It's a good location to initialize and start the service */
-		console.log('Initializing daemons');
-		startDeviceDaemon(300000, 3600000);
-		startTestDaemon(300000, 3600000);
 	}
 	else if (message.name === 'applicationWillStop') {
 		/*	The service should be stopped and ended here */
@@ -18,6 +15,9 @@ exports.postMessage = function (message) {
 	}
 	else if (message.name === 'httpServerDidStart') {
 		/*	This message should be handled if the service depends on the HTTP Server status */
+		console.log('Initializing daemons');
+		startDeviceDaemon(300000, 3600000);
+		startTestDaemon(300000, 3600000);
 	}
 	else if (message.name === 'httpServerWillStop') {
 		/*	This message should be handled if the service depends on the HTTP Server status */

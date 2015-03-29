@@ -24,7 +24,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var deviceModelEvent = {};	// @dataSource
 	var buttonCreateNewDevice = {};	// @button
 	var buttonSaveDevice = {};	// @button
-	var buttonCancelDevice = {};	// @button
+	var buttonDeviceRevertChanges = {};	// @button
 	var buttonPasteBCODE = {};	// @button
 	var buttonCopyBCODE = {};	// @button
 	var assayEvent = {};	// @dataSource
@@ -40,7 +40,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var buttonInsertTop = {};	// @button
 	var buttonDeleteAssay = {};	// @button
 	var buttonSaveAssay = {};	// @button
-	var buttonCancelAssay = {};	// @button
+	var buttonAssayRevertChanges = {};	// @button
 	var buttonCreateAssay = {};	// @button
 	var menuItemDevice = {};	// @menuItem
 	var buttonChangeParameter = {};	// @button
@@ -67,8 +67,14 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	
 	var clipboard = '';
 	
-	var websocketConnected = false;
+	var websocketConnections = {};
 	var websocket;
+	
+	function getWebsocketAddress() {
+		var baseURL = WAF.config.baseURL;
+		var ws = baseURL.replace('http', 'ws');
+		return ws.replace('waLib/WAF', 'websocket');
+	}
 	
 	function websocketUpdateData(name, data, dataSources) {
 		switch (name) {
@@ -97,62 +103,68 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function websocketConnect(param) {
-		websocket = new WebSocket('ws://localhost:8081/websocket');
-		websocket.onmessage = function websocketonmessagehandler(message) {
-			var packet = JSON.parse(message.data);
-			switch (packet.type) {
-				case 'connected':
-					websocketConnected = true;
-					this.send(JSON.stringify(param));
-					console.log('Websocket connected', packet);
-					break;
-				case 'message':
-					notification.info(packet.message);
-					console.log('Websocket message', packet);
-					break;
-				case 'error':
-					notification.error(packet.message);
-					console.log('Websocket error', packet);
-					break;
-				case 'done':
-					spinner.stop();
-					notification.log(packet.message);
-					console.log('Websocket done', packet);
-					break;
-				case 'data':
-					websocketUpdateData(packet.name, packet.data, packet.dataSources);
-					console.log('Websocket data', packet);
-					break;
-				case 'refresh':
-					updateDatasources(packet.datastore);
-					console.log('Update datasources');
-					break;
-				case 'percent_complete':
-					$$('progressBarTest').setValue(packet.data.percent_complete, 100, 'Test started at ' + (new Date(packet.data.startedOn)).toLocaleTimeString() + ': ' + packet.data.percent_complete + '% complete');
-					break;
-				case 'reload_cartridges':
-					testCartridge = sources.cartridgeRegistered.ID;
-					sources.testCartridge.sync();
-					loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
-					break;
-			}
-		};
-		websocket.onclose = function websocketonclosehandler() {
-			websocketConnected = false;
-		};
+	function connectToWebsocket(param) {
+		if (!websocketConnections[param.deviceID]) {
+			websocket = new WebSocket(getWebsocketAddress());
+			websocket.onmessage = function websocketonmessagehandler(message) {
+				var packet = JSON.parse(message.data);
+				switch (packet.type) {
+					case 'connected':
+						websocketConnections[param.deviceID] = true;
+						websocket.send(JSON.stringify(param));
+						console.log('Websocket connected', param.deviceID);
+						break;
+					case 'message':
+						notification.info(packet.message);
+						console.log('Websocket message', packet);
+						break;
+					case 'error':
+						spinner.stop();
+						notification.error(packet.message.message);
+						console.log('Websocket error', packet.message);
+						break;
+					case 'done':
+						spinner.stop();
+						notification.log(packet.message);
+						console.log('Websocket done', packet);
+						break;
+					case 'data':
+						websocketUpdateData(packet.name, packet.data, packet.dataSources);
+						console.log('Websocket data', packet);
+						break;
+					case 'refresh':
+						updateDatasources(packet.datastore);
+						console.log('Update datasources');
+						break;
+					case 'percent_complete':
+						$$('progressBarTest').setValue(packet.data.percent_complete, 100, 'Test started at ' + (new Date(packet.data.startedOn)).toLocaleTimeString() + ': ' + packet.data.percent_complete + '% complete');
+						break;
+					case 'reload_cartridges':
+						testCartridge = sources.cartridgeRegistered.ID;
+						sources.testCartridge.sync();
+						loadCartridgesByAssay(sources.assayTest.ID, null, sources.cartridgeRegistered);
+						break;
+				}
+			};
+			websocket.onclose = function websocketonclosehandler() {
+				console.log('Websocket disconnecting');
+				delete websocketConnections[param.deviceID];
+			};
+		}
 	}
 	
 	function sendWebsocketMessage(that, param, callback) {
 		if (that) {
 			spinner.spin(that.domNode);
 		}
-		if (websocketConnected) {
+		
+		if (param && param.deviceID && websocketConnections[param.deviceID]) {
 			websocket.send(JSON.stringify(param));
 		}
 		else {
-			websocketConnect(param);
+			connectToWebsocket(param);
 		}
+		
 		if (callback) {
 			callback();
 		}
@@ -287,7 +299,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 					onError: function(err) {
 						notification.error('ERROR: ' + err.error[0].message);
 					},
-					params: [assayID]
+					params: [assayID],
+					orderBy: 'finishedOn desc'
 				}
 		);
 	}
@@ -341,49 +354,6 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}
 	}
 	
-	function checkDeviceCalibration(that) {
-		if (sources.device.online) {
-			var user = WAF.directory.currentUser();
-			
-			if (user) {
-				sendWebsocketMessage(that, { type: 'run',  func: 'check_device_calibration', deviceID: sources.device.ID, dataSources: [], param: {
-						username: user.userName,
-						deviceID: sources.device.ID
-					 } 
-				});
-			}
-			else {
-				notification.error('You must be signed in to calibrate a device');
-			}
-		}
-		else {
-			notification.error('Device must be online to calibrate');
-		}
-	}
-	
-	function startTestMonitor(cartridgeID) {
-		sources.test.monitor(
-			{
-				onSuccess: function(evt) {
-						if (evt.result.success) {
-							notification.log('Test completed');
-						}
-						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not completed');
-						}
-						testCartridge = '';
-						sources.testCartridge.sync();
-					},
-				onError: function(err) {
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				cartridgeID: cartridgeID
-			}
-		);
-	}
-	
 	function updateBCODEDuration(BCODE) {
 		var str = BCODE ? BCODE : convertCommandsToAttribute();
 		spark.get_BCODE_durationAsync({
@@ -395,14 +365,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		});
 	}
 
-	var bounds = {
-		xmax : 0,
-		xmin : 0,
-		ymax : 0,
-		ymin : 0
-	}
-	
-	var svg;
+	var bounds, svg;
 	
 	function updateBounds(x, y) {
 		bounds.xmin = bounds.xmin > x ? x : bounds.xmin;
@@ -423,6 +386,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var blue = [];
 		var r_minus_b = [];
 
+		bounds = {
+			xmax : 0,
+			xmin : 0,
+			ymax : 0,
+			ymin : 0
+		}
+	
 		var startTime = Date.parse(rawData[0].time);
 		for (var i = 0; i < rawData.length; i += 2) {
 			clear.push(updateBounds(Date.parse(rawData[i].time) - startTime, rawData[i].clear - rawData[i + 1].clear));
@@ -458,7 +428,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		    .range([0, width]);
 		 
 		var y = d3.scale.linear()
-		    .domain([bounds.ymin, bounds.ymax])
+		    .domain([bounds.ymin * (bounds.ymin > 0 ? 0.9 : 1.1), bounds.ymax * (bounds.ymax > 0 ? 1.1 : 0.9)])
 		    .range([height, 0]);
 			
 		var xAxis = d3.svg.axis()
@@ -620,7 +590,28 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 			}
 		);
 	}
-			
+
+	function connectToTestInProgress() {
+		if (WAF.directory.currentUser()) {
+			connectToWebsocket({ type: 'reconnect', deviceID: sources.device.ID });
+			sources.device.test_in_progress(
+				{
+					onSuccess: function(event) {
+						testCartridge = event.result;
+						sources.testCartridge.sync();
+					},
+					onError: function(error) {
+						testCartridge = '';
+						sources.testCartridge.sync();
+						console.log('SYSTEM ERROR: Retrieving test in progress, ' + error.error[0].message);
+					}
+				},
+				{
+					deviceID: sources.device.ID
+				}
+			);
+		}
+	}
 //
 //
 //
@@ -715,7 +706,29 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonCheckCalibration.click = function buttonCheckCalibration_click (event)// @startlock
 	{// @endlock
-		checkDeviceCalibration(this);
+		if (sources.device.online) {
+			var user = WAF.directory.currentUser();
+			
+			if (user) {
+				sendWebsocketMessage(this, { 
+					type: 'run',  
+					func: 'check_device_calibration', 
+					deviceID: sources.device.ID, 
+					dataSources: [], 
+					param: {
+						username: user.userName,
+						deviceID: sources.device.ID
+					} 
+				});
+			}
+			else {
+				notification.error('You must be signed in to calibrate a device');
+			}
+		}
+		else {
+			notification.error('Device must be online to calibrate');
+		}
+
 	};// @lock
 
 	assayDataEvent.onCurrentElementChange = function assayDataEvent_onCurrentElementChange (event)// @startlock
@@ -735,29 +748,26 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 
 	buttonCancelTest.click = function buttonCancelTest_click (event)// @startlock
 	{// @endlock
-		spinner.spin(this.domNode);
-		sources.test.cancel(
-			{
-				onSuccess: function(evt) {
-						spinner.stop();
-						if (evt.result.success) {
-							notification.log('Test cancelled');
-							testCartridge = '';
-							sources.testCartridge.sync();
-						}
-						else {
-							notification.error('ERROR: ' + evt.result.message + ' - test not cancelled');
-						}
-					},
-				onError: function(err) {
-						spinner.stop();
-						notification.error('SYSTEM ERROR: ' + err.error[0].message);
-					}
-			},
-			{
-				cartridgeID: testCartridge
+		if (confirm('Are you sure you want to cancel this test? This cannot be undone, and the cartridge will be unusable afterwards')) {
+			var user = WAF.directory.currentUser();
+			
+			if (user) {
+				sendWebsocketMessage(this, { 
+					type: 'cancel',
+					func: 'cancel_test',
+					deviceID: sources.device.ID, 
+					dataSources: [], 
+					param: { 
+						username: user.userName, 
+						deviceID: sources.device.ID, 
+						cartridgeID: testCartridge 
+					} 
+				});
+				}
+			else {
+				notification.error('You must be signed in to cancel a test');	
 			}
-		);
+		}
 	};// @lock
 
 	buttonRunTest.click = function buttonRunTest_click (event)// @startlock
@@ -766,7 +776,17 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		
 		if (user) {
 			if (sources.cartridgeRegistered.ID) {
-				sendWebsocketMessage(this, { type: 'run', func: 'run_test', deviceID: sources.device.ID, dataSources: [], param: { username: user.userName, deviceID: sources.device.ID, cartridgeID: sources.cartridgeRegistered.ID } });
+				sendWebsocketMessage(this, { 
+					type: 'run', 
+					func: 'run_test', 
+					deviceID: sources.device.ID, 
+					dataSources: [], 
+					param: { 
+						username: user.userName, 
+						deviceID: sources.device.ID, 
+						cartridgeID: sources.cartridgeRegistered.ID 
+					} 
+				});
 			}
 			else {
 				notification.error('You must select a registered, unused cartridge');	
@@ -782,7 +802,19 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		var user = WAF.directory.currentUser();
 		
 		if (user) {
-			sendWebsocketMessage(this, { type: 'run',  func: 'initialize_device', deviceID: sources.device.ID, dataSources: [], param: { username: user.userName, deviceID: sources.device.ID } });
+			testCartridge = '';
+			sources.testCartridge.sync();
+			$$('progressBarTest').setValue(0, 100, 'No test underway');
+			sendWebsocketMessage(this, { 
+				type: 'run',  
+				func: 'initialize_device', 
+				deviceID: sources.device.ID, 
+				dataSources: [], 
+				param: { 
+					username: user.userName, 
+					deviceID: sources.device.ID 
+				} 
+			});
 		}
 		else {
 			notification.error('You must be signed in to initialize a device');	
@@ -797,6 +829,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 				sources.deviceOnline.sync();
 				$$('textFieldDeviceOnline').setBackgroundColor('green');
 				$$('containerTestActions').show();
+				connectToTestInProgress();
 			}
 			else {
 				deviceOnline = 'NO - OFFLINE' ;
@@ -913,7 +946,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		saveDevice();
 	};// @lock
 
-	buttonCancelDevice.click = function buttonCancelDevice_click (event)// @startlock
+	buttonDeviceRevertChanges.click = function buttonDeviceRevertChanges_click (event)// @startlock
 	{// @endlock
 		sources.assay.serverRefresh(
 			{
@@ -1090,7 +1123,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		);
 	};// @lock
 
-	buttonCancelAssay.click = function buttonCancelAssay_click (event)// @startlock
+	buttonAssayRevertChanges.click = function buttonAssayRevertChanges_click (event)// @startlock
 	{// @endlock
 		sources.assay.serverRefresh(
 			{
@@ -1126,7 +1159,16 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonChangeParameter.click = function buttonChangeParameter_click (event)// @startlock
 	{// @endlock
 		if (sources.device.online) {
-			sendWebsocketMessage(this, { type: 'run', func: 'change_parameter', deviceID: sources.device.ID, dataSources: [], param: {name: sources.sparkAttr.name, value: sources.sparkAttr.value} });
+			sendWebsocketMessage(this, { 
+				type: 'run', 
+				func: 'change_parameter', 
+				deviceID: sources.device.ID, 
+				dataSources: [], 
+				param: {
+					name: sources.sparkAttr.name, 
+					value: sources.sparkAttr.value
+				} 
+			});
 		}
 		else {
 			notification.error('Device "' + sources.device.name + '" is not online');
@@ -1136,7 +1178,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonLoadParams.click = function buttonLoadParams_click (event)// @startlock
 	{// @endlock
 		if (sources.device.online) {
-			sendWebsocketMessage(this, { type: 'run', func: 'load_parameters', deviceID: sources.device.ID, dataSources: [] });
+			sendWebsocketMessage(this, { 
+				type: 'run', 
+				func: 'load_parameters', 
+				deviceID: sources.device.ID, 
+				dataSources: [] 
+			});
 		}
 		else {
 			notification.error('Device "' + sources.device.name + '" is not online');
@@ -1146,7 +1193,12 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	buttonResetParams.click = function buttonResetParams_click (event)// @startlock
 	{// @endlock
 		if (sources.device.online) {
-			sendWebsocketMessage(this, { type: 'run', func: 'reset_parameters', deviceID: sources.device.ID, dataSources: [] });
+			sendWebsocketMessage(this, { 
+				type: 'run', 
+				func: 'reset_parameters', 
+				deviceID: sources.device.ID, 
+				dataSources: []
+			});
 		}
 		else {
 			notification.error('Device "' + sources.device.name + '" is not online');
@@ -1191,7 +1243,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("deviceModel", "onCurrentElementChange", deviceModelEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("buttonCreateNewDevice", "click", buttonCreateNewDevice.click, "WAF");
 	WAF.addListener("buttonSaveDevice", "click", buttonSaveDevice.click, "WAF");
-	WAF.addListener("buttonCancelDevice", "click", buttonCancelDevice.click, "WAF");
+	WAF.addListener("buttonDeviceRevertChanges", "click", buttonDeviceRevertChanges.click, "WAF");
 	WAF.addListener("buttonPasteBCODE", "click", buttonPasteBCODE.click, "WAF");
 	WAF.addListener("buttonCopyBCODE", "click", buttonCopyBCODE.click, "WAF");
 	WAF.addListener("assay", "onCurrentElementChange", assayEvent.onCurrentElementChange, "WAF");
@@ -1207,7 +1259,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	WAF.addListener("buttonInsertTop", "click", buttonInsertTop.click, "WAF");
 	WAF.addListener("buttonDeleteAssay", "click", buttonDeleteAssay.click, "WAF");
 	WAF.addListener("buttonSaveAssay", "click", buttonSaveAssay.click, "WAF");
-	WAF.addListener("buttonCancelAssay", "click", buttonCancelAssay.click, "WAF");
+	WAF.addListener("buttonAssayRevertChanges", "click", buttonAssayRevertChanges.click, "WAF");
 	WAF.addListener("buttonCreateAssay", "click", buttonCreateAssay.click, "WAF");
 	WAF.addListener("menuItemDevice", "click", menuItemDevice.click, "WAF");
 	WAF.addListener("buttonChangeParameter", "click", buttonChangeParameter.click, "WAF");
