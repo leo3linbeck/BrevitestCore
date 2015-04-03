@@ -1,1 +1,1 @@
-﻿exports.sparkUsername = function sparkUsername () {	return ('leo3@linbeck.com');};exports.sparkPassword = function sparkPassword () {	return ('2january88');};
+﻿exports.sparkUsername = function sparkUsername () {	return ('leo3@linbeck.com');};exports.sparkPassword = function sparkPassword () {	return ('2january88');};exports.serverIP = function serverIP () {	return ('54.70.2.9');};exports.serverIP = function serverIP () {	return ('80');};

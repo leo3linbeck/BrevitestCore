@@ -27,6 +27,7 @@
 				"panelColor": "#D88CFF",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 465,
 						"Y": 20
@@ -57,9 +58,10 @@
 				"panelColor": "#76923C",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
-						"X": 930,
-						"Y": 729
+						"X": 1287,
+						"Y": 340
 					}
 				}
 			},
@@ -168,6 +170,7 @@
 				"panelColor": "#C4BD97",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 2545,
 						"Y": 408
@@ -211,8 +214,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 751,
-						"Y": 111
+						"X": 838,
+						"Y": 43
 					}
 				}
 			},
@@ -220,6 +223,7 @@
 				"panelColor": "#fff",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 2232,
 						"Y": 203
@@ -250,8 +254,8 @@
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 48,
-			"workspaceTop": 984,
+			"workspaceLeft": 743,
+			"workspaceTop": 0,
 			"lastScriptLocation": {
 				"Cartridge": {
 					"method": "Cartridge/Cartridge-methods.js"
@@ -266,6 +270,15 @@
 				"Device": {
 					"method": "Device/Device-methods.js",
 					"computed": "Device/Device-events.js"
+				},
+				"Assay": {
+					"events": "Assay/Assay-events.js"
+				},
+				"Practice": {
+					"computed": "Practice/Practice-events.js"
+				},
+				"User": {
+					"method": "User/User-methods.js"
 				}
 			}
 		}
@@ -500,8 +513,9 @@
 					"path": "assay"
 				},
 				{
-					"name": "GCODE",
+					"name": "BCODE",
 					"kind": "storage",
+					"matchColumn": "GCODE",
 					"scope": "public",
 					"type": "string"
 				},
@@ -613,6 +627,73 @@
 					"type": "OrderItems",
 					"reversePath": true,
 					"path": "assay"
+				}
+			],
+			"events": [
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.Assay.events.save",
+					"userDefined": true
 				}
 			]
 		},
@@ -751,6 +832,12 @@
 					"type": "uuid"
 				},
 				{
+					"name": "rawData",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
 					"name": "manufacturedOn",
 					"kind": "storage",
 					"scope": "public",
@@ -787,8 +874,9 @@
 					"simpleDate": false
 				},
 				{
-					"name": "validatedOn",
+					"name": "registeredOn",
 					"kind": "storage",
+					"matchColumn": "validatedOn",
 					"scope": "public",
 					"type": "date",
 					"simpleDate": false
@@ -818,6 +906,13 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "bool"
+				},
+				{
+					"name": "registeredBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
 				},
 				{
 					"name": "practice",
@@ -866,14 +961,42 @@
 					"scope": "public",
 					"type": "Shipment",
 					"path": "Shipment"
+				},
+				{
+					"name": "startedBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
 				}
 			],
 			"methods": [
+				{
+					"name": "get_data_from_device",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.entityMethods.get_data_from_device",
+					"userDefined": true
+				},
 				{
 					"name": "manufacture",
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Cartridge.methods.manufacture",
+					"userDefined": true
+				},
+				{
+					"name": "mark_as_failed",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.entityMethods.mark_as_failed",
+					"userDefined": true
+				},
+				{
+					"name": "register",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Cartridge.methods.register",
 					"userDefined": true
 				}
 			]
@@ -1046,6 +1169,12 @@
 					"primKey": true
 				},
 				{
+					"name": "name",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
 					"name": "modelName",
 					"kind": "alias",
 					"scope": "public",
@@ -1171,21 +1300,74 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "notes",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "deviceModelName",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "deviceModel.name"
+				},
+				{
+					"name": "sparkName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "sparkLastHeard",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "registeredBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
+				},
+				{
+					"name": "registrar",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "registeredBy.fullName"
+				},
+				{
+					"name": "calibrationSteps",
+					"kind": "storage",
+					"scope": "public",
+					"type": "long"
 				}
 			],
 			"methods": [
 				{
-					"name": "checkSerialNumber",
+					"name": "check_serial_number",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Device.methods.checkSerialNumber",
+					"from": "$mainModel.Device.methods.check_serial_number",
 					"userDefined": true
 				},
 				{
-					"name": "initialize",
+					"name": "test_in_progress",
 					"applyTo": "dataClass",
-					"scope": "publicOnServer",
-					"from": "$mainModel.Device.methods.initialize",
+					"scope": "public",
+					"from": "$mainModel.Device.methods.test_in_progress",
+					"userDefined": true
+				},
+				{
+					"name": "update_status",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Device.entityMethods.update_status",
 					"userDefined": true
 				}
 			]
@@ -1975,6 +2157,26 @@
 					"type": "Patients",
 					"reversePath": true,
 					"path": "practice"
+				},
+				{
+					"name": "physicalAddress",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Address",
+					"path": "Address"
+				},
+				{
+					"name": "googleMapAddress",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Practice.googleMapAddress.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			]
 		},
@@ -2216,6 +2418,19 @@
 					"primKey": true
 				},
 				{
+					"name": "result",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "number",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.result.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
 					"name": "isComplete",
 					"kind": "calculated",
 					"scope": "public",
@@ -2226,13 +2441,25 @@
 							"from": "$mainModel.Test.isComplete.onGet",
 							"userDefined": true
 						}
+					],
+					"onQuery": [
+						{
+							"from": "$mainModel.Test.isComplete.onQuery",
+							"userDefined": true
+						}
 					]
 				},
 				{
-					"name": "result",
+					"name": "status",
 					"kind": "storage",
 					"scope": "public",
-					"type": "number"
+					"type": "string"
+				},
+				{
+					"name": "percentComplete",
+					"kind": "storage",
+					"scope": "public",
+					"type": "long"
 				},
 				{
 					"name": "physicianInstruction",
@@ -2248,19 +2475,48 @@
 					"path": "Prescription"
 				},
 				{
+					"name": "assay",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Assay",
+					"path": "Assay"
+				},
+				{
+					"name": "runBy",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
+				},
+				{
+					"name": "device",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Device",
+					"path": "Device"
+				},
+				{
+					"name": "billingItem",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "BillingItem",
+					"path": "BillingItem"
+				},
+				{
+					"name": "cartridges",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Cartridges",
+					"reversePath": true,
+					"path": "test"
+				},
+				{
 					"name": "prescribedOn",
 					"kind": "alias",
 					"scope": "public",
 					"type": "date",
 					"simpleDate": false,
 					"path": "prescription.prescribedOn"
-				},
-				{
-					"name": "assay",
-					"kind": "relatedEntity",
-					"scope": "public",
-					"type": "Assay",
-					"path": "Assay"
 				},
 				{
 					"name": "startedOn",
@@ -2285,26 +2541,17 @@
 					"scriptKind": "javascript"
 				},
 				{
-					"name": "billingItem",
-					"kind": "relatedEntity",
+					"name": "rawData",
+					"kind": "calculated",
 					"scope": "public",
-					"type": "BillingItem",
-					"path": "BillingItem"
-				},
-				{
-					"name": "device",
-					"kind": "relatedEntity",
-					"scope": "public",
-					"type": "Device",
-					"path": "Device"
-				},
-				{
-					"name": "cartridges",
-					"kind": "relatedEntities",
-					"scope": "public",
-					"type": "Cartridges",
-					"reversePath": true,
-					"path": "test"
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.rawData.onGet",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "assayName",
@@ -2356,18 +2603,6 @@
 					"path": "device.listModelSN"
 				},
 				{
-					"name": "status",
-					"kind": "storage",
-					"scope": "public",
-					"type": "string"
-				},
-				{
-					"name": "percentComplete",
-					"kind": "storage",
-					"scope": "public",
-					"type": "long"
-				},
-				{
 					"name": "assayRedMax",
 					"kind": "alias",
 					"scope": "public",
@@ -2394,21 +2629,53 @@
 					"scope": "public",
 					"type": "number",
 					"path": "assay.greenMin"
+				},
+				{
+					"name": "listViewLine2",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.listViewLine2.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "cartridgeID",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.cartridgeID.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "outcome",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.outcome.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			],
 			"methods": [
 				{
-					"name": "start",
+					"name": "get_sensor_reading_array",
 					"applyTo": "dataClass",
 					"scope": "public",
-					"from": "$mainModel.Test.methods.start",
-					"userDefined": true
-				},
-				{
-					"name": "updateStatus",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Test.methods.updateStatus",
+					"from": "$mainModel.Test.methods.get_sensor_reading_array",
 					"userDefined": true
 				}
 			]
@@ -2441,6 +2708,53 @@
 					"scope": "public",
 					"type": "Practice",
 					"path": "Practice"
+				},
+				{
+					"name": "cartridges",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Cartridges",
+					"reversePath": true,
+					"path": "registeredBy"
+				},
+				{
+					"name": "devices",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Devices",
+					"reversePath": true,
+					"path": "registeredBy"
+				},
+				{
+					"name": "fullName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "tests",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Tests",
+					"reversePath": true,
+					"path": "runBy"
+				},
+				{
+					"name": "cartridges_1",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "Cartridges",
+					"reversePath": true,
+					"path": "startedBy"
+				}
+			],
+			"methods": [
+				{
+					"name": "start_daemons",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.User.methods.start_daemons",
+					"userDefined": true
 				}
 			]
 		}

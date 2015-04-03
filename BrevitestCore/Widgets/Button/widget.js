@@ -47,7 +47,7 @@ WAF.define('Button', ['waf-core/widget'], function(Widget) {
             this.title.onChange(this.render);
             this.plainText.onChange(this.render);
 
-            this._handleClick = function() {
+            this._handleClick = function(event) {
                 this.fire('action');
 
                 if(this.actionSource()) {
@@ -72,6 +72,8 @@ WAF.define('Button', ['waf-core/widget'], function(Widget) {
                         window.location = this.url();
                     }
                 }
+
+                event.stopPropagation();
             }.bind(this);
             $(this.node).on('click', this._handleClick);
         }

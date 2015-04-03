@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?><permissions>
-	<allow type="module" resource="serverControl" action="executeFromClient"/>
 	<allow type="module" resource="sparkCore" action="executeFromClient"/>
+	<allow type="module" resource="dispatch-service" action="executeFromClient"/>
+	<allow type="module" resource="scan-qr-code" action="executeFromClient"/>
 </permissions>

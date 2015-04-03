@@ -1,0 +1,48 @@
+<!DOCTYPE html><html>
+    <head>
+        <title>Brevitest, LLC © 2015</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="generator" content="Wakanda GUIDesigner"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta name="WAF.catalog" content="Device,Test"/>
+        <meta name="WAF.packageJson"/>
+    	<meta name="wakanda-version" content="10 build 10.180578"/>
+		<meta name="wakanda-build" content="10.180578"/>
+		
+		
+<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="monitorStatus" data-lib="WAF" data-id="monitorStatus" data-dataType="boolean" data-autoLoad="true" content="monitorStatus"/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="deviceStatus" data-lib="WAF" data-id="deviceStatus" data-dataType="string" data-autoLoad="true" content="deviceStatus"/>
+<meta name="WAF.config.rpc.file" content="/rpc-proxy/sparkCore?namespace=spark"/>
+		
+		
+		
+		
+		
+		
+		
+		
+		<meta name="WAF.config.loadCSS" id="waf-interface-css" content="styles/index.css"/>
+		<meta name="WAF.config.loadCSS" id="waf-project-css" content="/application.css"/>
+		<meta name="WAF.config.loadCSS" content="styles/libnotify.css"/>
+<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Device" data-lib="WAF" data-id="deviceList" data-dataType="string" data-autoLoad="true" content="deviceList"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Test" data-lib="WAF" data-id="test" data-dataType="string" data-autoLoad="true" content="test"/>		<meta name="WAF.config.loadJS" id="waf-script" content="scripts/index.js"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/spin.js"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/humane.min.js"/>
+		<meta name="WAF.config.loadJS" content="/Javascript/d3.min.js"/>
+
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="cartridgeID" data-lib="WAF" data-id="cartridgeID" data-dataType="string" data-autoLoad="true" content="cartridgeID"/></head>
+    <body id="waf-body" data-workspace-width="0" data-workspace-orientation="portrait" data-workspace-height="0" data-workspace-device="desktop" data-viewport-width="device-width" data-viewport-minimum-scale="1.0" data-viewport-maximum-scale="1.0" data-viewport-initial-scale="1.0" data-type="document" data-title="Brevitest, LLC © 2015" data-theme="brevitest" data-platform="desktop" data-lib="WAF" data-group="[]" data-entire-model="false" data-apple-meta-tags-status-bar="default" class="waf-theme brevitest waf-widget waf-document" style="bottom:;right:;visibility:hidden;">
+    <div id="loginHome" data-user-label="User: " data-user-display="Signed in as " data-type="login" data-password-label="Password: " data-logout-action="Sign Out" data-login-title="Sign In Dialog" data-login-button="Sign In" data-login-action="Sign In" data-lib="WAF" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-login"></div><div id="richTextTitle" data-type="richText" data-target="_blank" data-plainText="true" data-overflow="Hidden" data-lib="WAF" data-label-position="left" data-label="" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-autoWidth="false" class="waf-widget waf-richText">Brevitest</div>
+		<div id="containerTestActions" data-type="container" data-lib="WAF" data-label-position="top" data-label="" data-hideonload="true" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-container waf-container-level-0 waf-level-0">	<button id="buttonInitDevice" data-type="button" data-text="Initialize Device" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-action="simple" class="waf-widget waf-button"></button>
+		<button id="buttonRunTest" data-type="button" data-text="Run Test" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-action="simple" class="waf-widget waf-button"></button>
+			<button id="buttonCancelTest" data-type="button" data-text="Cancel Process" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-action="simple" class="waf-widget waf-button"></button>
+		<textarea id="textFieldDeviceStatus" data-type="textField" data-readOnly="true" data-password="false" data-multiline="true" data-lib="WAF" data-label-position="top" data-label="" data-datapicker-on="false" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" data-binding="deviceStatus" class="waf-widget waf-textField"></textarea>
+		<div id="richTextDeviceStatusLabel" data-type="richText" data-target="_blank" data-plainText="true" data-overflow="Hidden" data-lib="WAF" data-label-position="left" data-label="" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" data-autoWidth="false" class="waf-widget waf-richText">Device Status</div>
+ 	 			<div id="dataGridDeviceFlash" data-type="dataGrid" data-selection-mode="single" data-readOnly="true" data-lib="WAF" data-label-position="top" data-label="" data-footer-text="device(s)" data-display-error="true" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-column="[{'sourceAttID':'name','colID':'name','width':'100%25','title':'Device'}]" data-binding="deviceList" class="waf-widget waf-dataGrid"></div>
+				<input type="text" id="textFieldAssayName" data-type="textField" data-readOnly="false" data-password="false" data-multiline="false" data-lib="WAF" data-label-position="left" data-label="Cartridge ID" data-datapicker-on="false" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" data-binding="cartridgeID" class="waf-widget waf-textField"/>
+ 	 		<label id="label1" for="textFieldAssayName" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-right="true" data-constraint-bottom="false" class="waf-widget waf-label waf-label-textfield">Cartridge ID</label>
+ 	 	</div>	<div id="containerTestResults" data-type="container" data-lib="WAF" data-label-position="top" data-label="" data-hideonload="true" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="true" class="waf-widget waf-container waf-container-level-0 waf-level-0">	<div id="dataGridTests" data-type="dataGrid" data-selection-mode="single" data-readOnly="true" data-lib="WAF" data-label-position="top" data-label="" data-footer-text="device(s)" data-display-error="false" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-column="[{'sourceAttID':'patientNumber','colID':'patientNumber','width':'140','title':'Patient%20No.'},{'sourceAttID':'startedOn','colID':'startedOn','width':'140','title':'Run%20Date'}]" data-binding="test" class="waf-widget waf-dataGrid"></div>
+					<div id="containerGraph" data-type="container" data-lib="WAF" data-label-position="top" data-label="" data-constraint-right="true" data-constraint-bottom="true" class="waf-widget waf-container waf-container-level-1 waf-level-1"></div>
+	</div>
+		<script type="text/javascript" src="/waLib/WAF/Loader.js"></script>
+	</body>
+</html>
