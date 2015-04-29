@@ -3,44 +3,53 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#htmlTag2 {
+	position: absolute;
+	z-index: 0;
+	width: 0px;
+	height: 0px;
+	top: auto;
+	left: auto;
+}
+
 #label27 {
+	z-index: 19;
 	width: 60px;
-	height: 18px;
-	top: 183px;
+	height: 19px;
+	top: 182px;
 	left: 665px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 19;
 }
 
 #label15 {
-	width: 74px;
-	height: 18px;
-	top: 143px;
-	left: 651px;
+	z-index: 16;
+	width: 72px;
+	height: 19px;
+	top: 142px;
+	left: 653px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 16;
 }
 
 #label10 {
-	width: 78px;
-	height: 18px;
-	top: 103px;
-	left: 647px;
+	z-index: 15;
+	width: 76px;
+	height: 19px;
+	top: 102px;
+	left: 649px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 15;
 }
 
 #label1 {
-	width: 64px;
-	height: 18px;
-	top: 63px;
-	left: 661px;
+	z-index: 14;
+	width: 62px;
+	height: 19px;
+	top: 62px;
+	left: 663px;
 	position: absolute;
 	font-size: 16px;
-	z-index: 14;
 }
 
 #progressBarTest .waf-progressBar-range {
@@ -49,7 +58,7 @@
 
 #label26 {
 	z-index: 11;
-	height: 21px;
+	height: 22px;
 	bottom: 82px;
 	left: 219px;
 	right: 0px;
@@ -60,9 +69,9 @@
 
 #label23 {
 	z-index: 21;
-	height: 18px;
-	top: 98px;
-	left: 115px;
+	height: 19px;
+	top: 97px;
+	left: 116px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
@@ -70,29 +79,29 @@
 
 #label22 {
 	z-index: 10;
-	width: 157px;
-	height: 18px;
-	top: 25px;
-	left: 199px;
+	width: 156px;
+	height: 19px;
+	top: 24px;
+	left: 200px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #label12 {
 	z-index: 10;
-	width: 121px;
+	width: 120px;
 	height: 16px;
 	top: 336px;
-	left: 26px;
+	left: 27px;
 	position: absolute;
 	font-size: 14px;
 }
 
 #label25 {
 	z-index: 19;
-	height: 18px;
-	top: 28px;
-	left: 80px;
+	height: 19px;
+	top: 27px;
+	left: 82px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
@@ -132,9 +141,9 @@
 
 #label24 {
 	z-index: 16;
-	height: 18px;
-	top: 133px;
-	left: 54px;
+	height: 19px;
+	top: 132px;
+	left: 56px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
@@ -142,10 +151,10 @@
 
 #label17 {
 	z-index: 13;
-	width: 126px;
-	height: 18px;
-	top: 168px;
-	left: 52px;
+	width: 123px;
+	height: 19px;
+	top: 167px;
+	left: 55px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -153,7 +162,7 @@
 #richText8 {
 	z-index: 1;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -161,10 +170,10 @@
 
 #label18 {
 	z-index: 10;
-	width: 50px;
-	height: 18px;
-	top: 43px;
-	left: 925px;
+	width: 49px;
+	height: 19px;
+	top: 42px;
+	left: 926px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -173,10 +182,10 @@
 
 #label16 {
 	z-index: 2;
-	height: 18px;
-	top: 231px;
-	left: 1133.5px;
-	right: 324px;
+	height: 20px;
+	top: 229px;
+	left: 994px;
+	right: -366px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -185,8 +194,8 @@
 
 #label11 {
 	width: 129px;
-	height: 18px;
-	top: 16px;
+	height: 20px;
+	top: 14px;
 	left: 520px;
 	position: absolute;
 	font-size: 16px;
@@ -200,7 +209,7 @@
 #richText6 {
 	z-index: 1;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -218,20 +227,20 @@
 
 #label14 {
 	z-index: 5;
-	width: 110px;
-	height: 18px;
+	width: 106px;
+	height: 19px;
 	bottom: 284px;
-	left: 797px;
+	left: 801px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #label9 {
 	z-index: 2;
-	width: 59px;
-	height: 18px;
+	width: 56px;
+	height: 19px;
 	bottom: 49px;
-	left: 186px;
+	left: 189px;
 	position: absolute;
 	letter-spacing: normal;
 	max-width: 250px;
@@ -242,10 +251,10 @@
 
 #label13 {
 	z-index: 11;
-	width: 151px;
-	top: 280px;
+	width: 148px;
+	top: 279px;
 	bottom: 249px;
-	left: 123px;
+	left: 124px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -253,9 +262,9 @@
 
 #label8 {
 	z-index: 3;
-	height: 18px;
-	top: 218px;
-	left: 135px;
+	height: 19px;
+	top: 217px;
+	left: 136px;
 	right: -104px;
 	position: absolute;
 	font-size: 16px;
@@ -264,9 +273,9 @@
 
 #label7 {
 	z-index: 2;
-	height: 18px;
-	top: 63px;
-	left: 74px;
+	height: 19px;
+	top: 62px;
+	left: 77px;
 	right: 0px;
 	position: absolute;
 	font-size: 16px;
@@ -280,7 +289,7 @@
 #richText4 {
 	z-index: 1;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -292,9 +301,9 @@
 
 #label2 {
 	z-index: 5;
-	height: 18px;
-	top: 15px;
-	left: 62.5px;
+	height: 20px;
+	top: 13px;
+	left: -71.5px;
 	right: 200px;
 	position: absolute;
 	text-align: center;
@@ -304,10 +313,10 @@
 
 #label5 {
 	z-index: 1;
-	width: 76px;
+	width: 73px;
 	height: 16px;
 	top: 80px;
-	left: 90px;
+	left: 92px;
 	position: absolute;
 	text-align: center;
 	font-size: 14px;
@@ -325,20 +334,20 @@
 
 #label4 {
 	z-index: 3;
-	width: 81px;
-	height: 18px;
+	width: 80px;
+	height: 19px;
 	top: 151px;
-	left: 94px;
+	left: 95px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #label3 {
 	z-index: 1;
-	width: 43px;
-	height: 18px;
-	top: 63px;
-	left: 132px;
+	width: 42px;
+	height: 19px;
+	top: 62px;
+	left: 133px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -535,8 +544,8 @@
 
 #richText3 {
 	z-index: 1;
-	width: 64px;
-	height: 22px;
+	width: 66px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -544,8 +553,8 @@
 
 #richText2 {
 	z-index: 1;
-	width: 64px;
-	height: 22px;
+	width: 66px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -553,8 +562,8 @@
 
 #richText1 {
 	z-index: 1;
-	width: 64px;
-	height: 22px;
+	width: 66px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -582,9 +591,9 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 1064px;
+	bottom: 686px;
 	left: 0px;
-	right: 5px;
+	right: 327px;
 	position: absolute;
 }
 
@@ -628,7 +637,7 @@
 #menuItemDevice {
 	z-index: 3;
 	width: 66px;
-	height: 23px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -637,7 +646,7 @@
 #menuItemTest {
 	z-index: 2;
 	width: 66px;
-	height: 23px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -646,7 +655,7 @@
 #menuItemAssay {
 	z-index: 1;
 	width: 66px;
-	height: 23px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -945,7 +954,7 @@
 #menuItemCartridge {
 	z-index: 4;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -1217,7 +1226,7 @@
 #menuItemData {
 	z-index: 6;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -1296,10 +1305,10 @@
 
 #label19 {
 	z-index: 5;
-	width: 86px;
-	height: 18px;
-	top: 84px;
-	left: 889px;
+	width: 85px;
+	height: 19px;
+	top: 83px;
+	left: 890px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -1308,10 +1317,10 @@
 
 #label20 {
 	z-index: 7;
-	width: 93px;
-	height: 18px;
-	top: 124px;
-	left: 882px;
+	width: 90px;
+	height: 19px;
+	top: 123px;
+	left: 885px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -1335,10 +1344,10 @@
 
 #label21 {
 	z-index: 8;
-	width: 91px;
+	width: 90px;
 	height: 37px;
 	top: 165px;
-	left: 884px;
+	left: 885px;
 	position: absolute;
 	text-align: center;
 	font-weight: normal;
@@ -1378,7 +1387,7 @@
 #menuItemHome {
 	z-index: 7;
 	width: 66px;
-	height: 0px;
+	height: 16px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -1762,6 +1771,7 @@
 }
 
 #textFieldAssayRedMax {
+	z-index: 14;
 	width: 120px;
 	height: 32px;
 	top: 56px;
@@ -1776,10 +1786,10 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 14;
 }
 
 #textFieldAssayGreenMax {
+	z-index: 15;
 	width: 120px;
 	height: 32px;
 	top: 96px;
@@ -1794,10 +1804,10 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 15;
 }
 
 #textFieldGreenMin {
+	z-index: 17;
 	width: 120px;
 	height: 32px;
 	top: 136px;
@@ -1812,10 +1822,10 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 17;
 }
 
 #textFieldAssayGreenMin {
+	z-index: 19;
 	width: 120px;
 	height: 32px;
 	top: 176px;
@@ -1830,10 +1840,10 @@
 	border-left-color: rgb(255, 0, 0);
 	border-right-color: rgb(255, 0, 0);
 	border-bottom-color: rgb(255, 0, 0);
-	z-index: 19;
 }
 
 #textFieldTestOutcome {
+	z-index: 13;
 	width: 342px;
 	height: 45px;
 	top: 161px;
@@ -1846,6 +1856,5 @@
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	font-size: 32px;
 	text-align: center;
-	z-index: 13;
 }
 

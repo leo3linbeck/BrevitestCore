@@ -619,20 +619,22 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		var v = sources.test.outcome;
-		if (v[0] === 'P') {
-			$$('textFieldTestOutcome').setBackgroundColor('#FF0000');
-		}
-		else {
-			if (v[0] === 'B') {
-				$$('textFieldTestOutcome').setBackgroundColor('yellow');
+		if (v) {
+			if (v[0] === 'P') {
+				$$('textFieldTestOutcome').setBackgroundColor('#FF0000');
 			}
 			else {
-				$$('textFieldTestOutcome').setBackgroundColor('#00FF00');
+				if (v[0] === 'B') {
+					$$('textFieldTestOutcome').setBackgroundColor('yellow');
+				}
+				else {
+					$$('textFieldTestOutcome').setBackgroundColor('#00FF00');
+				}
 			}
-		}
 
-		$('#containgerGraph, svg').remove();
-		loadGraph(sources.test.ID);
+			$('#containgerGraph, svg').remove();
+			loadGraph(sources.test.ID);
+		}
 	};// @lock
 
 	loginHome.login = function loginHome_login (event)// @startlock

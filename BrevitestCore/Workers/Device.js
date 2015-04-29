@@ -355,7 +355,7 @@ function initializeDevice(param) {
 					return;
 				}
 			}
-			if ((now - startTime) < 20000) {
+			if ((now - startTime) < 60000) {
 				doIt();
 			}
 			else {
@@ -486,7 +486,7 @@ function checkCalibration(param) {
 					return;
 				}
 			}
-			if ((now - startTime) < 20000) {
+			if ((now - startTime) < 60000) {
 				doIt();
 			}
 			else {
