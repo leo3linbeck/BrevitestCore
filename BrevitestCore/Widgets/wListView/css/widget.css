@@ -236,37 +236,6 @@ button::-moz-focus-inner,
     font-size:20px;
 }
 
-/* selectList template */
-.waf-theme .waf-widget.waf-wlistview li.selectList{
-    background-color:white;
-    background:none;
-}
-
-.waf-theme .waf-widget.waf-wlistview li.selectList strong{
-    float:left;
-    font-weight:bold;
-    font-size:14px;
-}
-
-.waf-theme .waf-widget.waf-wlistview li.selectList .check{
-    icon: 'images/onebit_34.png';
-}
-
-.waf-theme .waf-widget.waf-wlistview li.selectList .nocheck{
-    icon: '';
-}
-
-.waf-theme .waf-widget.waf-wlistview li.selectList p{
-    clear:left;
-}
-
-.waf-theme .waf-widget.waf-wlistview li.selectList a.nav{
-    font-weight:bold;
-    float:right;
-    color:#bbb;
-    font-size:20px;
-}
-
 /* rssList template */
 .waf-theme .waf-widget.waf-wlistview li.rssList{
     background-color:white;

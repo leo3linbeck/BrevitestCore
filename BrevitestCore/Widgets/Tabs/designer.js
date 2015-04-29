@@ -12,4 +12,11 @@
         sourceDisplay: false
     });
 
+    Tabs.doAfter('init', function() {
+        if(this.tabs.count()) return;
+        this.tabs.push({ title: 'Tab 1' });
+        this.tabs.push({ title: 'Tab 2' });
+    });
+
+    Tabs.addEvent('closeTab');
 });

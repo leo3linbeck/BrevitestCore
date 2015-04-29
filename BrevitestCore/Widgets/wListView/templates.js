@@ -39,20 +39,6 @@
                            </li>'
             },
             {
-                description: 'Select List',
-                className: 'selectList',
-                template: '<li class="selectList">\
-                                {{#if selected}}\
-                                	<img class="check" />\
-                                {{#else}}\
-                                	<img class="nocheck" />\
-                                {{/if selected}}\
-                                <strong>\
-                                    {{name}}\
-                                </strong>\
-                           </li>'
-            },
-            {
                 description: 'RSS Feed',
                 className: 'rssList',
                 template: '<li class="rssList">\

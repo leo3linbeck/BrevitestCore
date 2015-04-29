@@ -54,6 +54,9 @@
     };
 
     WAF.utils.parseNumber = function(value, options) {
+        if(value === '' || value == null) {
+            return null;
+        }
         options = options || {};
         if(typeof options === 'string') {
             options = { format: options };
@@ -74,6 +77,9 @@
     };
 
     WAF.utils.parseDate = function(value, options) {
+        if(value === '' || value == null) {
+            return null;
+        }
         options = options || {};
         if(typeof options === 'string') {
             options = { format: options };

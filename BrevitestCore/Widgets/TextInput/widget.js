@@ -143,6 +143,7 @@ WAF.define('TextInput', ['waf-core/widget'], function(widget) {
                     valueSubscriber.pause();
                     this.editValue(this.formatEditValue(this.value()));
                     this.displayValue(this.formatDisplayValue(this.value()));
+                    this.node.value = this.displayValue();
                     valueSubscriber.resume();
                 }
             }
@@ -196,7 +197,7 @@ WAF.define('TextInput', ['waf-core/widget'], function(widget) {
             }
             var formatter = 'format' + this.getType();
             if (formatter in WAF.utils) {
-                return WAF.utils[formatter](value, { format: this.format() });
+                return WAF.utils[formatter](value, { format: this.format() || '' });
             }
             return '' + value;
         },
@@ -204,7 +205,7 @@ WAF.define('TextInput', ['waf-core/widget'], function(widget) {
             // remove prefix and suffix from number format
             var result = /[^#0,.]*([#0,.%]+).*/.exec(this.format());
             if(result) {
-                return result[1];
+                return result[1].replace(',', '');
             }
             return this.format();
         },

@@ -2,7 +2,7 @@ WAF.define('Tabs', ['waf-core/widget', 'TabsBar', 'TabsContainer'], function(wid
     "use strict";
 
     var Tabs = widget.create('Tabs');
-    Tabs.inherit('waf-behavior/layout/container');
+    Tabs.inherit('waf-behavior/layout/multicontainer');
     Tabs.inherit('waf-behavior/layout/composed');
     Tabs.inherit('waf-behavior/layout/properties-container');
 
@@ -58,7 +58,7 @@ WAF.define('Tabs', ['waf-core/widget', 'TabsBar', 'TabsContainer'], function(wid
         }, this);
 
         menubar.subscribe('close', function(event) {
-            this.removeWidget(event.data.index);
+            this.fire('closeTab', event.data);
         }, this);
 
         //synhronise tabs with items
@@ -93,42 +93,20 @@ WAF.define('Tabs', ['waf-core/widget', 'TabsBar', 'TabsContainer'], function(wid
             });
         });
 
-        if (this.countWidgets() > 0 && this.currentContainerIndex() === undefined) {
+        if (this.countContainers() > 0 && this.currentContainerIndex() === undefined) {
             this.currentContainerIndex(0);
         }
     };
 
-    /**
-     * Allow to choose the current page
-     * This API will part of the futur multicontainer behavior
-     * @param {integer} [index] - the index of the container to set as current
-     * @returns {integer} - The index of the current active container
-     */
-    Tabs.prototype.currentContainerIndex = function(index) {
-        if(typeof index === 'number') {
-            if(index < 0 || index >= this._children.length) {
-                throw "Container not found";
-            }
-            this.invoke('removeClass', 'waf-state-active');
-            this._currentContainer = index;
-            this._children[this._currentContainer].addClass('waf-state-active');
-            this.fire('select', { index: index, widget: this._children[this._currentContainer] });
-
+    Tabs.doAfter('currentContainerIndex', function(index) {
+        if(arguments.length) {
             this._menubarSelectSubscriber.pause();
             this.getPart('menubar').select(index);
             this._menubarSelectSubscriber.resume();
         }
-        return this._currentContainer;
-    };
+    });
 
-    /**
-     * Set the current container as the last inserted or appended container
-     * This API will part of the futur multicontainer behavior
-     */
-    Tabs.prototype.setLastContainerAsCurrent = function() {
-        this.currentContainerIndex(this._lastWidgetIndex);
-    };
-
+    Tabs.defaultContainer(TabsContainer);
     Tabs.restrictWidget(TabsContainer);
 
     return Tabs;
