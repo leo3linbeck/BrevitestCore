@@ -1,0 +1,36 @@
+#menuBarControl {
+	z-index: 1 !important;
+	top: -30px !important;
+	left: -38px !important;
+	position: absolute;
+}
+
+#menuItemHome {
+	z-index: 1 !important;
+	width: 80 !important;
+}
+
+#menuItemAssay {
+	z-index: 2 !important;
+	width: 80 !important;
+}
+
+#menuItemDevice {
+	z-index: 3 !important;
+	width: 80 !important;
+}
+
+#menuItemCartridge {
+	z-index: 4 !important;
+	width: 80 !important;
+}
+
+#menuItemTest {
+	z-index: 5 !important;
+	width: 80 !important;
+}
+
+#menuItemData {
+	z-index: 6 !important;
+	width: 80 !important;
+}

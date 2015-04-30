@@ -3,6 +3,77 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
+#menuItemTest.waf-state-selected {
+	line-height: 20px;
+}
+
+#menuItemDevice.waf-state-selected {
+	line-height: 20px;
+}
+
+#menuItemHome.waf-state-selected {
+	line-height: 20px;
+}
+
+#menuItemAssay.waf-state-selected {
+	line-height: 20px;
+}
+
+#textField2 {
+	z-index: 14;
+	width: 351px;
+	height: 24px;
+	top: 91px;
+	left: 990px;
+	position: absolute;
+	border-top-style: dotted;
+	border-left-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	font-size: 14px;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+#label28 {
+	z-index: 14;
+	width: 151px;
+	height: 18px;
+	top: 94px;
+	left: 834px;
+	position: absolute;
+	font-size: 16px;
+	text-align: center;
+	font-weight: normal;
+}
+
+#textField1 {
+	z-index: 12;
+	width: 503px;
+	height: 32px;
+	top: 56px;
+	left: 360px;
+	position: absolute;
+	border-top-width: 3px;
+	border-left-width: 3px;
+	border-right-width: 3px;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	border-top-color: rgb(255, 0, 0);
+	border-left-color: rgb(255, 0, 0);
+	border-right-color: rgb(255, 0, 0);
+	border-bottom-color: rgb(255, 0, 0);
+}
+
+#label6 {
+	z-index: 12;
+	width: 148px;
+	height: 18px;
+	top: 63px;
+	left: 207px;
+	position: absolute;
+	font-size: 16px;
+}
+
 #label27 {
 	z-index: 19;
 	width: 60px;
@@ -48,11 +119,11 @@
 }
 
 #label26 {
-	z-index: 11;
+	z-index: 10;
 	height: 21px;
-	bottom: 82px;
+	bottom: 71px;
 	left: 219px;
-	right: 0px;
+	right: 1111px;
 	position: absolute;
 	font-size: 18px;
 	font-weight: bold;
@@ -63,13 +134,13 @@
 	height: 18px;
 	top: 98px;
 	left: 115px;
-	right: 0px;
+	right: 701px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #label22 {
-	z-index: 10;
+	z-index: 9;
 	width: 157px;
 	height: 18px;
 	top: 25px;
@@ -93,7 +164,7 @@
 	height: 18px;
 	top: 28px;
 	left: 80px;
-	right: 0px;
+	right: 701px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -135,7 +206,7 @@
 	height: 18px;
 	top: 133px;
 	left: 54px;
-	right: 0px;
+	right: 701px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -152,8 +223,8 @@
 
 #richText8 {
 	z-index: 1;
-	width: 66px;
-	height: 0px;
+	width: 64px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -163,8 +234,8 @@
 	z-index: 10;
 	width: 50px;
 	height: 18px;
-	top: 43px;
-	left: 925px;
+	top: 33px;
+	left: 935px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -175,8 +246,8 @@
 	z-index: 2;
 	height: 18px;
 	top: 231px;
-	left: 1001px;
-	right: 324px;
+	left: 1134px;
+	right: 651px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -195,12 +266,13 @@
 }
 
 #menuItemData.waf-state-selected {
+	line-height: 20px;
 }
 
 #richText6 {
 	z-index: 1;
-	width: 66px;
-	height: 0px;
+	width: 64px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -244,7 +316,7 @@
 	z-index: 11;
 	width: 151px;
 	top: 280px;
-	bottom: 249px;
+	bottom: 521px;
 	left: 123px;
 	position: absolute;
 	font-size: 16px;
@@ -256,7 +328,7 @@
 	height: 18px;
 	top: 218px;
 	left: 135px;
-	right: -104px;
+	right: 701px;
 	position: absolute;
 	font-size: 16px;
 	text-align: left;
@@ -267,20 +339,20 @@
 	height: 18px;
 	top: 63px;
 	left: 74px;
-	right: 0px;
+	right: 701px;
 	position: absolute;
 	font-size: 16px;
 }
 
 #menuItemCartridge.waf-state-selected {
-	line-height: 22px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+	line-height: 20px;
 }
 
 #richText4 {
 	z-index: 1;
-	width: 66px;
-	height: 0px;
+	width: 64px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -295,7 +367,7 @@
 	height: 18px;
 	top: 15px;
 	left: 62.5px;
-	right: 59px;
+	right: 192px;
 	position: absolute;
 	text-align: center;
 	font-size: 16px;
@@ -335,10 +407,10 @@
 
 #label3 {
 	z-index: 1;
-	width: 43px;
+	width: 45px;
 	height: 18px;
 	top: 63px;
-	left: 132px;
+	left: 130px;
 	position: absolute;
 	font-size: 16px;
 }
@@ -536,7 +608,7 @@
 #richText3 {
 	z-index: 1;
 	width: 64px;
-	height: 22px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -545,7 +617,7 @@
 #richText2 {
 	z-index: 1;
 	width: 64px;
-	height: 22px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -554,7 +626,7 @@
 #richText1 {
 	z-index: 1;
 	width: 64px;
-	height: 22px;
+	height: 1px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
@@ -582,16 +654,16 @@
 #menuBarControl {
 	z-index: 3;
 	top: 0px;
-	bottom: 891px;
+	bottom: 1064px;
 	left: 0px;
-	right: 5px;
+	right: 1111px;
 	position: absolute;
 }
 
 #containerAssay {
 	z-index: 4;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -600,7 +672,7 @@
 #containerTest {
 	z-index: 5;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -609,7 +681,7 @@
 #containerDevice {
 	z-index: 6;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -628,28 +700,31 @@
 #menuItemDevice {
 	z-index: 3;
 	width: 66px;
-	height: 23px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
+	line-height: 20px;
 }
 
 #menuItemTest {
 	z-index: 2;
 	width: 66px;
-	height: 23px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
+	line-height: 20px;
 }
 
 #menuItemAssay {
 	z-index: 1;
 	width: 66px;
-	height: 23px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
+	line-height: 20px;
 }
 
 #dataGridAssay {
@@ -936,7 +1011,7 @@
 #containerCartridge {
 	z-index: 7;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -945,12 +1020,12 @@
 #menuItemCartridge {
 	z-index: 4;
 	width: 66px;
-	height: 0px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
-	line-height: 22px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+	line-height: 20px;
 }
 
 #buttonCreateNewDevice {
@@ -1208,7 +1283,7 @@
 #containerData {
 	z-index: 9;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1217,12 +1292,12 @@
 #menuItemData {
 	z-index: 6;
 	width: 66px;
-	height: 0px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
-	line-height: 22px;
 	text-shadow: rgba(255, 255, 255, 0) 0px 0px 0px;
+	line-height: 20px;
 }
 
 #dataGridAssayData .waf-dataGrid-footer {
@@ -1298,8 +1373,8 @@
 	z-index: 5;
 	width: 86px;
 	height: 18px;
-	top: 84px;
-	left: 889px;
+	top: 64px;
+	left: 899px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -1311,7 +1386,7 @@
 	width: 93px;
 	height: 18px;
 	top: 124px;
-	left: 882px;
+	left: 892px;
 	position: absolute;
 	font-size: 16px;
 	text-align: center;
@@ -1323,7 +1398,7 @@
 	width: 351px;
 	height: 24px;
 	top: 121px;
-	left: 980px;
+	left: 990px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1364,8 +1439,8 @@
 	z-index: 10;
 	width: 351px;
 	height: 24px;
-	top: 40px;
-	left: 980px;
+	top: 30px;
+	left: 990px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1378,18 +1453,18 @@
 #menuItemHome {
 	z-index: 7;
 	width: 66px;
-	height: 0px;
+	height: 2px;
 	top: 0px;
 	left: 0px;
 	position: absolute;
 	font-size: 11px;
-	line-height: 22px;
+	line-height: 20px;
 }
 
 #containerHome {
 	z-index: 10;
 	top: 0px;
-	bottom: -15px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
 	position: absolute;
@@ -1643,7 +1718,7 @@
 }
 
 #textFieldTestCartridge {
-	z-index: 10;
+	z-index: 9;
 	width: 500px;
 	height: 30px;
 	top: 19px;
@@ -1697,9 +1772,9 @@
 }
 
 #progressBarTest {
-	z-index: 11;
+	z-index: 10;
 	height: 30px;
-	bottom: 47px;
+	bottom: 36px;
 	left: 219px;
 	right: 42px;
 	position: absolute;
@@ -1750,8 +1825,8 @@
 	z-index: 6;
 	width: 351px;
 	height: 24px;
-	top: 81px;
-	left: 980px;
+	top: 61px;
+	left: 990px;
 	position: absolute;
 	border-top-style: dotted;
 	border-left-style: dotted;
@@ -1834,7 +1909,7 @@
 }
 
 #textFieldTestOutcome {
-	z-index: 13;
+	z-index: 12;
 	width: 342px;
 	height: 45px;
 	top: 161px;

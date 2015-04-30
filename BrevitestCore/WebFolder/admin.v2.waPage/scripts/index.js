@@ -2,6 +2,7 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var textField1 = {};	// @textField
 	var testEvent = {};	// @dataSource
 	var loginHome = {};	// @login
 	var cartridgeRawEvent = {};	// @dataSource
@@ -616,6 +617,18 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 //
 // eventHandlers// @lock
 
+	textField1.change = function textField1_change (event)// @startlock
+	{// @endlock
+		sources.cartridgeRegistered.save({
+			onSuccess: function(evt) {
+				console.log(evt);
+			},
+			onError: function(err) {
+				console.log(err);
+			}
+		});
+	};// @lock
+
 	testEvent.onCurrentElementChange = function testEvent_onCurrentElementChange (event)// @startlock
 	{// @endlock
 		var v = sources.test.outcome;
@@ -1226,6 +1239,7 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("textField1", "change", textField1.change, "WAF");
 	WAF.addListener("test", "onCurrentElementChange", testEvent.onCurrentElementChange, "WAF");
 	WAF.addListener("loginHome", "login", loginHome.login, "WAF");
 	WAF.addListener("cartridgeRaw", "onCurrentElementChange", cartridgeRawEvent.onCurrentElementChange, "WAF");

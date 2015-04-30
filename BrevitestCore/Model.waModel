@@ -832,6 +832,12 @@
 					"type": "uuid"
 				},
 				{
+					"name": "description",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
 					"name": "rawData",
 					"kind": "storage",
 					"scope": "public",
@@ -2665,6 +2671,19 @@
 					"onGet": [
 						{
 							"from": "$mainModel.Test.outcome.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "cartridgeDescription",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Test.cartridgeDescription.onGet",
 							"userDefined": true
 						}
 					]
